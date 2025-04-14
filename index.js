@@ -4,31 +4,36 @@ new Vue({
     cores: ['red', 'blue', 'yellow', 'black'],
     jogadores: [
       {
+        id: 0,
         nome: 'Ana',
         funcao: 'Pesquisadora',
         imagem: 'assets/jogadora1.png',
         habilidades: ['Compartilha cartas', 'Identifica doenças'],
       },
       {
+        id: 1,
         nome: 'Ana',
         funcao: 'Pesquisadora',
         imagem: 'assets/jogadora1.png',
         habilidades: ['Compartilha cartas', 'Identifica doenças'],
       },
       {
+        id: 2,
         nome: 'Ana',
         funcao: 'Pesquisadora',
         imagem: 'assets/jogadora1.png',
         habilidades: ['Compartilha cartas', 'Identifica doenças'],
       },
       {
+        id: 3,
         nome: 'Ana',
         funcao: 'Pesquisadora',
         imagem: 'assets/jogadora1.png',
         habilidades: ['Compartilha cartas', 'Identifica doenças'],
       },
     ],
-    jogador: {
+    jogadorAtivo: {
+      id: 0,
       nome: '',
       funcao: '',
       imagem: '',
@@ -45,16 +50,13 @@ new Vue({
       { nome: 'Doença C', cor: 'yellow' },
       { nome: 'Doença D', cor: 'black' },
     ],
-    //criar função para alimentar cartar jogaveis de cidade
-    cartasJogaveis: [
-      { tipo: 'Cidade', cidade: 'São Paulo' },
-      { tipo: 'Especial', habilidade: 'Pesquisadora' },
-    ],
+    cartasJogo: [],
+    cartasInfeccao: [],
     frascos: [
-      { estado: 'não curado', doenca: 1 },
-      { estado: 'não curado', doenca: 2 },
-      { estado: 'não curado', doenca: 3 },
-      { estado: 'não curado', doenca: 4 },
+      { estado: 'não curado', cor: 'red' },
+      { estado: 'não curado', cor: 'blue' },
+      { estado: 'não curado', cor: 'yellow' },
+      { estado: 'não curado', cor: 'black' },
     ],
     //  ex pinoDoenca: { lugar: 'caixa', cor: '1'}
     pinosDoenca: [],
@@ -76,9 +78,20 @@ new Vue({
       mostrarCartaReferencia: false,
       mostrarCartasJogador: false,
     },
+    acoesRestantes: 4,
   },
   async mounted() {
     await this.PosicionarPinosDoenca();
+    await this.CarregarCartasJogo();
+    await this.CarregarCartasInfeccao();
+    await this.TrocarJogadorAtivo();
+  },
+  watch: {
+    acoesRestantes(novoValor) {
+      if (novoValor === 0) {
+        this.TrocarJogadorAtivo();
+      }
+    },
   },
   methods: {
     cityStyle(city) {
@@ -114,6 +127,25 @@ new Vue({
             posicao: 'caixa',
           });
         }
+      }
+    },
+    TrocarJogadorAtivo() {
+      this.jogadores[this.jogadorAtivo.id] = this.jogadorAtivo;
+      this.jogadorAtivo = this.jogadores[this.jogadorAtivo.id + 1];
+    },
+    CarregarCartasJogo() {
+      for (const cidade of this.cities) {
+        this.cartasJogo.push({
+          tipo: 'cidade',
+          conteudo: cidade.nome,
+        });
+      }
+    },
+    CarregarCartasInfeccao() {
+      for (const cidade of this.cities) {
+        this.cartasInfeccao.push({
+          cidade: cidade.nome,
+        });
       }
     },
   },

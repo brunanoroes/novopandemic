@@ -1,9 +1,8 @@
-Vue.component('carta-doenca', {
-  props: ['nome', 'cubos'],
+Vue.component('carta-infeccao', {
+  props: ['cidade'],
   template: `
     <div class="carta-doenca">
-      <h4>{{ nome }}</h4>
-      <p>{{ cubos }} Cubos de Doença</p>
+      <h4>{{ cidade }}</h4>
     </div>
   `,
 });

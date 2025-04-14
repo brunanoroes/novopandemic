@@ -8,6 +8,7 @@
   <body>
     <div id="appVue">
       <div class="mesa">
+        <div id="info">Jogador: {{jogadorAtivo.nome}} Acões restantes: {{acoesRestantes}}</div>
         <div class="conteiner-doenca">
           <div class="caixinha-doenca" v-for="cor in cores" :style="{ backgroundColor: cor }" :key="cor">
             <div v-for="(pino, index) in pinosDoenca" v-if="pino.cor === cor && pino.posicao === 'caixa'" :key="index">
@@ -16,8 +17,9 @@
           </div>
         </div>
         <div class="board">
-          <carta-jogador :nome="jogador.nome" :funcao="jogador.funcao" :imagem="jogador.imagem" :habilidades="jogador.habilidades"></carta-jogador>
-
+          <div v-for="carta in cartasInfeccao">
+            <carta-infeccao :cidade="carta.cidade"></carta-infeccao>
+          </div>
           <div v-for="city in cities" :key="city.id" class="city" :style="cityStyle(city)">
             <!-- Pinos de Jogador -->
             <div v-for="pinoJogador in pinosJogador" v-if="pinoJogador.lugar === city.name && pinoJogador.jogando">
@@ -34,14 +36,18 @@
               <centro-pesquisa></centro-pesquisa>
             </div> -->
           </div>
-
           <div v-for="(connection, index) in connections" :key="index" class="line" :style="lineStyle(connection)"></div>
         </div>
         <div class="conteiner-cartas-jogador">
           <div v-if="controls.mostrarCartaReferencia">
             <carta-referencia></carta-referencia>
           </div>
-          <div v-if="controls.mostrarCartasJogador"></div>
+          <div v-if="controls.mostrarCartasJogador">
+            <carta-jogador :nome="jogadorAtivo.nome" :funcao="jogadorAtivo.funcao" :imagem="jogadorAtivo.imagem" :habilidades="jogadorAtivo.habilidades"></carta-jogador>
+            <div v-for="carta in cartasJogo">
+              <carta-jogo :tipo="carta.tipo" :conteudo="carta.conteudo"></carta-jogo>
+            </div>
+          </div>
           <div>
             <button v-model="controls.mostrarCartaReferencia" @click="controls.mostrarCartaReferencia = !controls.mostrarCartaReferencia">Carta Referência</button>
             <button v-model="controls.mostrarCartasJogador" @click="controls.mostrarCartasJogador =!controls.mostrarCartasJogador">Cartas Jogáveis</button>
@@ -53,13 +59,17 @@
     <!-- Vue 2 -->
     <script src="assets/vue.js"></script>
 
-    <!-- Componente -->
-    <script src="components/CartaPersonagem.js"></script>
+    <!-- Componentes -->
     <script src="components/CartaInfeccao.js"></script>
-    <script src="components/CuboDoenca.js"></script>
+    <script src="components/CartaJogo.js"></script>
+    <script src="components/CartaPersonagem.js"></script>
     <script src="components/CartaReferencia.js"></script>
-    <script src="components/Peao.js"></script>
     <script src="components/CentroPesquisa.js"></script>
+    <script src="components/CuboDoenca.js"></script>
+    <script src="components/MarcadorCura.js"></script>
+    <script src="components/MarcadorSurto.js"></script>
+    <script src="components/MarcadorVelocidadeInfeccao.js"></script>
+    <script src="components/Peao.js"></script>
 
     <!-- App principal -->
     <script src="index.js"></script>

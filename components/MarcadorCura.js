@@ -1,8 +1,8 @@
-Vue.component('frasco', {
-  props: ['cidade'],
+Vue.component('marcador-cura', {
+  props: ['cor', 'estado'],
   template: `
-    <div class="frasco">
-      <p>Frasco de Cura: {{ cidade }}</p>
+    <div class="frasco" :style="{ backgroundColor: cor }">>
+      <p>Frasco de Cura: {{ estado }}</p>
     </div>
   `,
 });
