@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 
 new Vue({
@@ -37,10 +36,9 @@ new Vue({
     const params = new URLSearchParams(window.location.search);
     const nomesJogadores = params.getAll('nomesjogadores[]');
     this.PosicionarPeoes(nomesJogadores);
-    //cores: ['red', 'blue', 'yellow', 'black'],
   },
   async mounted() {
-    await this.MontandoTabuleiro();
+    await this.MontarTabuleiro();
   },
   watch: {
     acoesRestantes(novoValor) {
@@ -52,15 +50,15 @@ new Vue({
   methods: {
     //-Métodos de Preparação do Jogo
     //--Carregando Tabuleiro
-    cityStyle(city) {
+    EstilizarObjetoPosicao(objeto) {
       return {
-        top: city.top,
-        left: city.left,
+        top: objeto.top,
+        left: objeto.left,
       };
     },
-    lineStyle(connection) {
-      const from = this.cidades.find(c => c.id === connection.from);
-      const to = this.cidades.find(c => c.id === connection.to);
+    CriarLinhasConexão(conexao) {
+      const from = this.cidades.find(c => c.id === conexao.from);
+      const to = this.cidades.find(c => c.id === conexao.to);
 
       const fromX = parseFloat(from.left);
       const fromY = parseFloat(from.top);
@@ -77,17 +75,83 @@ new Vue({
         transform: `rotate(${angle}deg)`,
       };
     },
-    CarregarEspacosMarcadorInfeccao() {},
-    CarregarEspacosMarcadorSurto() {},
+    CarregarEspacosMarcadorInfeccao() {
+      const filePath = path.join(__dirname, 'data', 'EspacosMarcadorInfeccao.json');
+
+      fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+          console.error('Erro ao ler o arquivo:', err);
+          return;
+        }
+
+        this.espacosMarcadorInfeccao = JSON.parse(data);
+      });
+    },
+    CarregarEspacosMarcadorSurto() {
+      const filePath = path.join(__dirname, 'data', 'EspacosMarcadorSurto.json');
+
+      fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+          console.error('Erro ao ler o arquivo:', err);
+          return;
+        }
+
+        this.espacosMarcadorSurto = JSON.parse(data);
+      });
+    },
+    CarregarCidades() {
+      const filePath = path.join(__dirname, 'data', 'Cidades.json');
+
+      fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+          console.error('Erro ao ler o arquivo:', err);
+          return;
+        }
+
+        this.cidades = JSON.parse(data);
+      });
+    },
 
     //--Arrumando Mesa
     CarregarCartasJogo() {
-      for (const cidade of this.cities) {
+      for (const cidade of this.cidades) {
         this.cartasJogo.push({
           tipo: 'cidade',
           conteudo: cidade.nome,
         });
       }
+      const filePath = path.join(__dirname, 'data', 'CartasEpidemia.json');
+
+      fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+          console.error('Erro ao ler o arquivo:', err);
+          return;
+        }
+
+        const cartasEpidemia = JSON.parse(data);
+        for (const carta of cartasEpidemia) {
+          this.cartasJogo.push({
+            tipo: 'epidemia',
+            conteudo: carta.conteudo,
+          });
+        }
+      });
+      const filePath2 = path.join(__dirname, 'data', 'CartasEspeciais.json');
+
+      fs.readFile(filePath2, 'utf8', (err, data) => {
+        if (err) {
+          console.error('Erro ao ler o arquivo:', err);
+          return;
+        }
+
+        const cartasEspeciais = JSON.parse(data);
+        for (const carta of cartasEspeciais) {
+          this.cartasJogo.push({
+            tipo: 'especial',
+            conteudo: carta.conteudo,
+          });
+        }
+      });
     },
     CarregarCartasInfeccao() {
       for (const cidade of this.cities) {
@@ -111,20 +175,49 @@ new Vue({
         });
       });
     },
+    CarregarDoencas() {
+      const filePath = path.join(__dirname, 'data', 'Doenca.json');
+
+      fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+          console.error('Erro ao ler o arquivo:', err);
+          return;
+        }
+
+        this.doencas = JSON.parse(data);
+      });
+    },
     PosicionarCubosDoenca() {
       for (const doenca of this.doencas) {
         for (let i = 0; i < 24; i++) {
-          this.pinosDoenca.push({
-            cor: doenca.cor,
+          this.doencas.cubosDoencas.push({
             posicao: 'caixa',
           });
         }
       }
     },
-    PosicionarMarcadoresCura() {},
-    PosicionarMarcadoresInfeccao() {},
-    PosicionarMarcadoresSurto() {},
-    PosicionarCentrosPesquisa() {},
+    PosicionarMarcadoresInfeccao() {
+      this.marcadorInfeccao = {
+        lugar: 'caixa',
+        nivel: 1,
+      };
+    },
+    PosicionarMarcadoresSurto() {
+      this.marcadorSurto = {
+        lugar: 'caixa',
+        nivel: 1,
+      };
+    },
+    PosicionarCentrosPesquisa() {
+      this.centrosPesquisa.push({
+        posicao: 'São Paulo',
+      });
+      for (let i = 0; i < 5; i++) {
+        this.centrosPesquisa.push({
+          posicao: 'caixa',
+        });
+      }
+    },
     DistribuirCartas() {
       const filePath = path.join(__dirname, 'data', 'CartasPersonagem.json');
 
@@ -152,7 +245,19 @@ new Vue({
         this.jogadorAtivo = this.jogadores[0];
       });
     },
-    async MontarTabuleiro() {},
+    MontarTabuleiro() {
+      this.CarregarCidades();
+      this.CarregarEspacosMarcadorInfeccao();
+      this.CarregarEspacosMarcadorSurto();
+      this.CarregarCartasJogo();
+      this.CarregarCartasInfeccao();
+      this.CarregarDoencas();
+      this.PosicionarCubosDoenca();
+      this.PosicionarMarcadoresInfeccao();
+      this.PosicionarMarcadoresSurto();
+      this.PosicionarCentrosPesquisa();
+      this.DistribuirCartas();
+    },
 
     //--ComeçandoJogo
     PrimeiraJogadaComputador() {},

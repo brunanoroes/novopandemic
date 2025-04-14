@@ -10,23 +10,23 @@
       <div class="mesa">
         <div id="info" :style="{ backgroundColor: jogadorAtivo.peao.cor }">Jogador: {{ jogadorAtivo.nome }} | Ações restantes: {{ acoesRestantes }}</div>
         <div class="conteiner-doenca">
-          <div class="caixinha-doenca" v-for="cor in cores" :style="{ backgroundColor: cor }" :key="cor">
-            <div v-for="(pino, index) in pinosDoenca" v-if="pino.cor === cor && pino.posicao === 'caixa'" :key="index">
-              <pino-doenca :cor="pino.cor"></pino-doenca>
+          <div class="caixinha-doenca" v-for="doenca in doencas" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
+            <div v-for="(cubo, index) in doencas.cubosDoencas" v-if="cubo.posicao === 'caixa'" :key="index">
+              <pino-doenca :cor="doenca.cor"></pino-doenca>
             </div>
           </div>
         </div>
         <div class="board">
           <div class="carta-doenca">Montinho das cartas de doença usadas</div>
           <carta-infeccao :cidade="cartaInfeccaoAtiva.cidade"></carta-infeccao>
-          <div v-for="cidade in cidades" :key="cidade.id" class="city" :style="cityStyle(city)">
+          <div v-for="cidade in cidades" :key="cidade.id" class="city" :style="EstilizarObjetoPosicao(cidade)">
             <!-- Pinos de Jogador -->
-            <div v-for="peao in jogadores.peao" v-if="peao.lugar === city.name && pinoJogador.jogando">
+            <div v-for="peao in jogadores.peao" v-if="peao.lugar === cidade.name && pinoJogador.jogando">
               <pino-jogador :cor="peao.cor"></pino-jogador>
             </div>
 
             <!-- Pinos de Doença -->
-            <div v-for="(pino, index) in pinosDoenca" v-if="pino.posicao === city.name" :key="index">
+            <div v-for="(pino, index) in pinosDoenca" v-if="pino.posicao === cidade.name" :key="index">
               <pino-doenca :cor="pino.cor"></pino-doenca>
             </div>
 
@@ -35,14 +35,14 @@
               <centro-pesquisa></centro-pesquisa>
             </div> -->
           </div>
-          <div v-for="(conexao, index) in conexoesCidades" :key="index" class="line" :style="lineStyle(conexao)"></div>
+          <div v-for="(conexao, index) in conexoesCidades" :key="index" class="line" :style="CriarLinhasConexão(conexao)"></div>
         </div>
         <div class="conteiner-cartas-jogador">
           <div v-if="controls.mostrarCartaReferencia">
             <carta-referencia></carta-referencia>
           </div>
           <div v-if="controls.mostrarCartasJogador">
-            <carta-personagem :nome="jogadorAtivo.nome" :funcao="jogadorAtivo.funcao" :imagem="jogadorAtivo.imagem" :habilidades="jogadorAtivo.habilidades"></carta-personagem>
+            <carta-personagem :nome="jogadorAtivo.nome" :funcao="jogadorAtivo.cartaPersonagem.funcao" :imagem="jogadorAtivo.cartaPersonagem.imagem" :habilidades="jogadorAtivo.cartaPersonagem.habilidades"></carta-personagem>
             <div v-for="carta in jogadorAtivo.cartas">
               <carta-jogo :tipo="carta.tipo" :conteudo="carta.conteudo"></carta-jogo>
             </div>
@@ -72,6 +72,6 @@
     <script src="components/Peao.js"></script>
 
     <!-- App principal -->
-    <script src="jogo.js"></script>
+    <script type="module" src="jogo.js"></script>
   </body>
 </html>
