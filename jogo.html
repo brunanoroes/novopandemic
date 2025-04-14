@@ -16,12 +16,36 @@
           </div>
         </div>
         <div class="board">
-          <carta-jogador :nome="jogadores[0].nome" :funcao="jogadores[0].funcao" :imagem="jogadores[0].imagem" :habilidades="jogadores[0].habilidades"></carta-jogador>
-          <carta-doenca></carta-doenca>
+          <carta-jogador :nome="jogador.nome" :funcao="jogador.funcao" :imagem="jogador.imagem" :habilidades="jogador.habilidades"></carta-jogador>
 
-          <div v-for="city in cities" :key="city.id" class="city" :style="cityStyle(city)">{{ city.name }}</div>
+          <div v-for="city in cities" :key="city.id" class="city" :style="cityStyle(city)">
+            <!-- Pinos de Jogador -->
+            <div v-for="pinoJogador in pinosJogador" v-if="pinoJogador.lugar === city.name && pinoJogador.jogando">
+              <pino-jogador :cor="pinoJogador.cor"></pino-jogador>
+            </div>
+
+            <!-- Pinos de Doença -->
+            <div v-for="(pino, index) in pinosDoenca" v-if="pino.posicao === city.name" :key="index">
+              <pino-doenca :cor="pino.cor"></pino-doenca>
+            </div>
+
+            <!-- Centro de Pesquisa -->
+            <!-- <div v-if="">
+              <centro-pesquisa></centro-pesquisa>
+            </div> -->
+          </div>
 
           <div v-for="(connection, index) in connections" :key="index" class="line" :style="lineStyle(connection)"></div>
+        </div>
+        <div class="conteiner-cartas-jogador">
+          <div v-if="controls.mostrarCartaReferencia">
+            <carta-referencia></carta-referencia>
+          </div>
+          <div v-if="controls.mostrarCartasJogador"></div>
+          <div>
+            <button v-model="controls.mostrarCartaReferencia" @click="controls.mostrarCartaReferencia = !controls.mostrarCartaReferencia">Carta Referência</button>
+            <button v-model="controls.mostrarCartasJogador" @click="controls.mostrarCartasJogador =!controls.mostrarCartasJogador">Cartas Jogáveis</button>
+          </div>
         </div>
       </div>
     </div>
@@ -30,9 +54,12 @@
     <script src="assets/vue.js"></script>
 
     <!-- Componente -->
-    <script src="components/CartaJogador.js"></script>
-    <script src="components/CartaDoenca.js"></script>
-    <script src="components/PinoDoenca.js"></script>
+    <script src="components/CartaPersonagem.js"></script>
+    <script src="components/CartaInfeccao.js"></script>
+    <script src="components/CuboDoenca.js"></script>
+    <script src="components/CartaReferencia.js"></script>
+    <script src="components/Peao.js"></script>
+    <script src="components/CentroPesquisa.js"></script>
 
     <!-- App principal -->
     <script src="index.js"></script>

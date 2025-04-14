@@ -147,3 +147,20 @@ button:hover {
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5); /* Aumenta o efeito de sombra */
   cursor: pointer; /* Muda o cursor para indicar que é interativo */
 }
+
+.pino-jogador {
+  width: 12px; /* Tamanho pequeno */
+  height: 12px; /* Tamanho pequeno */
+  border-radius: 50%; /* Pino redondo */
+  background-color: inherit; /* Cor herdada da caixinha */
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  margin: 0 auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transição suave */
+}
+
+.pino-jogador:hover {
+  transform: scale(1.4); /* Aumenta o pino */
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5); /* Aumenta o efeito de sombra */
+  cursor: pointer; /* Indica que é interativo */
+}

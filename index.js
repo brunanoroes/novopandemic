@@ -28,6 +28,12 @@ new Vue({
         habilidades: ['Compartilha cartas', 'Identifica doenças'],
       },
     ],
+    jogador: {
+      nome: '',
+      funcao: '',
+      imagem: '',
+      habilidades: [],
+    },
     cities: [
       { id: 1, nome: 'São Paulo', top: '70%', left: '40%' },
       { id: 2, nome: 'Buenos Aires', top: '75%', left: '45%' },
@@ -56,16 +62,20 @@ new Vue({
       { cidade: 'São Paulo', nivel: 50 },
       { cidade: 'Buenos Aires', nivel: 30 },
     ],
-    pinoJogador: [
-      { lugar: 'caixa', cor: 'pink', jogando: false },
-      { lugar: 'caixa', cor: 'blue', jogando: false },
-      { lugar: 'caixa', cor: 'purple', jogando: false },
-      { lugar: 'caixa', cor: 'white', jogando: false },
+    pinosJogador: [
+      { lugar: 'São Paulo', cor: 'pink', jogando: true },
+      { lugar: 'São Paulo', cor: 'blue', jogando: true },
+      { lugar: 'São Paulo', cor: 'purple', jogando: false },
+      { lugar: 'São Paulo', cor: 'white', jogando: false },
     ],
     connections: [
       { from: 1, to: 2 },
       { from: 1, to: 3 },
     ],
+    controls: {
+      mostrarCartaReferencia: false,
+      mostrarCartasJogador: false,
+    },
   },
   async mounted() {
     await this.PosicionarPinosDoenca();
