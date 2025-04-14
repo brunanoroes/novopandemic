@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 new Vue({
   el: '#appVue',
   data: {
@@ -98,77 +101,56 @@ new Vue({
       }
     },
     DistribuirCartas() {
-      const funcoes = [
-        {
-          nome: 'Pesquisadora',
-          imagem: 'assets/pesquisadora.png',
-          habilidades: ['Pode dar qualquer carta de cidade ao outro jogador na mesma cidade sem se preocupar com a cor.', 'Facilita a troca de cartas.'],
-        },
-        {
-          nome: 'Médica',
-          imagem: 'assets/medica.png',
-          habilidades: ['Remove todos os cubos de uma cor ao tratar a doença.', 'Se a cura estiver descoberta, remove automaticamente os cubos ao entrar na cidade.'],
-        },
-        {
-          nome: 'Especialista em Quarentena',
-          imagem: 'assets/quarentena.png',
-          habilidades: ['Previne surtos e a colocação de cubos de doenças na cidade em que está e nas cidades conectadas.'],
-        },
-        {
-          nome: 'Cientista',
-          imagem: 'assets/cientista.png',
-          habilidades: ['Precisa de apenas 4 cartas da mesma cor para descobrir a cura (em vez de 5).'],
-        },
-        {
-          nome: 'Especialista em Operações',
-          imagem: 'assets/operacoes.png',
-          habilidades: ['Pode construir uma estação de pesquisa sem descartar carta.', 'Pode se mover entre estações de pesquisa livremente.'],
-        },
-        {
-          nome: 'Despachante',
-          imagem: 'assets/despachante.png',
-          habilidades: ['Pode mover outros peões como se fossem seus.', 'Se outro jogador estiver na mesma cidade que ele, pode movê-lo para qualquer cidade com estação de pesquisa.'],
-        },
-      ];
-
-      // Lista de cores para os peões (associada diretamente às funções)
-      const cores = ['pink', 'blue', 'green', 'red', 'yellow', 'orange'];
-
-      // Embaralhar as funções
-      const funcoesEmbaralhadas = [...funcoes].sort(() => Math.random() - 0.5);
-
-      this.jogadores = [];
-
-      // Distribuindo jogadores com funções e cores
-      this.nomesJogadores.forEach((nome, index) => {
-        const funcao = funcoesEmbaralhadas[index % funcoesEmbaralhadas.length];
-
-        this.jogadores.push({
-          id: index,
-          nome: nome,
-          funcao: funcao.nome,
-          imagem: funcao.imagem,
-          habilidades: funcao.habilidades,
-          cartas: [],
-          peao: {
-            lugar: 'São Paulo', // Cidade inicial
-            cor: cores[index % cores.length], // Cor do peão com fallback para mais jogadores
-          },
-        });
-      });
-
-      // Distribuir cartas
-      const cartasPorJogador = 1;
-      this.jogadores.forEach(jogador => {
-        for (let i = 0; i < cartasPorJogador; i++) {
-          const carta = this.cartasJogo.shift(); // remove do início
-          if (carta) {
-            jogador.cartas.push(carta);
-          }
+    
+      // Caminho do arquivo JSON
+      const filePath = path.join(__dirname, 'data', 'CartasPersonagem.json');
+    
+      // Lê o arquivo JSON
+      fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+          console.error('Erro ao ler o arquivo:', err);
+          return;
         }
+    
+        const cartasPersonagem = JSON.parse(data);  // Converte o conteúdo para JSON
+    
+        // Lista de cores para os peões (associada diretamente às funções)
+        const cores = ['pink', 'blue', 'green', 'red', 'yellow', 'orange'];
+    
+        // Embaralhar as funções
+        const funcoesEmbaralhadas = [...funcoes].sort(() => Math.random() - 0.5);
+    
+        this.jogadores = [];
+    
+        // Distribuindo jogadores com funções e cores
+        this.nomesJogadores.forEach((nome, index) => {
+          const funcao = funcoesEmbaralhadas[index % funcoesEmbaralhadas.length];
+    
+          this.jogadores.push({
+            id: index,
+            nome: nome,
+            cartaPersonagem: cartasPersonagem[index % cartasPersonagem.length],  // Alimenta com o JSON carregado
+            cartas: [],
+            peao: {
+              lugar: 'São Paulo', // Cidade inicial
+              cor: cores[index % cores.length], // Cor do peão com fallback para mais jogadores
+            },
+          });
+        });
+    
+        // Distribuir cartas
+        const cartasPorJogador = 1;
+        this.jogadores.forEach(jogador => {
+          for (let i = 0; i < cartasPorJogador; i++) {
+            const carta = this.cartasJogo.shift(); // remove do início
+            if (carta) {
+              jogador.cartas.push(carta);
+            }
+          }
+        });
+    
+        this.jogadorAtivo = this.jogadores[0];
       });
-
-      this.jogadorAtivo = this.jogadores[0];
     },
   },
 });
