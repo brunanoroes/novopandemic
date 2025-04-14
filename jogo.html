@@ -20,7 +20,7 @@
           <div class="carta-doenca">Montinho das cartas de doença usadas</div>
           <carta-infeccao :cidade="cartasInfeccao.amostra.cidade"></carta-infeccao>
           <div v-for="cidade in cidades" :key="cidade.id" class="city" :style="EstilizarObjetoPosicao(cidade)">
-            <!-- Pinos de Jogador -->
+            <!-- Pinos de Jogador -->{{cidade.nome}}
             <div v-for="peao in jogadores.peao" v-if="peao.lugar === cidade.name && pinoJogador.jogando">
               <pino-jogador :cor="peao.cor"></pino-jogador>
             </div>
@@ -38,6 +38,11 @@
             </div> -->
           </div>
           <div v-for="(conexao, index) in conexoesCidades" :key="index" class="line" :style="CriarLinhasConexão(conexao)"></div>
+          <div v-for="espaco in espacosMarcadorInfeccao" :key="espaco.id" class="marcadorInfeccao" :style="EstilizarObjetoPosicao(espaco)">{{espaco.nome}}</div>
+          <div v-for="espaco in espacosMarcadorSurto" :key="espaco.id" class="marcadorSurtos" :style="EstilizarObjetoPosicao(espaco)">{{espaco.nome}}</div>
+          <div v-for="doenca in doencas" :key="doenca.cor">
+            <marcador-cura :cor="doenca.cor" :estado="doenca.estado"></marcador-cura>
+          </div>
         </div>
         <div class="conteiner-cartas-jogador">
           <div v-if="controls.mostrarCartaReferencia">
