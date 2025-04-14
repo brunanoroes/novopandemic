@@ -2,29 +2,27 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pandemic - Grafo</title>
+    <title>Pandemic</title>
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
     <div id="appVue">
       <div class="board">
-        <!-- Componente Vue CartaJogador -->
-        <CartaJogador :nome="jogador.nome" :funcao="jogador.funcao" :imagem="jogador.imagem" :habilidades="['Exemplo 1', 'Exemplo 2']" />
+        <cartajogador :nome="jogador.nome" :funcao="jogador.funcao" :imagem="jogador.imagem" :habilidades="jogador.habilidades"></cartajogador>
 
-        <!-- Cidades -->
-        <div v-for="city in cities" :key="city.id" :class="['city', city.class]" :style="cityStyle(city)"></div>
+        <div v-for="city in cities" :key="city.id" class="city" :style="cityStyle(city)">{{ city.name }}</div>
 
-        <!-- Conexões -->
         <div v-for="(connection, index) in connections" :key="index" class="line" :style="lineStyle(connection)"></div>
       </div>
     </div>
 
-    <!-- Vue 3 via CDN -->
+    <!-- Vue 2 -->
     <script src="assets/vue.js"></script>
+
+    <!-- Componente -->
     <script src="components/CartaJogador.js"></script>
 
-    <!-- Seu script JS como módulo -->
-    <script type="module" src="index.js"></script>
+    <!-- App principal -->
+    <script src="index.js"></script>
   </body>
 </html>
