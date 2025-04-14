@@ -1,3 +1,54 @@
-Olá Bem Vindo Ao Nosso Projeto de Pandemic Quantos Jogadores? Instrução: <a href="instrucao.html">Instrução</a>
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pandemic - Início</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div id="appVue">
+      <h2>Olá, bem-vindo ao nosso projeto de Pandemic!</h2>
 
-<a href="jogo.html">Jogar</a>
+      <label>Quantos jogadores?</label>
+      <input type="number" v-model.number="quantidade" min="1" max="4" />
+
+      <div v-if="quantidade > 0">
+        <label>Quais os nomes dos jogadores?</label>
+        <div v-for="(nome, index) in nomes" :key="index">
+          <input v-model="nomes[index]" placeholder="Nome do jogador" />
+        </div>
+      </div>
+
+      <br />
+      <p>Instrução: <a href="instrucao.html">Instrução</a></p>
+
+      <a :href="linkJogar" v-if="todosNomesPreenchidos">Jogar</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script>
+      new Vue({
+        el: '#appVue',
+        data: {
+          quantidade: 0,
+          nomes: [],
+        },
+        watch: {
+          quantidade(novaQtd) {
+            // Atualiza a lista de nomes conforme o número de jogadores
+            this.nomes = Array(novaQtd).fill('');
+          },
+        },
+        computed: {
+          todosNomesPreenchidos() {
+            return this.nomes.every(nome => nome.trim() !== '');
+          },
+          linkJogar() {
+            const params = this.nomes.map((nome, i) => `nomesjogadores[]=${encodeURIComponent(nome)}`).join('&');
+            return `jogo.html?${params}`;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -2,13 +2,13 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <title>Pandemic</title>
-    <link rel="stylesheet" href="index.css" />
+    <title>Pandemic - Jogo</title>
+    <link rel="stylesheet" href="jogo.css" />
   </head>
   <body>
     <div id="appVue">
       <div class="mesa">
-        <div id="info">Jogador: {{jogadorAtivo.nome}} Acões restantes: {{acoesRestantes}}</div>
+        <div id="info" :style="{ backgroundColor: jogadorAtivo.peao.cor }">Jogador: {{ jogadorAtivo.nome }} | Ações restantes: {{ acoesRestantes }}</div>
         <div class="conteiner-doenca">
           <div class="caixinha-doenca" v-for="cor in cores" :style="{ backgroundColor: cor }" :key="cor">
             <div v-for="(pino, index) in pinosDoenca" v-if="pino.cor === cor && pino.posicao === 'caixa'" :key="index">
@@ -17,13 +17,12 @@
           </div>
         </div>
         <div class="board">
-          <div v-for="carta in cartasInfeccao">
-            <carta-infeccao :cidade="carta.cidade"></carta-infeccao>
-          </div>
+          <div class="carta-doenca">Montinho das cartas de doença usadas</div>
+          <carta-infeccao :cidade="cartaInfeccaoAtiva.cidade"></carta-infeccao>
           <div v-for="city in cities" :key="city.id" class="city" :style="cityStyle(city)">
             <!-- Pinos de Jogador -->
-            <div v-for="pinoJogador in pinosJogador" v-if="pinoJogador.lugar === city.name && pinoJogador.jogando">
-              <pino-jogador :cor="pinoJogador.cor"></pino-jogador>
+            <div v-for="peao in jogadores.peao" v-if="peao.lugar === city.name && pinoJogador.jogando">
+              <pino-jogador :cor="peao.cor"></pino-jogador>
             </div>
 
             <!-- Pinos de Doença -->
@@ -43,14 +42,15 @@
             <carta-referencia></carta-referencia>
           </div>
           <div v-if="controls.mostrarCartasJogador">
-            <carta-jogador :nome="jogadorAtivo.nome" :funcao="jogadorAtivo.funcao" :imagem="jogadorAtivo.imagem" :habilidades="jogadorAtivo.habilidades"></carta-jogador>
-            <div v-for="carta in cartasJogo">
+            <carta-personagem :nome="jogadorAtivo.nome" :funcao="jogadorAtivo.funcao" :imagem="jogadorAtivo.imagem" :habilidades="jogadorAtivo.habilidades"></carta-personagem>
+            <div v-for="carta in jogadorAtivo.cartas">
               <carta-jogo :tipo="carta.tipo" :conteudo="carta.conteudo"></carta-jogo>
             </div>
           </div>
           <div>
             <button v-model="controls.mostrarCartaReferencia" @click="controls.mostrarCartaReferencia = !controls.mostrarCartaReferencia">Carta Referência</button>
             <button v-model="controls.mostrarCartasJogador" @click="controls.mostrarCartasJogador =!controls.mostrarCartasJogador">Cartas Jogáveis</button>
+            <button @click="TrocarJogadorAtivo">Trocar de Jogador</button>
           </div>
         </div>
       </div>
@@ -72,6 +72,6 @@
     <script src="components/Peao.js"></script>
 
     <!-- App principal -->
-    <script src="index.js"></script>
+    <script src="jogo.js"></script>
   </body>
 </html>
