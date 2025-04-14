@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pandemic</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div id="appVue">
+      <div class="mesa">
+        <div class="conteiner-doenca">
+          <div class="caixinha-doenca" v-for="cor in cores" :style="{ backgroundColor: cor }" :key="cor">
+            <div v-for="(pino, index) in pinosDoenca" v-if="pino.cor === cor && pino.posicao === 'caixa'" :key="index">
+              <pino-doenca :cor="pino.cor"></pino-doenca>
+            </div>
+          </div>
+        </div>
+        <div class="board">
+          <carta-jogador :nome="jogadores[0].nome" :funcao="jogadores[0].funcao" :imagem="jogadores[0].imagem" :habilidades="jogadores[0].habilidades"></carta-jogador>
+          <carta-doenca></carta-doenca>
+
+          <div v-for="city in cities" :key="city.id" class="city" :style="cityStyle(city)">{{ city.name }}</div>
+
+          <div v-for="(connection, index) in connections" :key="index" class="line" :style="lineStyle(connection)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vue 2 -->
+    <script src="assets/vue.js"></script>
+
+    <!-- Componente -->
+    <script src="components/CartaJogador.js"></script>
+    <script src="components/CartaDoenca.js"></script>
+    <script src="components/PinoDoenca.js"></script>
+
+    <!-- App principal -->
+    <script src="index.js"></script>
+  </body>
+</html>

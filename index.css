@@ -89,3 +89,61 @@ button:hover {
   flex-direction: column;
   align-items: center;
 }
+
+/* Estilo das Cartas */
+.carta-doenca,
+.carta-jogavel,
+.frasco,
+.pino-doenca,
+.pino-infeccao {
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #f8f8f8;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pino-infeccao {
+  width: 20px;
+  height: 100%;
+  background-color: gray;
+}
+
+.conteiner-doenca {
+  display: flex;
+  flex-wrap: wrap; /* Permite que as caixinhas se movam para a linha seguinte */
+  justify-content: space-around; /* Espaço entre as caixinhas */
+  gap: 20px;
+}
+
+.caixinha-doenca {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 colunas por caixinha, para ter mais espaço */
+  grid-gap: 4px; /* Espaçamento entre os pinos */
+  width: 250px; /* Ajusta a largura da caixinha */
+  height: 250px; /* Ajusta a altura da caixinha */
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  padding: 10px;
+  position: relative; /* Para posicionar os pinos dentro da caixinha */
+  background-color: rgba(255, 255, 255, 0.5); /* Cor sutil de fundo */
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pino-doenca {
+  width: 12px; /* Menor tamanho dos pinos */
+  height: 12px; /* Menor tamanho dos pinos */
+  border-radius: 50%;
+  background-color: inherit; /* Cor herdada da caixinha */
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  margin: 0 auto;
+}
+
+/* Efeito hover */
+.pino-doenca:hover {
+  transform: scale(1.4); /* Aumenta o tamanho do pino */
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5); /* Aumenta o efeito de sombra */
+  cursor: pointer; /* Muda o cursor para indicar que é interativo */
+}

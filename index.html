@@ -1,28 +1,3 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Pandemic</title>
-    <link rel="stylesheet" href="index.css" />
-  </head>
-  <body>
-    <div id="appVue">
-      <div class="board">
-        <carta-jogador :nome="jogador.nome" :funcao="jogador.funcao" :imagem="jogador.imagem" :habilidades="jogador.habilidades"></carta-jogador>
+Olá Bem Vindo Ao Nosso Projeto de Pandemic Quantos Jogadores? Instrução: <a href="instrucao.html">Instrução</a>
 
-        <div v-for="city in cities" :key="city.id" class="city" :style="cityStyle(city)">{{ city.name }}</div>
-
-        <div v-for="(connection, index) in connections" :key="index" class="line" :style="lineStyle(connection)"></div>
-      </div>
-    </div>
-
-    <!-- Vue 2 -->
-    <script src="assets/vue.js"></script>
-
-    <!-- Componente -->
-    <script src="components/CartaJogador.js"></script>
-
-    <!-- App principal -->
-    <script src="index.js"></script>
-  </body>
-</html>
+<a href="jogo.html">Jogar</a>
