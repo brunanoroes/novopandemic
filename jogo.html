@@ -19,10 +19,10 @@
         <div class="board">
           <div class="carta-doenca">Montinho das cartas de doença usadas</div>
           <carta-infeccao :cidade="cartasInfeccao.amostra.cidade"></carta-infeccao>
-          <div v-for="cidade in cidades" :key="cidade.id" class="city" :style="EstilizarObjetoPosicao(cidade)">
+          <div v-for="cidade in cidades" :key="cidade.id" class="city" :style="{ ...EstilizarObjetoPosicao(cidade), backgroundColor: cidade.cor }" @click="() => MudarPosicao(cidade.nome)">
             <!-- Pinos de Jogador -->{{cidade.nome}}
-            <div v-for="peao in jogadores.peao" v-if="peao.lugar === cidade.name && pinoJogador.jogando">
-              <pino-jogador :cor="peao.cor"></pino-jogador>
+            <div v-for="jogador in jogadores.filter(j => j.peao.lugar === cidade.nome)">
+              <pino-jogador :cor="jogador.peao.cor"></pino-jogador>
             </div>
 
             <!-- Pinos de Doença -->

@@ -236,5 +236,8 @@ new Vue({
       this.jogadorAtivo = this.jogadores[proximoId];
     },
     //--jogador
+    MudarPosicao(novaCidade) {
+      this.jogadorAtivo.peao.lugar = novaCidade;
+    },
   },
 });
