@@ -6,19 +6,19 @@
     <link rel="stylesheet" href="jogo.css" />
   </head>
   <body>
-    <div id="appVue">
+    <div id="appVue" v-cloak>
       <div class="mesa">
-        <div id="info" :style="{ backgroundColor: jogadorAtivo.peao.cor }">Jogador: {{ jogadorAtivo.nome }} | Ações restantes: {{ acoesRestantes }}</div>
+        <div id="info" :style="{ backgroundColor: jogadorAtivo.peao?.cor || 'gray' }">Jogador: {{ jogadorAtivo.nome }} | Ações restantes: {{ acoesRestantes }}</div>
         <div class="conteiner-doenca">
           <div class="caixinha-doenca" v-for="doenca in doencas" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
-            <div v-for="(cubo, index) in doencas.cubosDoencas" v-if="cubo.posicao === 'caixa'" :key="index">
+            <div v-for="(cubo, index) in doenca.cubosDoenca" v-if="cubo.posicao === 'caixa'" :key="index">
               <pino-doenca :cor="doenca.cor"></pino-doenca>
             </div>
           </div>
         </div>
         <div class="board">
           <div class="carta-doenca">Montinho das cartas de doença usadas</div>
-          <carta-infeccao :cidade="cartaInfeccaoAtiva.cidade"></carta-infeccao>
+          <carta-infeccao :cidade="cartasInfeccao.amostra.cidade"></carta-infeccao>
           <div v-for="cidade in cidades" :key="cidade.id" class="city" :style="EstilizarObjetoPosicao(cidade)">
             <!-- Pinos de Jogador -->
             <div v-for="peao in jogadores.peao" v-if="peao.lugar === cidade.name && pinoJogador.jogando">
@@ -26,8 +26,10 @@
             </div>
 
             <!-- Pinos de Doença -->
-            <div v-for="(pino, index) in pinosDoenca" v-if="pino.posicao === cidade.name" :key="index">
-              <pino-doenca :cor="pino.cor"></pino-doenca>
+            <div v-for="(doenca, index) in doencas" :key="index">
+              <div v-for="(cubo, idx) in doenca.cubosDoenca" v-if="cubo.posicao === cidade.nome" :key="idx">
+                <pino-doenca :cor="doenca.cor"></pino-doenca>
+              </div>
             </div>
 
             <!-- Centro de Pesquisa -->

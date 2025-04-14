@@ -18,8 +18,8 @@
 /* Estilo das Cidades */
 .city {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 100px;
+  height: 100px;
   background-color: red;
   border-radius: 50%;
   border: 2px solid white;

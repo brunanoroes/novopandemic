@@ -1,24 +1,32 @@
-const path = require('path');
+import cartasEpidemiaJson from './data/CartasEpidemia.js';
+import cartasEventoJson from './data/CartasEvento.js';
+import cartasPersonagemJson from './data/CartasPersonagem.js';
+import cidadesJson from './data/Cidades.js';
+import conexoesCidadeJson from './data/ConexoesCidade.js';
+import doencasJson from './data/Doencas.js';
+import espacosMarcadorInfeccaoJson from './data/EspacosMarcadorInfeccao.js';
+import espacosMarcadorSurtoJson from './data/EspacosMarcadorSurto.js';
 
 new Vue({
   el: '#appVue',
   data: {
+    nomesJogadores: [],
     acoesRestantes: 4,
     // Jogador
     jogadores: [],
     jogadorAtivo: {},
     cartasJogo: [],
     // Cidades
-    cidades: [],
-    conexoesCidades: [],
+    cidades: cidadesJson,
+    conexoesCidades: conexoesCidadeJson,
     // Doença
-    doencas: [],
+    doencas: doencasJson,
     //Infeccao
     marcadorInfeccao: {},
-    espacosMarcadorInfeccao: [],
+    espacosMarcadorInfeccao: espacosMarcadorInfeccaoJson,
     //Surto
     marcadorSurto: {},
-    espacosMarcadorSurto: [],
+    espacosMarcadorSurto: espacosMarcadorSurtoJson,
     //Cartas Infeccao
     cartasInfeccao: {
       monteAtivo: [],
@@ -34,8 +42,7 @@ new Vue({
   },
   created() {
     const params = new URLSearchParams(window.location.search);
-    const nomesJogadores = params.getAll('nomesjogadores[]');
-    this.PosicionarPeoes(nomesJogadores);
+    this.nomesJogadores = params.getAll('nomesjogadores[]');
   },
   async mounted() {
     await this.MontarTabuleiro();
@@ -75,94 +82,67 @@ new Vue({
         transform: `rotate(${angle}deg)`,
       };
     },
-    CarregarEspacosMarcadorInfeccao() {
-      const filePath = path.join(__dirname, 'data', 'EspacosMarcadorInfeccao.json');
-
-      fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-          console.error('Erro ao ler o arquivo:', err);
-          return;
-        }
-
-        this.espacosMarcadorInfeccao = JSON.parse(data);
-      });
-    },
-    CarregarEspacosMarcadorSurto() {
-      const filePath = path.join(__dirname, 'data', 'EspacosMarcadorSurto.json');
-
-      fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-          console.error('Erro ao ler o arquivo:', err);
-          return;
-        }
-
-        this.espacosMarcadorSurto = JSON.parse(data);
-      });
-    },
-    CarregarCidades() {
-      const filePath = path.join(__dirname, 'data', 'Cidades.json');
-
-      fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-          console.error('Erro ao ler o arquivo:', err);
-          return;
-        }
-
-        this.cidades = JSON.parse(data);
-      });
-    },
 
     //--Arrumando Mesa
     CarregarCartasJogo() {
+      this.cartasJogo = [];
+
+      // 1. Adiciona cartas de cidade
       for (const cidade of this.cidades) {
         this.cartasJogo.push({
           tipo: 'cidade',
           conteudo: cidade.nome,
         });
       }
-      const filePath = path.join(__dirname, 'data', 'CartasEpidemia.json');
 
-      fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-          console.error('Erro ao ler o arquivo:', err);
-          return;
-        }
+      // 2. Adiciona cartas de evento
+      for (const carta of cartasEventoJson) {
+        this.cartasJogo.push({
+          tipo: 'evento',
+          conteudo: carta.conteudo,
+        });
+      }
 
-        const cartasEpidemia = JSON.parse(data);
-        for (const carta of cartasEpidemia) {
-          this.cartasJogo.push({
-            tipo: 'epidemia',
-            conteudo: carta.conteudo,
-          });
-        }
-      });
-      const filePath2 = path.join(__dirname, 'data', 'CartasEspeciais.json');
+      // 3. Embaralha cartas de cidade + evento
+      this.cartasJogo = this.Embaralhar(this.cartasJogo);
 
-      fs.readFile(filePath2, 'utf8', (err, data) => {
-        if (err) {
-          console.error('Erro ao ler o arquivo:', err);
-          return;
-        }
+      // 4. Armazena cartas de epidemia separadamente (serão inseridas depois)
+      this.cartasEpidemia = cartasEpidemiaJson.map(carta => ({
+        tipo: 'epidemia',
+        conteudo: carta.conteudo,
+      }));
+    },
+    Embaralhar(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    },
+    InserirCartasEpidemiaNoBaralho(numEpidemias = 4) {
+      const montes = [];
+      const tamanhoMonte = Math.ceil(this.cartasJogo.length / numEpidemias);
 
-        const cartasEspeciais = JSON.parse(data);
-        for (const carta of cartasEspeciais) {
-          this.cartasJogo.push({
-            tipo: 'especial',
-            conteudo: carta.conteudo,
-          });
-        }
-      });
+      // Divide em montinhos
+      for (let i = 0; i < numEpidemias; i++) {
+        const monte = this.cartasJogo.splice(0, tamanhoMonte);
+
+        // Adiciona 1 carta de epidemia e embaralha o monte
+        const epidemia = this.cartasEpidemia[i];
+        if (epidemia) monte.push(epidemia);
+
+        montes.push(this.Embaralhar(monte));
+      }
+
+      // Junta os montes para formar o novo baralho
+      this.cartasJogo = montes.flat();
     },
     CarregarCartasInfeccao() {
-      for (const cidade of this.cities) {
-        this.cartasInfeccao.push({
+      for (const cidade of this.cidades) {
+        this.cartasInfeccao.monteAtivo.push({
           cidade: cidade.nome,
         });
       }
     },
-    PosicionarPeoes(nomesJogadores) {
+    PosicionarPeoes() {
       const coresPeao = ['pink', 'blue', 'green', 'red', 'yellow', 'orange'];
-      nomesJogadores.forEach((nome, index) => {
+      this.nomesJogadores.forEach((nome, index) => {
         this.jogadores.push({
           id: index,
           nome: nome,
@@ -175,22 +155,10 @@ new Vue({
         });
       });
     },
-    CarregarDoencas() {
-      const filePath = path.join(__dirname, 'data', 'Doenca.json');
-
-      fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-          console.error('Erro ao ler o arquivo:', err);
-          return;
-        }
-
-        this.doencas = JSON.parse(data);
-      });
-    },
     PosicionarCubosDoenca() {
       for (const doenca of this.doencas) {
         for (let i = 0; i < 24; i++) {
-          this.doencas.cubosDoencas.push({
+          doenca.cubosDoenca.push({
             posicao: 'caixa',
           });
         }
@@ -218,45 +186,42 @@ new Vue({
         });
       }
     },
-    DistribuirCartas() {
-      const filePath = path.join(__dirname, 'data', 'CartasPersonagem.json');
+    AtribuirCartasEPersonagens() {
+      const personagensEmbaralhados = [...cartasPersonagemJson].sort(() => Math.random() - 0.5);
 
-      fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-          console.error('Erro ao ler o arquivo:', err);
-          return;
+      // Regra de negócio: determinar número de cartas iniciais
+      let cartasPorJogador = 2;
+      const totalJogadores = this.jogadores.length;
+      if (totalJogadores === 2) cartasPorJogador = 4;
+      else if (totalJogadores === 3) cartasPorJogador = 3;
+      else if (totalJogadores === 4) cartasPorJogador = 2;
+
+      this.jogadores.forEach((jogador, index) => {
+        const personagem = personagensEmbaralhados[index % personagensEmbaralhados.length];
+        jogador.cartaPersonagem = personagem;
+        jogador.funcao = personagem.funcao;
+
+        jogador.cartas = [];
+        for (let i = 0; i < cartasPorJogador; i++) {
+          const carta = this.cartasJogo.shift(); // tira do topo do baralho
+          if (carta) jogador.cartas.push(carta);
         }
-
-        const cartasPersonagem = JSON.parse(data);
-        const funcoesEmbaralhadas = [...funcoes].sort(() => Math.random() - 0.5);
-
-        this.jogadores.forEach((jogador, index) => {
-          jogador.cartaPersonagem = cartasPersonagem[index % cartasPersonagem.length];
-          jogador.funcao = funcoesEmbaralhadas[index % funcoesEmbaralhadas.length];
-
-          jogador.cartas = [];
-          const cartasPorJogador = 1;
-          for (let i = 0; i < cartasPorJogador; i++) {
-            const carta = this.cartasJogo.shift();
-            if (carta) jogador.cartas.push(carta);
-          }
-        });
-
-        this.jogadorAtivo = this.jogadores[0];
       });
     },
+    IniciarJogadores() {
+      this.PosicionarPeoes();
+      this.AtribuirCartasEPersonagens();
+      this.jogadorAtivo = this.jogadores[0];
+    },
     MontarTabuleiro() {
-      this.CarregarCidades();
-      this.CarregarEspacosMarcadorInfeccao();
-      this.CarregarEspacosMarcadorSurto();
+      this.IniciarJogadores();
       this.CarregarCartasJogo();
       this.CarregarCartasInfeccao();
-      this.CarregarDoencas();
+      this.InserirCartasEpidemiaNoBaralho(4); //dificuldade normal
       this.PosicionarCubosDoenca();
       this.PosicionarMarcadoresInfeccao();
       this.PosicionarMarcadoresSurto();
       this.PosicionarCentrosPesquisa();
-      this.DistribuirCartas();
     },
 
     //--ComeçandoJogo
