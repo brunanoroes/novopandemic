@@ -8,7 +8,7 @@
   <body>
     <div id="appVue">
       <div class="board">
-        <cartajogador :nome="jogador.nome" :funcao="jogador.funcao" :imagem="jogador.imagem" :habilidades="jogador.habilidades"></cartajogador>
+        <carta-jogador :nome="jogador.nome" :funcao="jogador.funcao" :imagem="jogador.imagem" :habilidades="jogador.habilidades"></carta-jogador>
 
         <div v-for="city in cities" :key="city.id" class="city" :style="cityStyle(city)">{{ city.name }}</div>
 
