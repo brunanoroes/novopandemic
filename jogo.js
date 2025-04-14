@@ -4,53 +4,19 @@ new Vue({
     cores: ['red', 'blue', 'yellow', 'black'],
     nomesJogadores: [],
     jogadores: [],
-    jogadorAtivo: {
-      id: 0,
-      nome: '',
-      funcao: '',
-      imagem: '',
-      habilidades: [],
-      cartas: [],
-      peão: {
-        lugar: '',
-        cor: '',
-      },
-    },
-    cities: [
-      { id: 1, nome: 'São Paulo', top: '70%', left: '40%' },
-      { id: 2, nome: 'Buenos Aires', top: '75%', left: '45%' },
-      { id: 3, nome: 'Cidade 3', top: '50%', left: '60%' },
-      { id: 4, nome: 'Cidade 4', top: '50%', left: '60%' },
-    ],
-    connections: [
-      { from: 1, to: 2 },
-      { from: 1, to: 3 },
-    ],
-    doencas: [
-      { nome: 'Doença A', cor: 'red', estado: 'nao curado' },
-      { nome: 'Doença B', cor: 'blue', estado: 'nao curado' },
-      { nome: 'Doença C', cor: 'yellow', estado: 'nao curado' },
-      { nome: 'Doença D', cor: 'black', estado: 'nao curado' },
-    ],
+    jogadorAtivo: {},
+    cidades: [],
+    conexoesCidades: [],
+    doencas: [],
     cartasJogo: [],
     cartasInfeccao: [],
     cartaInfeccaoAtiva: { cidade: '' },
     cartasInfeccaoMonte: [],
     pinosDoenca: [],
     marcadorInfeccao: {},
-    espacosMarcadorInfeccao: [
-      { id: 1, nome: 'Nivel 1', top: '70%', left: '40%' },
-      { id: 2, nome: 'Nivel 2', top: '75%', left: '45%' },
-      { id: 3, nome: 'Nivel 3', top: '50%', left: '60%' },
-      { id: 4, nome: 'Nivel 4', top: '50%', left: '60%' },
-    ],
+    espacosMarcadorInfeccao: [],
     marcadorSurto: {},
-    espacosMarcadorSurto: [
-      { id: 1, nome: 'Nivel 1', top: '70%', left: '40%' },
-      { id: 2, nome: 'Nivel 2', top: '75%', left: '45%' },
-      { id: 3, nome: 'Nivel 3', top: '50%', left: '60%' },
-      { id: 4, nome: 'Nivel 4', top: '50%', left: '60%' },
-    ],
+    espacosMarcadorSurto: [],
     controls: {
       mostrarCartaReferencia: false,
       mostrarCartasJogador: false,
@@ -82,8 +48,8 @@ new Vue({
       };
     },
     lineStyle(connection) {
-      const from = this.cities.find(c => c.id === connection.from);
-      const to = this.cities.find(c => c.id === connection.to);
+      const from = this.cidades.find(c => c.id === connection.from);
+      const to = this.cidades.find(c => c.id === connection.to);
 
       const fromX = parseFloat(from.left);
       const fromY = parseFloat(from.top);

@@ -19,7 +19,7 @@
         <div class="board">
           <div class="carta-doenca">Montinho das cartas de doença usadas</div>
           <carta-infeccao :cidade="cartaInfeccaoAtiva.cidade"></carta-infeccao>
-          <div v-for="city in cities" :key="city.id" class="city" :style="cityStyle(city)">
+          <div v-for="cidade in cidades" :key="cidade.id" class="city" :style="cityStyle(city)">
             <!-- Pinos de Jogador -->
             <div v-for="peao in jogadores.peao" v-if="peao.lugar === city.name && pinoJogador.jogando">
               <pino-jogador :cor="peao.cor"></pino-jogador>
@@ -35,7 +35,7 @@
               <centro-pesquisa></centro-pesquisa>
             </div> -->
           </div>
-          <div v-for="(connection, index) in connections" :key="index" class="line" :style="lineStyle(connection)"></div>
+          <div v-for="(conexao, index) in conexoesCidades" :key="index" class="line" :style="lineStyle(conexao)"></div>
         </div>
         <div class="conteiner-cartas-jogador">
           <div v-if="controls.mostrarCartaReferencia">
