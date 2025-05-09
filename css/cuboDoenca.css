@@ -1,0 +1,16 @@
+.pino-doenca {
+  width: 12px; /* Menor tamanho dos pinos */
+  height: 12px; /* Menor tamanho dos pinos */
+  border-radius: 50%;
+  background-color: inherit; /* Cor herdada da caixinha */
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  margin: 0 auto;
+}
+
+/* Efeito hover */
+.pino-doenca:hover {
+  transform: scale(1.4); /* Aumenta o tamanho do pino */
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5); /* Aumenta o efeito de sombra */
+  cursor: pointer; /* Muda o cursor para indicar que é interativo */
+}

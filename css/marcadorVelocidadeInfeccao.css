@@ -1,0 +1,15 @@
+.marcadorInfeccao {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-color: green;
+  border-radius: 50%;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px; /* Ajuste do tamanho do texto da cidade */
+  color: white;
+  font-weight: bold;
+  z-index: 1;
+}

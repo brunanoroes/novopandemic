@@ -2,26 +2,26 @@ const espacosMarcadorSurtoJson = [
   {
     id: 1,
     nome: 'Nivel 1',
-    top: '50%',
-    left: '30%',
+    x: 20,
+    y: 15,
   },
   {
     id: 2,
     nome: 'Nivel 2',
-    top: '50%',
-    left: '50%',
+    x: 20,
+    y: 20,
   },
   {
     id: 3,
     nome: 'Nivel 3',
-    top: '60%',
-    left: '40%',
+    x: 20,
+    y: 25,
   },
   {
     id: 4,
     nome: 'Nivel 4',
-    top: '70%',
-    left: '30%',
+    x: 20,
+    y: 30,
   },
 ];
 export default espacosMarcadorSurtoJson;

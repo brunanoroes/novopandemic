@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Pandemic - Jogo</title>
-    <link rel="stylesheet" href="jogo.css" />
+    <link rel="stylesheet" href="css/jogo.css" />
   </head>
   <body>
     <div id="appVue" v-cloak>
@@ -19,7 +19,7 @@
         <div class="board">
           <div class="carta-doenca">Montinho das cartas de doença usadas</div>
           <carta-infeccao :cidade="cartasInfeccao.amostra.cidade"></carta-infeccao>
-          <div v-for="cidade in cidades" :key="cidade.id" class="city" :style="{ ...EstilizarObjetoPosicao(cidade), backgroundColor: cidade.cor }" @click="() => MudarPosicao(cidade.nome)">
+          <div v-for="cidade in cidades" :id="'cidade-' + cidade.id" class="city" :style="{ ...EstilizarObjetoPosicao(cidade), backgroundColor: cidade.cor }" @click="() => Jogador.moverPara(cidade.nome)">
             <!-- Pinos de Jogador -->{{cidade.nome}}
             <div v-for="jogador in jogadores.filter(j => j.peao.lugar === cidade.nome)">
               <pino-jogador :cor="jogador.peao.cor"></pino-jogador>
@@ -37,11 +37,19 @@
               <centro-pesquisa></centro-pesquisa>
             </div> -->
           </div>
-          <div v-for="(conexao, index) in conexoesCidades" :key="index" class="line" :style="CriarLinhasConexão(conexao)"></div>
+          <!-- Conexões entre cidades -->
+          <svg>
+            <line v-for="(conexao, index) in conexoesCidades" :key="index" :x1="getPosicao(conexao.from).x" :y1="getPosicao(conexao.from).y" :x2="getPosicao(conexao.to).x" :y2="getPosicao(conexao.to).y" stroke="black" stroke-width="2" />
+          </svg>
           <div v-for="espaco in espacosMarcadorInfeccao" :key="espaco.id" class="marcadorInfeccao" :style="EstilizarObjetoPosicao(espaco)">{{espaco.nome}}</div>
           <div v-for="espaco in espacosMarcadorSurto" :key="espaco.id" class="marcadorSurtos" :style="EstilizarObjetoPosicao(espaco)">{{espaco.nome}}</div>
           <div v-for="doenca in doencas" :key="doenca.cor">
             <marcador-cura :cor="doenca.cor" :estado="doenca.estado"></marcador-cura>
+          </div>
+        </div>
+        <div class="acoes">
+          <div v-for="(acao, index) in acoes" :key="index">
+            <botao-acao :acao="acao"></botao-acao>
           </div>
         </div>
         <div class="conteiner-cartas-jogador">
@@ -77,6 +85,7 @@
     <script src="components/MarcadorSurto.js"></script>
     <script src="components/MarcadorVelocidadeInfeccao.js"></script>
     <script src="components/Peao.js"></script>
+    <script src="components/BotaoAcao.js"></script>
 
     <!-- App principal -->
     <script type="module" src="jogo.js"></script>
