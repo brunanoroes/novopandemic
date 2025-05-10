@@ -152,7 +152,6 @@ new Vue({
       window.alert(`Vez do jogador ${this.jogadorAtivo.nome}`);
     },
     jogadorAtivoAcao(cidade) {
-      console.log(this.doencas);
       const resultado = this.jogadorAtivo.Acao(cidade, this.acaoAtual, this.cidades, this.cartasJogo, this.conexoesCidades, this.centrosPesquisa, this.doencas);
       if (resultado && resultado.mensagem) {
         this.modal.mostra = true;

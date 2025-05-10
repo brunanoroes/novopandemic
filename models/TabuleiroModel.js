@@ -98,8 +98,6 @@ export default class TabuleiroModel {
     this.jogadores.forEach((jogador, index) => {
       const personagem = personagensEmbaralhados[index % personagensEmbaralhados.length];
       jogador.cartaPersonagem = personagem;
-      jogador.funcao = personagem.funcao;
-
       for (let i = 0; i < cartasPorJogador; i++) {
         const carta = this.cartasJogo.shift();
         if (carta) jogador.cartas.push(carta);
@@ -137,10 +135,13 @@ export default class TabuleiroModel {
     this.jogadorAtivo = this.jogadores[0];
   }
 
-  MontarTabuleiro() {
+  async MontarTabuleiro() {
     this.CarregarCartasJogo();
+
     this.CarregarCartasInfeccao();
-    this.IniciarJogadores(); // <-- mover para depois de carregar as cartas
+
+    // Depois de carregar as cartas, iniciar os jogadores
+    this.IniciarJogadores(); // <-- agora que as cartas estão carregadas
     this.InserirCartasEpidemiaNoBaralho(4);
     this.PosicionarCubosDoenca();
     this.PosicionarCentrosPesquisa();

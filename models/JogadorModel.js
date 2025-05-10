@@ -14,11 +14,6 @@ export default class Jogador {
     };
   }
 
-  atribuirPersonagem(personagem) {
-    this.cartaPersonagem = personagem;
-    this.funcao = personagem.funcao;
-  }
-
   comprarCartas(numCartas, monteCartasJogo) {
     const cartasCompradas = [];
 
@@ -74,7 +69,7 @@ export default class Jogador {
         break;
 
       case 'Ponte Aérea':
-        if (this.TemCentroPesquisa(centrosPesquisa, this.peao.lugar)) {
+        if (this.TemCentroPesquisa(centrosPesquisa, this.peao.lugar) && this.TemCentroPesquisa(centrosPesquisa, cidade.nome)) {
           this.peao.lugar = cidade.nome;
         } else {
           return { mensagem: 'Ambas as cidades devem ter um centro de pesquisa para usar a ponte aérea.' };
@@ -111,24 +106,25 @@ export default class Jogador {
         break;
 
       case 'Construir Centro de Pesquisa':
-        if (this.peao.cartas.includes(this.peao.lugar)) {
-          // Verifica se o jogador tem a carta da cidade atual
-          if (!TemCentroPesquisa(centrosPesquisa, this.peao.lugar)) {
-            // Verifica se já existe um centro de pesquisa na cidade atual
-            // Verifica se existe um centro de pesquisa com a posição 'caixa' e transforma ele para a cidade atual
+        // Verifica se o jogador tem a carta da cidade atual
+        const temCarta = this.cartas.some(carta => carta.conteudo === this.peao.lugar);
+        if (temCarta) {
+          // Verifica se já existe um centro de pesquisa na cidade atual
+          if (!this.TemCentroPesquisa(centrosPesquisa, this.peao.lugar)) {
+            // Procura por um centro de pesquisa com a posição 'caixa' para ser movido
             const centroDePesquisaCaixa = centrosPesquisa.find(centro => centro.posicao === 'caixa');
 
             if (centroDePesquisaCaixa) {
-              centroDePesquisaCaixa.posicao = this.peao.lugar.nome; // Atualiza a posição do centro de pesquisa para a cidade atual
-              console.log(`Centro de pesquisa foi construído em ${this.peao.lugar.nome}.`);
+              centroDePesquisaCaixa.posicao = this.peao.lugar; // Atualiza a posição do centro de pesquisa
+              console.log(`Centro de pesquisa foi construído em ${this.peao.lugar}.`);
             } else {
               return { mensagem: 'Não há centros de pesquisa disponíveis para construção.' };
             }
 
             // Descarta a carta da cidade atual
-            this.DescartarCarta(this.peao.lugar.nome);
+            this.DescartarCarta(this.peao.lugar);
           } else {
-            return { mensagem: `Já existe um centro de pesquisa em ${this.peao.lugar.nome}.` };
+            return { mensagem: `Já existe um centro de pesquisa em ${this.peao.lugar}.` };
           }
         } else {
           return { mensagem: 'Você precisa ter a carta da cidade atual para construir um centro de pesquisa.' };
@@ -149,8 +145,8 @@ export default class Jogador {
     return conexoes.some(c => (c.from === nomeA && c.to === nomeB) || (c.from === nomeB && c.to === nomeA));
   }
 
-  TemCentroPesquisa(centrosPesquisa, posicaoAtual) {
-    return centrosPesquisa.some(centro => centro.posicao === posicaoAtual);
+  TemCentroPesquisa(centrosPesquisa, posicao) {
+    return centrosPesquisa.some(centro => centro.posicao === posicao);
   }
 
   DescartarCarta(nomeCidade) {
