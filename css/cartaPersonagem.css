@@ -12,10 +12,6 @@
   transition: transform 0.3s;
 }
 
-.carta-personagem:hover {
-  transform: scale(1.05);
-}
-
 .carta-personagem img {
   border-radius: 8px;
   margin-bottom: 10px;

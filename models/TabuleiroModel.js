@@ -23,7 +23,7 @@ export default class TabuleiroModel {
     this.cartasJogo = [];
 
     for (const cidade of this.cidades) {
-      this.cartasJogo.push({ tipo: 'cidade', conteudo: cidade.nome, descricao: '' });
+      this.cartasJogo.push({ tipo: 'cidade', conteudo: cidade.nome, descricao: cidade.cor });
     }
 
     for (const carta of cartasEventoJson) {

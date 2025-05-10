@@ -47,7 +47,6 @@ export default class Jogador {
       case 'Balsa':
         if (this.EstaConectada(this.peao.lugar, cidade.nome, conexoes)) {
           this.peao.lugar = cidade.nome;
-          return { mensagem: `Você usou a balsa para ir para ${cidade.nome}.` };
         } else {
           return { mensagem: 'Você não pode andar de balsa para essa cidade. As cidades precisam estar conectadas.' };
         }
@@ -57,7 +56,6 @@ export default class Jogador {
         if (this.cartas.some(c => c.conteudo === cidade.nome)) {
           this.peao.lugar = cidade.nome;
           this.DescartarCarta(cidade.nome);
-          return { mensagem: `Você usou o voo direto para ir para ${cidade.nome}.` };
         } else {
           return { mensagem: 'Você precisa ter a carta da cidade de destino para usar o voo direto.' };
         }
@@ -70,7 +68,6 @@ export default class Jogador {
           this.peao.lugar = cidade.nome;
           // Remove a carta da cidade atual (já que foi usada no voo fretado)
           this.DescartarCarta(this.peao.lugar);
-          return { mensagem: `Você usou o voo fretado para ir para ${cidade.nome}.` };
         } else {
           return { mensagem: 'Você precisa ter a carta da cidade atual para usar o voo fretado.' };
         }
@@ -88,7 +85,6 @@ export default class Jogador {
         // Verifica se o jogador está na cidade correta para tratar a doença
         if (this.peao.lugar === cidade.nome) {
           let mensagemTrato = 'Você não tem cubos de doença para remover nesta cidade.';
-          console.log(doencas);
           // Itera sobre todas as doenças
           for (let doenca of doencas) {
             // Verifica se a cor da doença corresponde à cor da cidade
@@ -99,7 +95,7 @@ export default class Jogador {
               if (cubosCidade.length > 0) {
                 // Remove um cubo de doença da cidade e coloca na caixa
                 cubosCidade[0].posicao = 'caixa';
-                mensagemTrato = `Você tratou a doença ${doenca.nome} em ${cidade.nome}.`;
+                mensagemTrato = '';
                 break;
               }
             }

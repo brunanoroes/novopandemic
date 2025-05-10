@@ -23,8 +23,3 @@
 .carta-referencia p {
   margin: 0; /* Remove a margem do parágrafo */
 }
-
-.carta-referencia:hover {
-  transform: scale(1.05); /* Efeito de aumento ao passar o mouse */
-  box-shadow: 0.5rem 0.5rem 3rem rgba(0, 0, 0, 0.5); /* Sombra mais intensa ao passar o mouse */
-}

@@ -1,12 +1,31 @@
 .carta-jogavel {
   width: 200px;
+  min-height: 120px;
   background-color: #fff;
-  border: 2px solid #333;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  padding: 12px;
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  padding: 16px 12px;
   text-align: center;
   font-family: 'Segoe UI', sans-serif;
-  margin: 10px;
-  transition: transform 0.3s;
+  margin: 12px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.carta-jogavel h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.carta-jogavel p {
+  font-size: 0.95rem;
+  color: #e2d3d3;
+  margin: 8px 0 0;
 }

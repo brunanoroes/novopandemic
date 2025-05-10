@@ -10,10 +10,3 @@
   border-radius: 8px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-/* Efeito hover */
-.pino-doenca:hover {
-  transform: scale(1.4); /* Aumenta o tamanho do pino */
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5); /* Aumenta o efeito de sombra */
-  cursor: pointer; /* Muda o cursor para indicar que é interativo */
-}
