@@ -1,33 +1,38 @@
 Vue.component('carta-referencia', {
   props: [],
   template: `
-    <div class="carta-doenca">
-      <h4>Carta Referência</h4>
-      <p>Deslocar-se entre cidades:
+  <div class="carta-referencia">
+    <h4>Carta Referência</h4>
+    <div class="descricao">
+      <h5>Deslocar-se entre cidades:</h5>
+      <ul>
+        <li><strong>Balsa:</strong> Mover para uma cidade conectada.</li>
+        <li><strong>Voar Direto:</strong> Descartar uma carta de cidade para ir até ela.</li>
+        <li><strong>Voar Charter:</strong> Descartar a carta da cidade em que está para ir a qualquer cidade.</li>
+        <li><strong>Voar Shuttle:</strong> Mover entre centros de pesquisa.</li>
+      </ul>
+      
+      <h5>Construir Centro de Pesquisa:</h5>
+      <ul>
+        <li>Descartar a carta da cidade em que está.</li>
+      </ul>
 
-        Dirigir/Ferry: Mover para uma cidade conectada.
+      <h5>Tratar Doença:</h5>
+      <ul>
+        <li>Remover 1 cubo de doença (todos se a cura da doença estiver descoberta).</li>
+      </ul>
 
-        Voar Direto: Descartar uma carta de cidade para ir até ela.
+      <h5>Compartilhar Conhecimento:</h5>
+      <ul>
+        <li>Dar ou receber a carta da cidade onde os dois jogadores estão.</li>
+      </ul>
 
-        Voar Charter: Descartar a carta da cidade em que está para ir a qualquer cidade.
-
-        Voar Shuttle: Mover entre centros de pesquisa.
-
-        Construir Centro de Pesquisa:
-
-        Descartar a carta da cidade em que está.
-
-        Tratar Doença:
-
-        Remover 1 cubo de doença (todos se a cura da doença estiver descoberta).
-
-        Compartilhar Conhecimento:
-
-        Dar ou receber a carta da cidade onde os dois jogadores estão.
-
-        Descobrir Cura:
-
-        Em um centro de pesquisa, descartar 5 cartas da mesma cor (ou menos, dependendo da habilidade do personagem).</p>
+      <h5>Descobrir Cura:</h5>
+      <ul>
+        <li>Em um centro de pesquisa, descartar 5 cartas da mesma cor (ou menos, dependendo da habilidade do personagem).</li>
+      </ul>
     </div>
+  </div>
+
   `,
 });

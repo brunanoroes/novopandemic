@@ -1,0 +1,30 @@
+.carta-referencia {
+  display: flex;
+  flex-direction: column; /* Garante que o conteúdo seja disposto de cima para baixo */
+  width: 30rem; /* Tamanho da carta */
+  height: auto; /* Ajusta a altura conforme o conteúdo */
+  margin: 1rem; /* Espaçamento entre cartas */
+  padding: 1.5rem; /* Espaçamento interno */
+  background-color: #2e3b4e; /* Cor de fundo da carta */
+  color: white; /* Cor do texto */
+  border-radius: 0.8rem; /* Borda arredondada */
+  box-shadow: 0.5rem 0.5rem 2rem rgba(0, 0, 0, 0.3); /* Sombra suave */
+  text-align: center; /* Centraliza o texto */
+  line-height: 1.8rem; /* Distância entre as linhas */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Efeito de transição */
+}
+
+.carta-referencia h4 {
+  margin: 0; /* Remove a margem do título */
+  font-weight: bold; /* Deixa o título em negrito */
+  margin-bottom: 1rem; /* Espaçamento abaixo do título */
+}
+
+.carta-referencia p {
+  margin: 0; /* Remove a margem do parágrafo */
+}
+
+.carta-referencia:hover {
+  transform: scale(1.05); /* Efeito de aumento ao passar o mouse */
+  box-shadow: 0.5rem 0.5rem 3rem rgba(0, 0, 0, 0.5); /* Sombra mais intensa ao passar o mouse */
+}
