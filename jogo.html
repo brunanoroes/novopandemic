@@ -37,6 +37,9 @@
           </div>
         </div>
         <div class="board">
+          <svg id="conexoes-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0">
+            <line v-for="(conexao, index) in conexoesCidades" :key="index" :x1="getCidadeX(conexao.from)" :y1="getCidadeY(conexao.from)" :x2="getCidadeX(conexao.to)" :y2="getCidadeY(conexao.to)" stroke="#999" stroke-width="2" />
+          </svg>
           <div v-for="cidade in cidades" :id="'cidade-' + cidade.id" class="city" :style="{ ...EstilizarObjetoPosicao(cidade), backgroundColor: cidade.cor }" @click="jogadorAtivoAcao(cidade)">
             <!-- Pinos de Jogador -->{{cidade.nome}}
             <div v-for="jogador in jogadores.filter(j => j.peao.lugar === cidade.nome)">

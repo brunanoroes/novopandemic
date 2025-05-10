@@ -111,6 +111,14 @@ new Vue({
     //   }
   },
   methods: {
+    getCidadeX(nome) {
+      const cidade = this.cidades.find(c => c.nome === nome);
+      return cidade ? `${cidade.x}%` : '0%';
+    },
+    getCidadeY(nome) {
+      const cidade = this.cidades.find(c => c.nome === nome);
+      return cidade ? `${cidade.y}%` : '0%';
+    },
     EstilizarObjetoPosicao(objeto) {
       return {
         position: 'absolute',
