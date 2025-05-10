@@ -1,8 +1,8 @@
 .marcadorSurtos {
   position: absolute;
-  width: 100px;
-  height: 100px;
-  background-color: blue;
+  width: 3rem;
+  height: 3rem;
+  background-color: rgb(132, 211, 132);
   border-radius: 50%;
   border: 2px solid white;
   display: flex;

@@ -69,6 +69,9 @@ new Vue({
   watch: {
     acoesRestantes(novoValor) {
       if (novoValor === 0) {
+        // O jogador compra 2 cartas do jogo
+        this.jogadorAtivo.comprarCartas(2, this.tabuleiro.cartasJogo);
+
         const cartas = this.tabuleiro.cartasInfeccao.monteAtivo.splice(0, this.tabuleiro.marcadorInfeccao.nivel);
 
         cartas.forEach(carta => {

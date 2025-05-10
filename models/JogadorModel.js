@@ -19,8 +19,15 @@ export default class Jogador {
     this.funcao = personagem.funcao;
   }
 
-  receberCarta(carta) {
-    this.cartas.push(carta);
+  comprarCartas(numCartas, monteCartasJogo) {
+    // Compra as cartas do monte e as adiciona ao jogador
+    for (let i = 0; i < numCartas; i++) {
+      const carta = monteCartasJogo.pop(); // Remove a carta do monte
+      if (carta) {
+        this.cartas.push(carta); // Adiciona a carta ao jogador
+      }
+    }
+    console.log(`${this.nome} comprou ${numCartas} cartas.`);
   }
 
   Acao(cidade, acaoSelecionada, cidades, cartasJogo, conexoes) {
