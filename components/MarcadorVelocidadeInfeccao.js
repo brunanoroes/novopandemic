@@ -1,8 +1,9 @@
 Vue.component('pino-infeccao', {
-  props: ['cidade', 'nivel'],
+  props: ['nivel', 'atual'],
   template: `
-    <div class="pino-infeccao" :style="{ height: nivel + '%' }">
-      <p>{{ cidade }}</p>
+    <div>
+      <p>{{ nivel }}</p>
+      <div v-if="atual">Atual</div>
     </div>
   `,
 });

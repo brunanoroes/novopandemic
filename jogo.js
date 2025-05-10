@@ -15,6 +15,7 @@ new Vue({
     jogadores: [],
     jogadorAtivo: {},
     cartasJogo: [],
+    acaoAtual: '',
     cidades: cidadesJson,
     conexoesCidades: conexoesCidadeJson,
     doencas: doencasJson,
@@ -34,6 +35,10 @@ new Vue({
     },
     tabuleiro: null,
     acoes: acoesJogadorJson,
+    modal: {
+      mostra: true,
+      mensagem: '',
+    },
   },
   created() {
     const params = new URLSearchParams(window.location.search);
