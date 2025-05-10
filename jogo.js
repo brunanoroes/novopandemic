@@ -19,7 +19,7 @@ new Vue({
     acaoAtual: '',
     cidades: cidadesJson,
     conexoesCidades: conexoesCidadeJson,
-    doencas: doencasJson,
+    doencas: [],
     marcadorInfeccao: {},
     espacosMarcadorInfeccao: espacosMarcadorInfeccaoJson,
     marcadorSurto: {},
@@ -39,10 +39,12 @@ new Vue({
       mostra: false,
       mensagem: '',
     },
+    centrosPesquisa: [],
   },
   created() {
     const params = new URLSearchParams(window.location.search);
     this.nomesJogadores = params.getAll('nomesjogadores[]');
+    this.doencas = doencasJson.map(d => new Doenca(d.nome, d.cor, d.estado, d.cubosDoenca));
   },
   mounted() {
     this.tabuleiro = new TabuleiroModel({
@@ -53,6 +55,7 @@ new Vue({
       cartasInfeccao: this.cartasInfeccao,
       marcadorInfeccao: this.marcadorInfeccao,
       marcadorSurto: this.marcadorSurto,
+      centrosPesquisa: this.centrosPesquisa,
     });
 
     this.tabuleiro.MontarTabuleiro();
@@ -65,6 +68,7 @@ new Vue({
     this.marcadorInfeccao = this.tabuleiro.marcadorInfeccao;
     this.marcadorSurto = this.tabuleiro.marcadorSurto;
     this.cartasInfeccao = this.tabuleiro.cartasInfeccao;
+    this.centrosPesquisa = this.tabuleiro.centrosPesquisa;
   },
   watch: {
     acoesRestantes(novoValor) {
@@ -90,6 +94,27 @@ new Vue({
         this.TrocarJogadorAtivo();
       }
     },
+    cartasJogo(novoValor) {
+      if (!novoValor) {
+        this.modal.mostra = true;
+        this.modal.mensagem = 'PERDEU';
+        window.open('index.html', '_self');
+      }
+    },
+    // doencasEspalhadas(valor) {
+    //   if (valor >= 8) {
+    //     this.modal.mostra = true;
+    //     this.modal.mensagem = 'PERDEU (doença se espalhou demais!)';
+    //     window.open('index.html', '_self');
+    //   }
+    // },
+    // cidadesComCentroPesquisa(valor) {
+    //   if (this.doencasCuradas.azul && this.doencasCuradas.vermelha &&
+    //       this.doencasCuradas.amarela && this.doencasCuradas.preta) {
+    //     this.modal.mostra = true;
+    //     this.modal.mensagem = 'VITÓRIA! Todas as doenças foram curadas.';
+    //     window.open('index.html', '_self');
+    //   }
   },
   methods: {
     EstilizarObjetoPosicao(objeto) {
@@ -101,51 +126,10 @@ new Vue({
         transform: 'translate(-50%, -50%)',
       };
     },
-    CriarLinhasConexao(conexao) {
-      // Encontrar as cidades de origem e destino
-      const fromCidade = this.cidades.find(cidade => cidade.id === conexao.from);
-      const toCidade = this.cidades.find(cidade => cidade.id === conexao.to);
-
-      // Verificar se as cidades existem
-      if (!fromCidade || !toCidade) return null;
-
-      // Calcular as posições para as linhas
-      const fromX = fromCidade.x;
-      const fromY = fromCidade.y;
-      const toX = toCidade.x;
-      const toY = toCidade.y;
-
-      // Calcular a distância e o ângulo da linha
-      const dx = toX - fromX;
-      const dy = toY - fromY;
-      const length = Math.sqrt(dx * dx + dy * dy);
-      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-      return {
-        x1: `${fromX}%`,
-        y1: `${fromY}%`,
-        x2: `${toX}%`,
-        y2: `${toY}%`,
-        stroke: 'black',
-        strokeWidth: 2,
-        transform: `rotate(${angle}deg)`,
-        transformOrigin: '0 0',
-        width: `${length}%`,
-      };
-    },
-    getPosicao(idCidade) {
-      const cidade = this.cidades.find(c => c.id === idCidade);
-      return cidade ? { x: `${cidade.x}%`, y: `${cidade.y}%` } : { x: '0%', y: '0%' };
-    },
     TrocarJogadorAtivo() {
       this.jogadores[this.jogadorAtivo.id] = this.jogadorAtivo;
       const proximoId = (this.jogadorAtivo.id + 1) % this.jogadores.length;
       this.jogadorAtivo = this.jogadores[proximoId];
-    },
-    calcularAngulo(cidadeDe, cidadePara) {
-      const deltaX = cidadePara.x - cidadeDe.x;
-      const deltaY = cidadePara.y - cidadeDe.y;
-      return Math.atan2(deltaY, deltaX) * (180 / Math.PI);
     },
     jogadorAtivoAcao(cidade) {
       const resultado = this.jogadorAtivo.Acao(cidade, this.acaoAtual, this.cidades, this.cartasJogo, this.conexoesCidades);
@@ -154,7 +138,6 @@ new Vue({
         this.modal.mensagem = resultado.mensagem;
       } else {
         this.acoesRestantes -= 1;
-        console.log(this.jogadorAtivo);
       }
     },
   },

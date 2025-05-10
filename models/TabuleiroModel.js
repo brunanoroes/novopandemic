@@ -4,7 +4,7 @@ import cartasPersonagemJson from '../data/CartasPersonagem.js';
 import Jogador from './JogadorModel.js';
 
 export default class TabuleiroModel {
-  constructor({ nomesJogadores, cidades, doencas, jogadores, cartasInfeccao, marcadorInfeccao, marcadorSurto }) {
+  constructor({ nomesJogadores, cidades, doencas, jogadores, cartasInfeccao, marcadorInfeccao, marcadorSurto, centrosPesquisa }) {
     this.nomesJogadores = nomesJogadores;
     this.cidades = cidades;
     this.doencas = doencas;
@@ -14,6 +14,7 @@ export default class TabuleiroModel {
     this.marcadorSurto = marcadorSurto;
     this.cartasJogo = [];
     this.jogadorAtivo = null;
+    this.centrosPesquisa = centrosPesquisa;
   }
 
   Embaralhar(array) {
@@ -95,8 +96,9 @@ export default class TabuleiroModel {
   }
 
   PosicionarCentrosPesquisa() {
-    for (let cidade of this.cidades) {
-      cidade.centroPesquisa = cidade.nome === 'Atlanta';
+    this.centrosPesquisa.push({ posicao: 'Atlanta' });
+    for (let i = 0; i < 5; i++) {
+      this.centrosPesquisa.push({ posicao: 'caixa' });
     }
   }
 

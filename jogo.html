@@ -25,6 +25,11 @@
               <pino-doenca :cor="doenca.cor"></pino-doenca>
             </div>
           </div>
+          <div class="caixinha-centroPesquisa">
+            <div v-for="(centroPesquisa, index) in centrosPesquisa" v-if="centroPesquisa.posicao === 'caixa'" :key="index">
+              <centro-pesquisa></centro-pesquisa>
+            </div>
+          </div>
           <div style="display: flex">
             <div v-for="doenca in doencas" :key="doenca.cor">
               <marcador-cura :cor="doenca.cor" :estado="doenca.estado"></marcador-cura>
@@ -46,14 +51,10 @@
             </div>
 
             <!-- Centro de Pesquisa -->
-            <div v-if="cidade.centroPesquisa">
+            <div v-for="centro in centrosPesquisa" v-if="centro.posicao === cidade.nome" :key="centro.posicao">
               <centro-pesquisa></centro-pesquisa>
             </div>
           </div>
-          <!-- Conexões entre cidades -->
-          <svg>
-            <line v-for="(conexao, index) in conexoesCidades" :key="index" :x1="getPosicao(conexao.from).x" :y1="getPosicao(conexao.from).y" :x2="getPosicao(conexao.to).x" :y2="getPosicao(conexao.to).y" stroke="black" stroke-width="2" />
-          </svg>
           <div v-for="espaco in espacosMarcadorInfeccao" :key="espaco.id" :style="EstilizarObjetoPosicao(espaco)">
             <marcador-infeccao :atual="espaco.atual" :nivel="espaco.nome"></marcador-infeccao>
           </div>
