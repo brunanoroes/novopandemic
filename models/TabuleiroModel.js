@@ -4,14 +4,12 @@ import cartasPersonagemJson from '../data/CartasPersonagem.js';
 import Jogador from './JogadorModel.js';
 
 export default class TabuleiroModel {
-  constructor({ nomesJogadores, cidades, doencas, jogadores, cartasInfeccao, marcadorInfeccao, marcadorSurto, centrosPesquisa }) {
+  constructor({ nomesJogadores, cidades, doencas, jogadores, cartasInfeccao, centrosPesquisa }) {
     this.nomesJogadores = nomesJogadores;
     this.cidades = cidades;
     this.doencas = doencas;
     this.jogadores = jogadores;
     this.cartasInfeccao = cartasInfeccao;
-    this.marcadorInfeccao = marcadorInfeccao;
-    this.marcadorSurto = marcadorSurto;
     this.cartasJogo = [];
     this.jogadorAtivo = null;
     this.centrosPesquisa = centrosPesquisa;
@@ -85,16 +83,6 @@ export default class TabuleiroModel {
     }
   }
 
-  PosicionarMarcadoresInfeccao() {
-    this.marcadorInfeccao.lugar = 'caixa';
-    this.marcadorInfeccao.nivel = 1;
-  }
-
-  PosicionarMarcadoresSurto() {
-    this.marcadorSurto.lugar = 'caixa';
-    this.marcadorSurto.nivel = 1;
-  }
-
   PosicionarCentrosPesquisa() {
     this.centrosPesquisa.push({ posicao: 'Atlanta' });
     for (let i = 0; i < 5; i++) {
@@ -155,8 +143,6 @@ export default class TabuleiroModel {
     this.IniciarJogadores(); // <-- mover para depois de carregar as cartas
     this.InserirCartasEpidemiaNoBaralho(4);
     this.PosicionarCubosDoenca();
-    this.PosicionarMarcadoresInfeccao();
-    this.PosicionarMarcadoresSurto();
     this.PosicionarCentrosPesquisa();
   }
 }

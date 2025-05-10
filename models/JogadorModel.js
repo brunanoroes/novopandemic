@@ -20,21 +20,34 @@ export default class Jogador {
   }
 
   comprarCartas(numCartas, monteCartasJogo) {
-    // Compra as cartas do monte e as adiciona ao jogador
+    const cartasCompradas = [];
+
     for (let i = 0; i < numCartas; i++) {
-      const carta = monteCartasJogo.pop(); // Remove a carta do monte
+      const carta = monteCartasJogo.pop();
       if (carta) {
-        this.cartas.push(carta); // Adiciona a carta ao jogador
+        if (carta.tipo === 'epidemia') {
+          // Ainda adiciona a carta ao jogador, se for o caso
+          this.cartas.push(carta);
+        } else {
+          this.cartas.push(carta);
+        }
+        cartasCompradas.push(carta);
       }
     }
-    console.log(`${this.nome} comprou ${numCartas} cartas.`);
+
+    const nomes = cartasCompradas.map(c => c.nome || c.tipo).join(', ');
+    return {
+      mensagem: `${this.nome} comprou as cartas: ${nomes}`,
+      cartasCompradas,
+    };
   }
 
-  Acao(cidade, acaoSelecionada, cidades, cartasJogo, conexoes, centrosPesquisa) {
+  Acao(cidade, acaoSelecionada, cidades, cartasJogo, conexoes, centrosPesquisa, doencas) {
     switch (acaoSelecionada) {
       case 'Balsa':
         if (this.EstaConectada(this.peao.lugar, cidade.nome, conexoes)) {
           this.peao.lugar = cidade.nome;
+          return { mensagem: `Você usou a balsa para ir para ${cidade.nome}.` };
         } else {
           return { mensagem: 'Você não pode andar de balsa para essa cidade. As cidades precisam estar conectadas.' };
         }
@@ -44,17 +57,22 @@ export default class Jogador {
         if (this.cartas.some(c => c.conteudo === cidade.nome)) {
           this.peao.lugar = cidade.nome;
           this.DescartarCarta(cidade.nome);
+          return { mensagem: `Você usou o voo direto para ir para ${cidade.nome}.` };
         } else {
           return { mensagem: 'Você precisa ter a carta da cidade de destino para usar o voo direto.' };
         }
         break;
 
       case 'Voo Fretado':
-        if (this.peao.cartas.includes(this.peao.lugar.nome)) {
+        // Verifica se o jogador tem a carta da cidade onde ele está
+        if (this.cartas.some(carta => carta.conteudo === this.peao.lugar)) {
+          // Se tiver a carta, ele pode viajar
           this.peao.lugar = cidade.nome;
-          this.DescartarCarta(this.peao.lugar.nome);
+          // Remove a carta da cidade atual (já que foi usada no voo fretado)
+          this.DescartarCarta(this.peao.lugar);
+          return { mensagem: `Você usou o voo fretado para ir para ${cidade.nome}.` };
         } else {
-          return { mensagem: 'Você precisa descartar a carta da cidade atual para usar o voo fretado.' };
+          return { mensagem: 'Você precisa ter a carta da cidade atual para usar o voo fretado.' };
         }
         break;
 
@@ -67,7 +85,29 @@ export default class Jogador {
         break;
 
       case 'Tratar Doença':
-        this.TratarDoenca(cidade);
+        // Verifica se o jogador está na cidade correta para tratar a doença
+        if (this.peao.lugar === cidade.nome) {
+          let mensagemTrato = 'Você não tem cubos de doença para remover nesta cidade.';
+          console.log(doencas);
+          // Itera sobre todas as doenças
+          for (let doenca of doencas) {
+            // Verifica se a cor da doença corresponde à cor da cidade
+            if (doenca.cor === cidade.cor) {
+              // Verifica se há cubos de doença nessa cidade
+              const cubosCidade = doenca.cubosDoenca.filter(cubo => cubo.posicao === cidade.nome);
+
+              if (cubosCidade.length > 0) {
+                // Remove um cubo de doença da cidade e coloca na caixa
+                cubosCidade[0].posicao = 'caixa';
+                mensagemTrato = `Você tratou a doença ${doenca.nome} em ${cidade.nome}.`;
+                break;
+              }
+            }
+          }
+          return { mensagem: mensagemTrato };
+        } else {
+          return { mensagem: 'Você precisa estar na cidade para tratar a doença.' };
+        }
         break;
 
       case 'Encontrar Cura':
@@ -75,9 +115,9 @@ export default class Jogador {
         break;
 
       case 'Construir Centro de Pesquisa':
-        if (this.peao.cartas.includes(this.peao.lugar.nome)) {
+        if (this.peao.cartas.includes(this.peao.lugar)) {
           // Verifica se o jogador tem a carta da cidade atual
-          if (!TemCentroPesquisa(centrosPesquisa, this.peao.lugar.nome)) {
+          if (!TemCentroPesquisa(centrosPesquisa, this.peao.lugar)) {
             // Verifica se já existe um centro de pesquisa na cidade atual
             // Verifica se existe um centro de pesquisa com a posição 'caixa' e transforma ele para a cidade atual
             const centroDePesquisaCaixa = centrosPesquisa.find(centro => centro.posicao === 'caixa');

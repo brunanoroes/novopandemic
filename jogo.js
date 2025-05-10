@@ -19,10 +19,8 @@ new Vue({
     acaoAtual: '',
     cidades: cidadesJson,
     conexoesCidades: conexoesCidadeJson,
-    doencas: [],
-    marcadorInfeccao: {},
+    doencas: doencasJson,
     espacosMarcadorInfeccao: espacosMarcadorInfeccaoJson,
-    marcadorSurto: {},
     espacosMarcadorSurto: espacosMarcadorSurtoJson,
     cartasInfeccao: {
       monteAtivo: [],
@@ -53,8 +51,6 @@ new Vue({
       doencas: this.doencas,
       jogadores: this.jogadores,
       cartasInfeccao: this.cartasInfeccao,
-      marcadorInfeccao: this.marcadorInfeccao,
-      marcadorSurto: this.marcadorSurto,
       centrosPesquisa: this.centrosPesquisa,
     });
 
@@ -65,8 +61,6 @@ new Vue({
     this.jogadores = this.tabuleiro.jogadores;
     this.jogadorAtivo = this.tabuleiro.jogadorAtivo;
     this.cartasJogo = this.tabuleiro.cartasJogo;
-    this.marcadorInfeccao = this.tabuleiro.marcadorInfeccao;
-    this.marcadorSurto = this.tabuleiro.marcadorSurto;
     this.cartasInfeccao = this.tabuleiro.cartasInfeccao;
     this.centrosPesquisa = this.tabuleiro.centrosPesquisa;
   },
@@ -74,22 +68,22 @@ new Vue({
     acoesRestantes(novoValor) {
       if (novoValor === 0) {
         // O jogador compra 2 cartas do jogo
-        this.jogadorAtivo.comprarCartas(2, this.tabuleiro.cartasJogo);
+        const resultado = this.jogadorAtivo.comprarCartas(2, this.tabuleiro.cartasJogo);
 
-        const cartas = this.tabuleiro.cartasInfeccao.monteAtivo.splice(0, this.tabuleiro.marcadorInfeccao.nivel);
+        // Verifica se houve epidemias e aplica a epidemia para cada uma delas
+        const qtdEpidemias = resultado.cartasCompradas.filter(c => c.tipo === 'Epidemia').length;
 
-        cartas.forEach(carta => {
-          const cidade = this.cidades.find(c => c.nome === carta.cidade);
-          const doenca = this.doencas.find(d => d.cor === cidade.cor);
+        for (let i = 0; i < qtdEpidemias; i++) {
+          // Aplica a epidemia
+          this.doencas.forEach(doenca => {
+            doenca.epidemizar(this.cidades, this.espacosMarcadorInfeccao, this.espacosMarcadorSurto);
+          });
+        }
 
-          if (doenca) {
-            const resultado = doenca.infectar(cidade);
-            console.log(resultado);
-          }
+        this.mensagemCartasCompradas = resultado.mensagem;
+        this.mostrarModalCartas = true;
 
-          this.tabuleiro.cartasInfeccao.monteDescarte.push(carta);
-        });
-
+        // Decrementa o número de ações restantes
         this.acoesRestantes = 4;
         this.TrocarJogadorAtivo();
       }
@@ -130,9 +124,11 @@ new Vue({
       this.jogadores[this.jogadorAtivo.id] = this.jogadorAtivo;
       const proximoId = (this.jogadorAtivo.id + 1) % this.jogadores.length;
       this.jogadorAtivo = this.jogadores[proximoId];
+      window.alert(`Vez do jogador ${this.jogadorAtivo.nome}`);
     },
     jogadorAtivoAcao(cidade) {
-      const resultado = this.jogadorAtivo.Acao(cidade, this.acaoAtual, this.cidades, this.cartasJogo, this.conexoesCidades);
+      console.log(this.doencas);
+      const resultado = this.jogadorAtivo.Acao(cidade, this.acaoAtual, this.cidades, this.cartasJogo, this.conexoesCidades, this.centrosPesquisa, this.doencas);
       if (resultado && resultado.mensagem) {
         this.modal.mostra = true;
         this.modal.mensagem = resultado.mensagem;
