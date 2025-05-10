@@ -8,7 +8,11 @@
   <body>
     <div id="appVue" v-cloak>
       <div class="mesa">
-        <div id="info" :style="{ backgroundColor: jogadorAtivo.peao?.cor || 'gray' }">Jogador: {{ jogadorAtivo.nome }}</div>
+        <div id="info" :style="{ backgroundColor: jogadorAtivo.peao?.cor || 'gray' }" class="info-jogador">
+          <span class="label">Jogador:</span>
+          <span class="nome">{{ jogadorAtivo.nome }}</span>
+        </div>
+
         <div class="conteiner-doenca">
           <div>
             <div v-if="controls.mostrarCartasInfeccao">
@@ -66,12 +70,17 @@
           </div>
         </div>
         <div class="acoes">
-          Ao marcar a ação você estará apto a realizar ela (Ações restantes: {{ acoesRestantes }})
+          <p>
+            <strong>Ações restantes:</strong> {{ acoesRestantes }}<br />
+            Selecione sua próxima ação abaixo:
+          </p>
+
           <select v-model="acaoAtual">
-            <option value="">Selecione Sua Próxima Ação</option>
+            <option disabled value="">-- Escolha uma ação --</option>
             <option v-for="acao in acoes" :key="acao" :value="acao">{{ acao }}</option>
           </select>
         </div>
+
         <div class="conteiner-cartas-jogador">
           <div v-if="controls.mostrarCartaReferencia">
             <carta-referencia></carta-referencia>

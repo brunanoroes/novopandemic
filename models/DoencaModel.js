@@ -12,6 +12,11 @@ export default class Doenca {
       return { erro: 'cor_incorreta', cidade };
     }
 
+    if (this.estado === 'erradicado') {
+      window.alert('Doença Erradicada');
+      return { erro: 'doenca_erradicada', cidade };
+    }
+
     const cubosNaCidade = this.cubosDoenca.filter(c => c.posicao === cidade.nome).length;
 
     if (cubosNaCidade >= 3) {

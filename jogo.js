@@ -28,7 +28,7 @@ new Vue({
     },
     controls: {
       mostrarCartaReferencia: false,
-      mostrarCartasJogador: false,
+      mostrarCartasJogador: true,
       mostrarCartasInfeccao: false,
     },
     tabuleiro: null,
@@ -95,20 +95,37 @@ new Vue({
         window.open('index.html', '_self');
       }
     },
-    // doencasEspalhadas(valor) {
-    //   if (valor >= 8) {
-    //     this.modal.mostra = true;
-    //     this.modal.mensagem = 'PERDEU (doença se espalhou demais!)';
-    //     window.open('index.html', '_self');
-    //   }
-    // },
-    // cidadesComCentroPesquisa(valor) {
-    //   if (this.doencasCuradas.azul && this.doencasCuradas.vermelha &&
-    //       this.doencasCuradas.amarela && this.doencasCuradas.preta) {
-    //     this.modal.mostra = true;
-    //     this.modal.mensagem = 'VITÓRIA! Todas as doenças foram curadas.';
-    //     window.open('index.html', '_self');
-    //   }
+    espacosMarcadorSurto(valor) {
+      const espacoCritico = valor.find(e => e.nome === 'X' && e.atual === true);
+      if (espacoCritico) {
+        this.modal.mostra = true;
+        this.modal.mensagem = 'PERDEU (doença se espalhou demais!)';
+        window.open('index.html', '_self');
+      }
+    },
+    doencas(valor) {
+      const todasCuradas = this.doencas.every(d => d.estado === 'curado');
+      if (todasCuradas) {
+        this.modal.mostra = true;
+        this.modal.mensagem = 'VITÓRIA! Todas as doenças foram curadas.';
+        window.open('index.html', '_self');
+      }
+
+      for (const doenca of this.doencas) {
+        const cubosNaCaixa = doenca.cubosDoenca.filter(c => c.posicao === 'caixa').length;
+
+        if (cubosNaCaixa === 0) {
+          this.modal.mostra = true;
+          this.modal.mensagem = `PERDEU! Acabaram os cubos da doença ${doenca.nome}.`;
+          window.open('index.html', '_self');
+          break;
+        }
+
+        if (cubosNaCaixa === 24 && doenca.estado === 'curado') {
+          doenca.estado = 'erradicado';
+        }
+      }
+    },
   },
   methods: {
     getCidadeX(nome) {

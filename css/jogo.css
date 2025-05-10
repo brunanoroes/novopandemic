@@ -13,7 +13,7 @@
 .board {
   position: relative;
   width: 100%;
-  height: 80vh;
+  height: 100vh;
   background-image: url('../assets/Sem%20título.png');
   background-size: cover; /* Ou use 'contain' dependendo da necessidade */
   background-position: center;
@@ -139,4 +139,56 @@ button:hover {
   border: none;
   font-size: 18px;
   cursor: pointer;
+}
+.acoes {
+  background-color: #f9f9f9;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 16px 24px;
+  margin: 20px auto;
+  width: fit-content;
+  max-width: 90%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+}
+
+.acoes select {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.acoes select:hover {
+  border-color: #0056b3;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+}
+
+.acoes option {
+  font-size: 16px;
+}
+.info-jogador {
+  padding: 10px 16px;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: inline-block;
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.info-jogador .label {
+  opacity: 0.8;
+  margin-right: 8px;
+}
+
+.info-jogador .nome {
+  text-transform: uppercase;
 }
