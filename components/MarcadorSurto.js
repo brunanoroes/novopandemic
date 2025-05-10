@@ -1,9 +1,8 @@
-Vue.component('pino-infeccao', {
+Vue.component('marcador-surto', {
   props: ['nivel', 'atual'],
   template: `
-    <div>
+    <div :class="['marcador-surto', { atual }]">
       <p>{{ nivel }}</p>
-      <div v-if="atual">Atual</div>
     </div>
   `,
 });
