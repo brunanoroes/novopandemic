@@ -28,7 +28,6 @@ new Vue({
       amostra: { cidade: '' },
       monteDescarte: [],
     },
-    centrosPesquisa: [],
     controls: {
       mostrarCartaReferencia: false,
       mostrarCartasJogador: false,
@@ -36,7 +35,7 @@ new Vue({
     tabuleiro: null,
     acoes: acoesJogadorJson,
     modal: {
-      mostra: true,
+      mostra: false,
       mensagem: '',
     },
   },
@@ -49,7 +48,6 @@ new Vue({
       nomesJogadores: this.nomesJogadores,
       cidades: this.cidades,
       doencas: this.doencas,
-      centrosPesquisa: this.centrosPesquisa,
       jogadores: this.jogadores,
       cartasInfeccao: this.cartasInfeccao,
       marcadorInfeccao: this.marcadorInfeccao,
@@ -62,7 +60,6 @@ new Vue({
     this.jogadores = this.tabuleiro.jogadores;
     this.jogadorAtivo = this.tabuleiro.jogadorAtivo;
     this.cartasJogo = this.tabuleiro.cartasJogo;
-    this.centrosPesquisa = this.tabuleiro.centrosPesquisa;
     this.marcadorInfeccao = this.tabuleiro.marcadorInfeccao;
     this.marcadorSurto = this.tabuleiro.marcadorSurto;
     this.cartasInfeccao = this.tabuleiro.cartasInfeccao;
@@ -70,6 +67,8 @@ new Vue({
   watch: {
     acoesRestantes(novoValor) {
       if (novoValor === 0) {
+        //Jogada da Doenca
+        this.acoesRestantes = 4;
         this.TrocarJogadorAtivo();
       }
     },
@@ -129,6 +128,14 @@ new Vue({
       const deltaX = cidadePara.x - cidadeDe.x;
       const deltaY = cidadePara.y - cidadeDe.y;
       return Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+    },
+    jogadorAtivoAcao(cidade) {
+      const resultado = this.tabuleiro.jogadorAtivo.Acao(cidade, this.acaoAtual, this.cidades, this.cartasJogo, this.conexoesCidades);
+      if (resultado && resultado.mensagem) {
+        this.modal.mostra = true;
+        this.modal.mensagem = resultado.mensagem;
+      }
+      this.acoesRestantes -= 1;
     },
   },
 });

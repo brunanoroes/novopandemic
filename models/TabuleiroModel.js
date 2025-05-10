@@ -4,11 +4,10 @@ import cartasPersonagemJson from '../data/CartasPersonagem.js';
 import Jogador from './JogadorModel.js';
 
 export default class TabuleiroModel {
-  constructor({ nomesJogadores, cidades, doencas, centrosPesquisa, jogadores, cartasInfeccao, marcadorInfeccao, marcadorSurto }) {
+  constructor({ nomesJogadores, cidades, doencas, jogadores, cartasInfeccao, marcadorInfeccao, marcadorSurto }) {
     this.nomesJogadores = nomesJogadores;
     this.cidades = cidades;
     this.doencas = doencas;
-    this.centrosPesquisa = centrosPesquisa;
     this.jogadores = jogadores;
     this.cartasInfeccao = cartasInfeccao;
     this.marcadorInfeccao = marcadorInfeccao;
@@ -67,7 +66,7 @@ export default class TabuleiroModel {
 
     this.nomesJogadores.forEach((nome, index) => {
       const cor = coresPeao[index % coresPeao.length];
-      const jogador = new Jogador(index, nome, cor, 'São Paulo');
+      const jogador = new Jogador(index, nome, cor, 'Atlanta');
       this.jogadores.push(jogador);
     });
   }
@@ -92,9 +91,8 @@ export default class TabuleiroModel {
   }
 
   PosicionarCentrosPesquisa() {
-    this.centrosPesquisa.push({ posicao: 'São Paulo' });
-    for (let i = 0; i < 5; i++) {
-      this.centrosPesquisa.push({ posicao: 'caixa' });
+    for (let cidade of this.cidades) {
+      cidade.centroPesquisa = cidade.nome === 'Atlanta';
     }
   }
 

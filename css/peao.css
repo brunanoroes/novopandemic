@@ -1,7 +1,7 @@
-pino-jogador {
-  width: 10px;
-  height: 10px;
+.pino-jogador {
+  width: 1rem;
+  height: 1rem;
   border-radius: 50%;
   background-color: white;
-  position: absolute;
+  border: 2px solid white;
 }

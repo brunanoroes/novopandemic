@@ -10,18 +10,23 @@
       <div class="mesa">
         <div id="info" :style="{ backgroundColor: jogadorAtivo.peao?.cor || 'gray' }">Jogador: {{ jogadorAtivo.nome }}</div>
         <div class="conteiner-doenca">
+          <div>
+            <button>Montinho das cartas de doença usadas</button>
+            <carta-infeccao :cidade="cartasInfeccao.amostra.cidade"></carta-infeccao>
+          </div>
           <div class="caixinha-doenca" v-for="doenca in doencas" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
             <div v-for="(cubo, index) in doenca.cubosDoenca" v-if="cubo.posicao === 'caixa'" :key="index">
               <pino-doenca :cor="doenca.cor"></pino-doenca>
             </div>
           </div>
+          <div style="display: flex">
+            <div v-for="doenca in doencas" :key="doenca.cor">
+              <marcador-cura :cor="doenca.cor" :estado="doenca.estado"></marcador-cura>
+            </div>
+          </div>
         </div>
         <div class="board">
-          <div>
-            <button>Montinho das cartas de doença usadas</button>
-            <carta-infeccao :cidade="cartasInfeccao.amostra.cidade"></carta-infeccao>
-          </div>
-          <div v-for="cidade in cidades" :id="'cidade-' + cidade.id" class="city" :style="{ ...EstilizarObjetoPosicao(cidade), backgroundColor: cidade.cor }" @click="() => Jogador.moverPara(cidade.nome)">
+          <div v-for="cidade in cidades" :id="'cidade-' + cidade.id" class="city" :style="{ ...EstilizarObjetoPosicao(cidade), backgroundColor: cidade.cor }" @click="jogadorAtivoAcao(cidade.nome)">
             <!-- Pinos de Jogador -->{{cidade.nome}}
             <div v-for="jogador in jogadores.filter(j => j.peao.lugar === cidade.nome)">
               <pino-jogador :cor="jogador.peao.cor"></pino-jogador>
@@ -45,9 +50,6 @@
           </svg>
           <div v-for="espaco in espacosMarcadorInfeccao" :key="espaco.id" :atual="espaco.atual" class="marcadorInfeccao" :nivel="espaco.nome" :style="EstilizarObjetoPosicao(espaco)"></div>
           <div v-for="espaco in espacosMarcadorSurto" :key="espaco.id" class="marcadorSurtos" :atual="espaco.atual" :nivel="espaco.nome" :style="EstilizarObjetoPosicao(espaco)"></div>
-          <div v-for="doenca in doencas" :key="doenca.cor">
-            <marcador-cura :cor="doenca.cor" :estado="doenca.estado"></marcador-cura>
-          </div>
         </div>
         <div class="acoes">
           Ao marcar a ação você estará apto a realizar ela (Ações restantes: {{ acoesRestantes }})
@@ -69,7 +71,6 @@
           <div>
             <button v-model="controls.mostrarCartaReferencia" @click="controls.mostrarCartaReferencia = !controls.mostrarCartaReferencia">Carta Referência</button>
             <button v-model="controls.mostrarCartasJogador" @click="controls.mostrarCartasJogador =!controls.mostrarCartasJogador">Cartas Jogáveis</button>
-            <button @click="TrocarJogadorAtivo">Trocar de Jogador</button>
           </div>
         </div>
       </div>

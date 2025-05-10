@@ -1,11 +1,14 @@
 .pino-doenca {
-  width: 12px; /* Menor tamanho dos pinos */
-  height: 12px; /* Menor tamanho dos pinos */
+  width: 1rem; /* Menor tamanho dos pinos */
+  height: 1rem; /* Menor tamanho dos pinos */
   border-radius: 50%;
   background-color: inherit; /* Cor herdada da caixinha */
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
   display: inline-block;
   margin: 0 auto;
+  border: 2px solid #333;
+  border-radius: 8px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Efeito hover */
