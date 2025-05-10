@@ -63,6 +63,7 @@ new Vue({
     this.marcadorInfeccao = this.tabuleiro.marcadorInfeccao;
     this.marcadorSurto = this.tabuleiro.marcadorSurto;
     this.cartasInfeccao = this.tabuleiro.cartasInfeccao;
+    console.log(this.jogadores, this.jogadorAtivo, this.cartasJogo, this.marcadorInfeccao, this.marcadorSurto, this.cartasInfeccao);
   },
   watch: {
     acoesRestantes(novoValor) {

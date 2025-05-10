@@ -24,11 +24,11 @@ export default class TabuleiroModel {
     this.cartasJogo = [];
 
     for (const cidade of this.cidades) {
-      this.cartasJogo.push({ tipo: 'cidade', conteudo: cidade.nome });
+      this.cartasJogo.push({ tipo: 'cidade', conteudo: cidade.nome, descricao: '' });
     }
 
     for (const carta of cartasEventoJson) {
-      this.cartasJogo.push({ tipo: 'evento', conteudo: carta.conteudo });
+      this.cartasJogo.push({ tipo: 'evento', conteudo: carta.conteudo, descricao: carta.descricao });
     }
 
     this.cartasJogo = this.Embaralhar(this.cartasJogo);
@@ -36,6 +36,7 @@ export default class TabuleiroModel {
     this.cartasEpidemia = cartasEpidemiaJson.map(carta => ({
       tipo: 'epidemia',
       conteudo: carta.conteudo,
+      descricao: carta.descricao,
     }));
   }
 
@@ -120,9 +121,9 @@ export default class TabuleiroModel {
   }
 
   MontarTabuleiro() {
-    this.IniciarJogadores();
     this.CarregarCartasJogo();
     this.CarregarCartasInfeccao();
+    this.IniciarJogadores(); // <-- mover para depois de carregar as cartas
     this.InserirCartasEpidemiaNoBaralho(4);
     this.PosicionarCubosDoenca();
     this.PosicionarMarcadoresInfeccao();

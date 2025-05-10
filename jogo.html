@@ -62,15 +62,16 @@
           <div v-if="controls.mostrarCartaReferencia">
             <carta-referencia></carta-referencia>
           </div>
-          <div v-if="controls.mostrarCartasJogador">
+          <div v-if="controls.mostrarCartasJogador" style="display: flex">
             <carta-personagem :nome="jogadorAtivo.nome" :funcao="jogadorAtivo.cartaPersonagem.funcao" :imagem="jogadorAtivo.cartaPersonagem.imagem" :habilidades="jogadorAtivo.cartaPersonagem.habilidades"></carta-personagem>
             <div v-for="carta in jogadorAtivo.cartas">
-              <carta-jogo :tipo="carta.tipo" :conteudo="carta.conteudo"></carta-jogo>
+              <carta-jogo :tipo="carta.tipo" :conteudo="carta.conteudo" :descricao="carta.descricao"></carta-jogo>
             </div>
           </div>
-          <div>
-            <button v-model="controls.mostrarCartaReferencia" @click="controls.mostrarCartaReferencia = !controls.mostrarCartaReferencia">Carta Referência</button>
-            <button v-model="controls.mostrarCartasJogador" @click="controls.mostrarCartasJogador =!controls.mostrarCartasJogador">Cartas Jogáveis</button>
+          <div style="display: flex">
+            <button style="margin-right: 2rem" v-model="controls.mostrarCartaReferencia" @click="controls.mostrarCartaReferencia = !controls.mostrarCartaReferencia">Carta Referência</button>
+            <button style="margin-right: 2rem" v-model="controls.mostrarCartasJogador" @click="controls.mostrarCartasJogador =!controls.mostrarCartasJogador">Cartas Jogáveis</button>
+            <p><a href="instrucao.html" target="_blank">Instrução</a></p>
           </div>
         </div>
       </div>
