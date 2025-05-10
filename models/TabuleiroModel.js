@@ -56,9 +56,12 @@ export default class TabuleiroModel {
 
   CarregarCartasInfeccao() {
     this.cartasInfeccao.monteAtivo = [];
+
     for (const cidade of this.cidades) {
-      this.cartasInfeccao.monteAtivo.push({ cidade: cidade.nome });
+      this.cartasInfeccao.monteAtivo.push({ cidade: cidade.nome, cor: cidade.cor });
     }
+
+    this.cartasInfeccao.monteAtivo = this.Embaralhar(this.cartasInfeccao.monteAtivo);
   }
 
   PosicionarPeoes() {
@@ -111,6 +114,30 @@ export default class TabuleiroModel {
         const carta = this.cartasJogo.shift();
         if (carta) jogador.cartas.push(carta);
       }
+    });
+  }
+  PrimeiraInfeccao() {
+    const cartas = this.cartasInfeccao.monteAtivo.splice(0, 9); // remove as 9 primeiras cartas
+    cartas.forEach((carta, index) => {
+      const alvo = this.cidades.find(c => c.nome === carta.cidade);
+      if (!alvo) return;
+
+      // Determina a quantidade de cubos
+      const quantidade = index < 3 ? 3 : index < 6 ? 2 : 1;
+
+      // Encontra a doença da cor correspondente
+      const doenca = this.doencas.find(d => d.cor === carta.cor);
+      if (!doenca) return;
+
+      // Coloca os cubos na cidade
+      for (let i = 0; i < quantidade; i++) {
+        const cubo = doenca.cubosDoenca.find(c => c.posicao === 'caixa');
+        if (cubo) cubo.posicao = carta.cidade;
+        else console.warn(`Sem cubos disponíveis para ${doenca.nome}`);
+      }
+
+      // Move a carta para o descarte
+      this.cartasInfeccao.monteDescarte.push(carta);
     });
   }
 

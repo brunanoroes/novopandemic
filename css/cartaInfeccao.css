@@ -1,12 +1,10 @@
 .carta-doenca {
-  width: 200px;
-  background-color: #fff;
-  border: 2px solid #333;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  padding: 12px;
-  text-align: center;
-  font-family: 'Segoe UI', sans-serif;
-  margin: 10px;
-  transition: transform 0.3s;
+  display: inline-block;
+  min-width: 120px;
+  margin-right: 8px;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  border: 3px solid green; /* Borda verde */
+  border-radius: 8px; /* Opcional: bordas arredondadas */
+  padding: 4px; /* Opcional: espaço interno */
 }

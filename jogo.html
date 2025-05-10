@@ -11,8 +11,14 @@
         <div id="info" :style="{ backgroundColor: jogadorAtivo.peao?.cor || 'gray' }">Jogador: {{ jogadorAtivo.nome }}</div>
         <div class="conteiner-doenca">
           <div>
-            <button>Montinho das cartas de doença usadas</button>
-            <carta-infeccao :cidade="cartasInfeccao.amostra.cidade"></carta-infeccao>
+            <div v-if="controls.mostrarCartasInfeccao">
+              <div style="display: inline-flex; gap: 8px">
+                <div v-for="(cartaInfeccao, index) in cartasInfeccao.monteDescarte" :key="index">
+                  <carta-infeccao :cidade="cartaInfeccao.cidade" :cor="cartaInfeccao.cor" />
+                </div>
+              </div>
+            </div>
+            <button @click="controls.mostrarCartasInfeccao = !controls.mostrarCartasInfeccao">Montinho das cartas de doença usadas</button>
           </div>
           <div class="caixinha-doenca" v-for="doenca in doencas" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
             <div v-for="(cubo, index) in doenca.cubosDoenca" v-if="cubo.posicao === 'caixa'" :key="index">

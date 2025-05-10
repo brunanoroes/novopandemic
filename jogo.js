@@ -6,6 +6,7 @@ import espacosMarcadorInfeccaoJson from './data/EspacosMarcadorInfeccao.js';
 import espacosMarcadorSurtoJson from './data/EspacosMarcadorSurto.js';
 import acoesJogadorJson from './data/AcoesJogador.js';
 import Jogador from './models/JogadorModel.js';
+import Doenca from './models/DoencaModel.js';
 
 new Vue({
   el: '#appVue',
@@ -25,12 +26,12 @@ new Vue({
     espacosMarcadorSurto: espacosMarcadorSurtoJson,
     cartasInfeccao: {
       monteAtivo: [],
-      amostra: { cidade: '' },
       monteDescarte: [],
     },
     controls: {
       mostrarCartaReferencia: false,
       mostrarCartasJogador: false,
+      mostrarCartasInfeccao: false,
     },
     tabuleiro: null,
     acoes: acoesJogadorJson,
@@ -55,6 +56,7 @@ new Vue({
     });
 
     this.tabuleiro.MontarTabuleiro();
+    this.tabuleiro.PrimeiraInfeccao();
 
     // sincronizar os dados de volta
     this.jogadores = this.tabuleiro.jogadores;
@@ -63,12 +65,24 @@ new Vue({
     this.marcadorInfeccao = this.tabuleiro.marcadorInfeccao;
     this.marcadorSurto = this.tabuleiro.marcadorSurto;
     this.cartasInfeccao = this.tabuleiro.cartasInfeccao;
-    console.log(this.jogadores, this.jogadorAtivo, this.cartasJogo, this.marcadorInfeccao, this.marcadorSurto, this.cartasInfeccao);
   },
   watch: {
     acoesRestantes(novoValor) {
       if (novoValor === 0) {
-        //Jogada da Doenca
+        const cartas = this.tabuleiro.cartasInfeccao.monteAtivo.splice(0, this.tabuleiro.marcadorInfeccao.nivel);
+
+        cartas.forEach(carta => {
+          const cidade = this.cidades.find(c => c.nome === carta.cidade);
+          const doenca = this.doencas.find(d => d.cor === cidade.cor);
+
+          if (doenca) {
+            const resultado = doenca.infectar(cidade);
+            console.log(resultado);
+          }
+
+          this.tabuleiro.cartasInfeccao.monteDescarte.push(carta);
+        });
+
         this.acoesRestantes = 4;
         this.TrocarJogadorAtivo();
       }
