@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="board">
-          <div v-for="cidade in cidades" :id="'cidade-' + cidade.id" class="city" :style="{ ...EstilizarObjetoPosicao(cidade), backgroundColor: cidade.cor }" @click="jogadorAtivoAcao(cidade.nome)">
+          <div v-for="cidade in cidades" :id="'cidade-' + cidade.id" class="city" :style="{ ...EstilizarObjetoPosicao(cidade), backgroundColor: cidade.cor }" @click="jogadorAtivoAcao(cidade)">
             <!-- Pinos de Jogador -->{{cidade.nome}}
             <div v-for="jogador in jogadores.filter(j => j.peao.lugar === cidade.nome)">
               <pino-jogador :cor="jogador.peao.cor"></pino-jogador>

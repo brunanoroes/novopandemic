@@ -148,12 +148,14 @@ new Vue({
       return Math.atan2(deltaY, deltaX) * (180 / Math.PI);
     },
     jogadorAtivoAcao(cidade) {
-      const resultado = this.tabuleiro.jogadorAtivo.Acao(cidade, this.acaoAtual, this.cidades, this.cartasJogo, this.conexoesCidades);
+      const resultado = this.jogadorAtivo.Acao(cidade, this.acaoAtual, this.cidades, this.cartasJogo, this.conexoesCidades);
       if (resultado && resultado.mensagem) {
         this.modal.mostra = true;
         this.modal.mensagem = resultado.mensagem;
+      } else {
+        this.acoesRestantes -= 1;
+        console.log(this.jogadorAtivo);
       }
-      this.acoesRestantes -= 1;
     },
   },
 });

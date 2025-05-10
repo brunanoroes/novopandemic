@@ -34,35 +34,35 @@ export default class Jogador {
     switch (acaoSelecionada) {
       case 'Balsa':
         if (this.EstaConectada(this.peao.lugar.id, cidade.id)) {
-          this.peao.lugar = cidade;
+          this.peao.lugar = cidade.nome;
         } else {
-          this.AbrirModal('Você não pode andar de balsa para essa cidade. As cidades precisam estar conectadas.');
+          return { mensagem: 'Você não pode andar de balsa para essa cidade. As cidades precisam estar conectadas.' };
         }
         break;
 
       case 'Voo Direto':
-        if (this.peao.cartas.includes(cidade.nome)) {
-          this.peao.lugar = cidade;
+        if (this.cartas.some(c => c.conteudo === cidade.nome)) {
+          this.peao.lugar = cidade.nome;
           this.DescartarCarta(cidade.nome);
         } else {
-          this.AbrirModal('Você precisa ter a carta da cidade de destino para usar o voo direto.');
+          return { mensagem: 'Você precisa ter a carta da cidade de destino para usar o voo direto.' };
         }
         break;
 
       case 'Voo Fretado':
         if (this.peao.cartas.includes(this.peao.lugar.nome)) {
-          this.peao.lugar = cidade;
+          this.peao.lugar = cidade.nome;
           this.DescartarCarta(this.peao.lugar.nome);
         } else {
-          this.AbrirModal('Você precisa descartar a carta da cidade atual para usar o voo fretado.');
+          return { mensagem: 'Você precisa descartar a carta da cidade atual para usar o voo fretado.' };
         }
         break;
 
       case 'Ponte Aérea':
         if (this.TemCentroPesquisa(this.peao.lugar) && this.TemCentroPesquisa(cidade)) {
-          this.peao.lugar = cidade;
+          this.peao.lugar = cidade.nome;
         } else {
-          this.AbrirModal('Ambas as cidades devem ter um centro de pesquisa para usar a ponte aérea.');
+          return { mensagem: 'Ambas as cidades devem ter um centro de pesquisa para usar a ponte aérea.' };
         }
         break;
 
@@ -79,7 +79,7 @@ export default class Jogador {
           cidade.centrosPesquisa = true;
           this.DescartarCarta(this.peao.lugar.nome);
         } else {
-          this.AbrirModal('Você precisa ter a carta da cidade atual para construir um centro de pesquisa.');
+          return { mensagem: 'Você precisa ter a carta da cidade atual para construir um centro de pesquisa.' };
         }
         break;
 
@@ -88,25 +88,21 @@ export default class Jogador {
         break;
 
       default:
-        this.AbrirModal('Ação não reconhecida.');
+        return { mensagem: 'Ação não reconhecida.' };
     }
   }
 
   EstaConectada(idA, idB, conexoes) {
+    if (!Array.isArray(conexoes)) return false;
     return conexoes.some(c => (c.from === idA && c.to === idB) || (c.from === idB && c.to === idA));
   }
 
   TemCentroPesquisa(cidade) {
-    return this.centrosPesquisa.some(c => c.id === cidade.id);
-  }
-
-  AbrirModal(mensagem) {
-    this.modal.mostrar = true;
-    this.modal.mensagem = mensagem;
+    return cidade.centroPesquisa === true;
   }
 
   DescartarCarta(nomeCidade) {
-    this.peao.cartas = this.peao.cartas.filter(carta => carta !== nomeCidade);
+    this.cartas = this.cartas.filter(carta => carta.conteudo !== nomeCidade);
   }
 
   reiniciarCartas() {
