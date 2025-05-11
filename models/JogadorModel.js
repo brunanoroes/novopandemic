@@ -19,20 +19,20 @@ export default class Jogador {
 
     for (let i = 0; i < numCartas; i++) {
       const carta = monteCartasJogo.pop();
-      if (carta) {
-        if (carta.tipo === 'epidemia') {
-          // Ainda adiciona a carta ao jogador, se for o caso
-          this.cartas.push(carta);
-        } else {
-          this.cartas.push(carta);
-        }
-        cartasCompradas.push(carta);
+
+      // Adiciona a carta comprada ao jogador
+      cartasCompradas.push(carta);
+
+      // Se for uma carta de epidemia, você pode querer tratar de forma especial
+      if (carta.tipo === 'epidemia') {
+        // Talvez você queira fazer algo específico para epidemias aqui
+        window.alert(`${this.nome} comprou uma carta de Epidemia!`);
+      } else {
+        // Se não for epidemia, apenas adiciona a carta ao jogador
+        this.cartas.push(carta);
       }
     }
-
-    const nomes = cartasCompradas.map(c => c.nome || c.tipo).join(', ');
     return {
-      mensagem: `${this.nome} comprou as cartas: ${nomes}`,
       cartasCompradas,
     };
   }

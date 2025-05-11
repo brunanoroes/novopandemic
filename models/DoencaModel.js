@@ -50,23 +50,6 @@ export default class Doenca {
     }
   }
 
-  epidemizar(cidades, espacosMarcadorInfeccao, espacosMarcadorSurto) {
-    cidades.forEach(cidade => {
-      if (cidade.cor === this.cor) {
-        const cubosNaCidade = this.cubosDoenca.filter(c => c.posicao === cidade.nome).length;
-        if (cubosNaCidade < 3) {
-          const cubo = this.cubosDoenca.find(c => c.posicao === 'caixa');
-          if (cubo) {
-            cubo.posicao = cidade.nome;
-          }
-        } else {
-          console.warn(`Surto em ${cidade.nome}!`);
-          this.propagateSurto(cidade, espacosMarcadorInfeccao, espacosMarcadorSurto);
-        }
-      }
-    });
-  }
-
   getConexoesCidade(cidade) {
     return this.conexoes.filter(c => c.from === cidade.id || c.to === cidade.id);
   }

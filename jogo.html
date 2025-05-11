@@ -16,7 +16,7 @@
         <div class="conteiner-doenca">
           <div>
             <div v-if="controls.mostrarCartasInfeccao">
-              <div style="display: inline-flex; gap: 8px">
+              <div style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px">
                 <div v-for="(cartaInfeccao, index) in cartasInfeccao.monteDescarte" :key="index">
                   <carta-infeccao :cidade="cartaInfeccao.cidade" :cor="cartaInfeccao.cor" />
                 </div>
@@ -81,14 +81,16 @@
           </select>
         </div>
 
-        <div class="conteiner-cartas-jogador">
+        <div>
           <div v-if="controls.mostrarCartaReferencia">
             <carta-referencia></carta-referencia>
           </div>
           <div v-if="controls.mostrarCartasJogador" style="display: flex">
             <carta-personagem :nome="jogadorAtivo.nome" :funcao="jogadorAtivo.cartaPersonagem.funcao" :imagem="jogadorAtivo.cartaPersonagem.imagem" :habilidades="jogadorAtivo.cartaPersonagem.habilidades"></carta-personagem>
-            <div v-for="carta in jogadorAtivo.cartas">
-              <carta-jogo :tipo="carta.tipo" :conteudo="carta.conteudo" :descricao="carta.descricao" :style="{ backgroundColor: carta.tipo === 'cidade' ? carta.descricao : '#fff' }"></carta-jogo>
+            <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px">
+              <div v-for="carta in jogadorAtivo.cartas">
+                <carta-jogo :tipo="carta.tipo" :conteudo="carta.conteudo" :descricao="carta.descricao" :style="{ backgroundColor: carta.tipo === 'cidade' ? carta.descricao : '#fff' }"></carta-jogo>
+              </div>
             </div>
           </div>
           <div style="display: flex">
