@@ -6,34 +6,6 @@ export default class Doenca {
     this.cubosDoenca = cubosDoenca;
   }
 
-  infectar(cidade) {
-    if (cidade.cor !== this.cor) {
-      console.warn(`Tentando infectar ${cidade.nome} com doença ${this.nome} incorreta`);
-      return { erro: 'cor_incorreta', cidade };
-    }
-
-    if (this.estado === 'erradicado') {
-      window.alert('Doença Erradicada');
-      return { erro: 'doenca_erradicada', cidade };
-    }
-
-    const cubosNaCidade = this.cubosDoenca.filter(c => c.posicao === cidade.nome).length;
-
-    if (cubosNaCidade >= 3) {
-      console.warn(`Surto em ${cidade.nome}`);
-      return { surto: true, cidade };
-    }
-
-    const cubo = this.cubosDoenca.find(c => c.posicao === 'caixa');
-    if (cubo) {
-      cubo.posicao = cidade.nome;
-      return { sucesso: true, cidade };
-    } else {
-      console.warn(`Sem cubos disponíveis para a doença ${this.nome}`);
-      return { erro: 'sem_cubos', cidade };
-    }
-  }
-
   propagateSurto(cidade, espacosMarcadorInfeccao, espacosMarcadorSurto) {
     const cidadesConectadas = this.getConexoesCidade(cidade);
     cidadesConectadas.forEach(conexao => {

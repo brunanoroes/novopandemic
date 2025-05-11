@@ -37,7 +37,7 @@ export default class Jogador {
     };
   }
 
-  Acao(cidade, acaoSelecionada, cidades, cartasJogo, conexoes, centrosPesquisa, doencas) {
+  Acao(cidade, acaoSelecionada, cidades, cartasJogo, conexoes, centrosPesquisa, doencas, jogadores) {
     switch (acaoSelecionada) {
       case 'Balsa':
         if (this.EstaConectada(this.peao.lugar, cidade.nome, conexoes)) {
@@ -102,8 +102,46 @@ export default class Jogador {
         break;
 
       case 'Encontrar Cura':
-        this.TentarEncontrarCura();
-        break;
+        if (!this.TemCentroPesquisa(centrosPesquisa, this.peao.lugar)) {
+          return { mensagem: 'Você precisa estar em uma cidade com centro de pesquisa para encontrar a cura.' };
+        }
+
+        // Agrupa as cartas por cor
+        const cartasPorCor = {};
+        this.cartas.forEach(carta => {
+          if (carta.tipo === 'cidade') {
+            if (!cartasPorCor[carta.descricao]) {
+              cartasPorCor[carta.descricao] = [];
+            }
+            cartasPorCor[carta.descricao].push(carta);
+          }
+        });
+
+        // Procura por uma cor com 5 cartas
+        let corComCura = null;
+        for (let cor in cartasPorCor) {
+          if (cartasPorCor[cor].length >= 5) {
+            corComCura = cor;
+            break;
+          }
+        }
+
+        if (corComCura) {
+          // Remove 5 cartas da cor usada para a cura
+          let cartasDescartadas = 0;
+          this.cartas = this.cartas.filter(carta => {
+            if (carta.tipo === 'cidade' && carta.descricao === corComCura && cartasDescartadas < 5) {
+              cartasDescartadas++;
+              return false; // remove a carta
+            }
+            return true;
+          });
+
+          // Aqui você pode marcar que a cura foi encontrada para essa doença no jogo (precisa ajustar no escopo global)
+          return { mensagem: `Cura encontrada para a doença de cor ${corComCura}!` };
+        } else {
+          return { mensagem: 'Você precisa de 5 cartas da mesma cor para encontrar a cura.' };
+        }
 
       case 'Construir Centro de Pesquisa':
         // Verifica se o jogador tem a carta da cidade atual
@@ -132,11 +170,24 @@ export default class Jogador {
         break;
 
       case 'Compartilhar Conhecimento':
-        this.CompartilharConhecimentoComOutroJogador();
-        break;
+        for (let jogador of jogadores) {
+          if (jogador.id !== this.id && jogador.peao.lugar === this.peao.lugar) {
+            // Verifica se o jogador atual tem a carta da cidade em que estão
+            const cartaParaCompartilhar = this.cartas.find(c => c.conteudo === cidade.nome);
+            if (cartaParaCompartilhar) {
+              // Remove a carta do jogador atual
+              this.cartas = this.cartas.filter(c => c !== cartaParaCompartilhar);
+              // Adiciona a carta ao outro jogador
+              jogador.cartas.push(cartaParaCompartilhar);
 
-      default:
-        return { mensagem: 'Ação não reconhecida.' };
+              window.alert(`Sua carta da cidade ${cidade.nome} foi passada para ${jogador.nome}.`);
+              return { mensagem: `Carta compartilhada com ${jogador.nome}` };
+            } else {
+              return { mensagem: `Você não possui a carta da cidade ${cidade.nome}.` };
+            }
+          }
+        }
+        return { mensagem: 'Não há outro jogador na mesma cidade para compartilhar conhecimento.' };
     }
   }
 
