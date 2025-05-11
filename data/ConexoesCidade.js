@@ -89,4 +89,11 @@ const conexoesCidadesJson = [
   { from: 'Manila', to: 'Tokyo' },
 ];
 
+// Adicionar conexões reversas
+conexoesCidadesJson.forEach(conexao => {
+  if (!conexoesCidadesJson.some(c => c.from === conexao.to && c.to === conexao.from)) {
+    conexoesCidadesJson.push({ from: conexao.to, to: conexao.from });
+  }
+});
+
 export default conexoesCidadesJson;
