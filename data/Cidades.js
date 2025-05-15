@@ -1,5 +1,5 @@
 const cidadesJson = [
-  { nome: 'Atlanta', x: 13.71, y: 13.62, cor: 'blue' },
+  { id: 1, nome: 'Atlanta', x: 13.71, y: 13.62, cor: 'blue' },
   { id: 2, nome: 'Chicago', x: 19.51, y: 13.07, cor: 'blue' },
   { id: 3, nome: 'Montreal', x: 25.05, y: 10.35, cor: 'blue' },
   { id: 4, nome: 'San Francisco', x: 12.39, y: 10.35, cor: 'blue' },
