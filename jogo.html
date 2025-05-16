@@ -89,7 +89,7 @@
             <carta-personagem :nome="jogadorAtivo.nome" :funcao="jogadorAtivo.cartaPersonagem.funcao" :imagem="jogadorAtivo.cartaPersonagem.imagem" :habilidades="jogadorAtivo.cartaPersonagem.habilidades"></carta-personagem>
             <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px">
               <div v-for="carta in jogadorAtivo.cartas">
-                <carta-jogo :tipo="carta.tipo" :conteudo="carta.conteudo" :descricao="carta.descricao" :style="{ backgroundColor: carta.tipo === 'cidade' ? carta.descricao : '#fff' }"></carta-jogo>
+                <carta-jogo @click="jogadorAtivoAcao(cidade)" :tipo="carta.tipo" :conteudo="carta.conteudo" :descricao="carta.descricao" :style="{ backgroundColor: carta.tipo === 'cidade' ? carta.descricao : '#fff' }"></carta-jogo>
               </div>
             </div>
           </div>
