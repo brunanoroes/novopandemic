@@ -138,7 +138,7 @@ new Vue({
       this.jogadorAtivo = this.jogadores[proximoId];
       window.alert(`Vez do jogador ${this.jogadorAtivo.nome}`);
     },
-    jogadorAtivoAcao(referencia, tipo) {
+    jogadorAtivoAcao(referencia, tipo, cartaTipo) {
       if(tipo === 1){
         const acao = this.acaoEventoAtual || this.acaoAtual;
         const resultado = this.jogadorAtivo.Acao(referencia, acao , this.cidades, this.cartasJogo, this.conexoesCidades, this.centrosPesquisa, this.doencas, this.jogadores);
@@ -146,19 +146,23 @@ new Vue({
           this.modal.mostra = true;
           this.modal.mensagem = resultado.mensagem;
           this.acaoEventoAtual = '';
-          if(resposta.tipo === 'sucesso')this.acoesRestantes -= 1;
+          if(resultado.tipo === 'sucesso')this.acoesRestantes -= 1;
         }
       }
       else{
-        if(referencia === 'Recurso Extra') this.acoesRestantes += 2
-        const resultado = this.jogadorAtivo.UtilizarCartaEvento(referencia);
-        if (resultado && resultado.mensagem) {
-          this.modal.mostra = true;
-          this.modal.mensagem = resultado.mensagem;
-          if(!(referencia === 'Recurso Extra')) this.acaoEventoAtual === referencia;
+        if(cartaTipo === 'evento'){
+          if(referencia === 'Recurso Extra'){
+            this.jogadorAtivo.cartas = this.jogadorAtivo.cartas.filter(carta => carta.conteudo !== 'Recurso Extra');
+            this.acoesRestantes += 2
+          } 
+          const resultado = this.jogadorAtivo.UtilizarCartaEvento(referencia);
+          if (resultado && resultado.mensagem) {
+            this.modal.mostra = true;
+            this.modal.mensagem = resultado.mensagem;
+            if (referencia !== 'Recurso Extra') this.acaoEventoAtual = referencia;
+          }
         }
       }
-
     },
     trocarTurno() {
       // O jogador compra 2 cartas do jogo
@@ -298,15 +302,14 @@ new Vue({
       this.proximasSeisCartas = cartas;
     },
     confirmarReordenacao() {
-      // Atualiza o monteAtivo com as 6 cartas reordenadas no início, depois o resto normal
       this.cartasInfeccao.monteAtivo = [
         ...this.proximasSeisCartas,
         ...this.cartasInfeccao.monteAtivo.slice(6)
       ];
-  
-      // Aqui você pode chamar sua lógica para avançar no jogo, ou avisar que reordenação terminou
+      this.jogadorAtivo.cartas = this.jogadorAtivo.cartas.filter(carta => carta.conteudo !== this.acaoEventoAtual);
       this.acaoEventoAtual = '';
+      this.modal.mostra = false
       alert('Reordenação confirmada!');
-    }
+    }    
   },
 });

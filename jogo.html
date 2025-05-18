@@ -79,6 +79,7 @@
             <option disabled value="">-- Escolha uma ação --</option>
             <option v-for="acao in acoes" :key="acao" :value="acao">{{ acao }}</option>
           </select>
+          <p style="background: white;" v-if="acaoEventoAtual">{{acaoEventoAtual}}</p>
         </div>
 
         <div>
@@ -89,7 +90,7 @@
             <carta-personagem :nome="jogadorAtivo.nome" :funcao="jogadorAtivo.cartaPersonagem.funcao" :imagem="jogadorAtivo.cartaPersonagem.imagem" :habilidades="jogadorAtivo.cartaPersonagem.habilidades"></carta-personagem>
             <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px">
               <div v-for="carta in jogadorAtivo.cartas">
-                <carta-jogo @click="carta.tipo === 'evento' && jogadorAtivoAcao(carta.conteudo, 2)" :tipo="carta.tipo" :conteudo="carta.conteudo" :descricao="carta.descricao" :style="{ backgroundColor: carta.tipo === 'cidade' ? carta.descricao : '#fff' }"></carta-jogo>
+                <carta-jogo @click="jogadorAtivoAcao(carta.conteudo, 2, carta.tipo)" :tipo="carta.tipo" :conteudo="carta.conteudo" :descricao="carta.descricao" :style="{ backgroundColor: carta.tipo === 'cidade' ? carta.descricao : '#fff' }"></carta-jogo>
               </div>
             </div>
           </div>
@@ -111,16 +112,19 @@
       </div>
 
       <div v-if="acaoEventoAtual === 'Previsão'">
-        <div v-for="(carta, index) in proximasSeisCartas" :key="carta.id" style="display:flex; align-items:center; margin-bottom:8px;">
-          <carta-infeccao :cidade="carta.cidade" :cor="carta.cor" />
-          <div style="margin-left:8px;">
-            <button @click="moverCarta(index, -1)" :disabled="index === 0">↑</button>
-            <button @click="moverCarta(index, 1)" :disabled="index === proximasSeisCartas.length - 1">↓</button>
+        <div class="modal-overlay">
+          <div class="modal-content">
+            <div v-for="(carta, index) in proximasSeisCartas" :key="carta.id" style="display:flex; align-items:center; margin-bottom:8px;">
+              <div>{{ carta.cidade }} - {{ carta.cor }}</div>
+              <div style="margin-left:8px;">
+                <button @click="moverCarta(index, -1)" :disabled="index === 0">↑</button>
+                <button @click="moverCarta(index, 1)" :disabled="index === proximasSeisCartas.length - 1">↓</button>
+              </div>
+            </div>
+            <button @click="confirmarReordenacao">Confirmar Reordenar</button>
           </div>
         </div>
-        <button @click="confirmarReordenacao">Confirmar Reordenar</button>
       </div>
-      
 
     </div>
 

@@ -160,6 +160,7 @@ export default class Jogador {
   
       case 'Evento Ponte Aérea':
         this.peao.lugar = cidade.nome;
+        this.DescartarCarta(acaoSelecionada);
         return { mensagem: `Carta de Evento de Ponte Aérea utilizada. Jogador foi movido para ${cidade.nome}.`, tipo: 'sucesso' };
   
       case 'Operação Silenciosa':
@@ -168,6 +169,7 @@ export default class Jogador {
             const cubosCidade = doenca.cubosDoenca.filter(cubo => cubo.posicao === cidade.nome);
             if (cubosCidade.length > 0) {
               cubosCidade[0].posicao = 'caixa';
+              this.DescartarCarta(acaoSelecionada);
               return { mensagem: 'Cubo Removido', tipo: 'sucesso' };
             }
           }
@@ -206,7 +208,7 @@ export default class Jogador {
         return { mensagem: 'Use Previsão para ver e reordenar as 6 primeiras cartas de infecção.' };
   
       case 'Operação Silenciosa':
-        return { mensagem: 'Use Operação Silenciosa para impedir cubos de doença na próxima infecção.' };
+        return { mensagem: 'Use Operação Silenciosa para tirar qualquer cubo de qualquer cidade.' };
   
       case 'Recurso Extra':
         return { mensagem: 'Recurso Extra Utilizado' };
