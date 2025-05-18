@@ -1,7 +1,7 @@
 const cartasEventoJson = [
   {
     tipo: 'evento',
-    conteudo: 'Ponte Aérea',
+    conteudo: 'Evento Ponte Aérea',
     descricao: 'Desloque qualquer peão para qualquer cidade, independentemente de conexões.',
   },
   {

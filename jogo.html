@@ -44,7 +44,7 @@
           <svg id="conexoes-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0">
             <line v-for="(conexao, index) in conexoesCidades" :key="index" :x1="getCidadeX(conexao.from)" :y1="getCidadeY(conexao.from)" :x2="getCidadeX(conexao.to)" :y2="getCidadeY(conexao.to)" stroke="#999" stroke-width="2" />
           </svg>
-          <div v-for="cidade in cidades" :id="'cidade-' + cidade.id" class="city" :style="{ ...EstilizarObjetoPosicao(cidade), backgroundColor: cidade.cor }" @click="jogadorAtivoAcao(cidade)">
+          <div v-for="cidade in cidades" :id="'cidade-' + cidade.id" class="city" :style="{ ...EstilizarObjetoPosicao(cidade), backgroundColor: cidade.cor }" @click="jogadorAtivoAcao(cidade, 1)">
             <!-- Pinos de Jogador -->{{cidade.nome}}
             <div v-for="jogador in jogadores.filter(j => j.peao.lugar === cidade.nome)">
               <pino-jogador :cor="jogador.peao.cor"></pino-jogador>
@@ -89,7 +89,7 @@
             <carta-personagem :nome="jogadorAtivo.nome" :funcao="jogadorAtivo.cartaPersonagem.funcao" :imagem="jogadorAtivo.cartaPersonagem.imagem" :habilidades="jogadorAtivo.cartaPersonagem.habilidades"></carta-personagem>
             <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px">
               <div v-for="carta in jogadorAtivo.cartas">
-                <carta-jogo @click="jogadorAtivoAcao(cidade)" :tipo="carta.tipo" :conteudo="carta.conteudo" :descricao="carta.descricao" :style="{ backgroundColor: carta.tipo === 'cidade' ? carta.descricao : '#fff' }"></carta-jogo>
+                <carta-jogo @click="carta.tipo === 'evento' && jogadorAtivoAcao(carta.conteudo, 2)" :tipo="carta.tipo" :conteudo="carta.conteudo" :descricao="carta.descricao" :style="{ backgroundColor: carta.tipo === 'cidade' ? carta.descricao : '#fff' }"></carta-jogo>
               </div>
             </div>
           </div>

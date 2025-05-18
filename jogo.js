@@ -17,6 +17,7 @@ new Vue({
     jogadorAtivo: {},
     cartasJogo: [],
     acaoAtual: '',
+    acaoEventoAtual: '',
     cidades: cidadesJson,
     conexoesCidades: conexoesCidadeJson,
     doencas: doencasJson,
@@ -133,14 +134,26 @@ new Vue({
       this.jogadorAtivo = this.jogadores[proximoId];
       window.alert(`Vez do jogador ${this.jogadorAtivo.nome}`);
     },
-    jogadorAtivoAcao(cidade) {
-      const resultado = this.jogadorAtivo.Acao(cidade, this.acaoAtual, this.cidades, this.cartasJogo, this.conexoesCidades, this.centrosPesquisa, this.doencas, this.jogadores);
-      if (resultado && resultado.mensagem) {
-        this.modal.mostra = true;
-        this.modal.mensagem = resultado.mensagem;
-      } else {
-        this.acoesRestantes -= 1;
+    jogadorAtivoAcao(referencia, tipo) {
+      if(tipo === 1){
+        const acao = this.acaoEventoAtual || this.acaoAtual;
+        const resultado = this.jogadorAtivo.Acao(referencia, acao , this.cidades, this.cartasJogo, this.conexoesCidades, this.centrosPesquisa, this.doencas, this.jogadores);
+        if (resultado && resultado.mensagem) {
+          this.modal.mostra = true;
+          this.modal.mensagem = resultado.mensagem;
+          this.acaoEventoAtual = '';
+          if(resposta.tipo === 'sucesso')this.acoesRestantes -= 1;
+        }
       }
+      else{
+        const resultado = this.jogadorAtivo.UtilizarCartaEvento(referencia);
+        if (resultado && resultado.mensagem) {
+          this.modal.mostra = true;
+          this.modal.mensagem = resultado.mensagem;
+          this.acaoEventoAtual === referencia;
+        }
+      }
+
     },
     trocarTurno() {
       // O jogador compra 2 cartas do jogo
@@ -257,12 +270,15 @@ new Vue({
       this.cartasInfeccao.monteDescarte.push(carta);
 
       // 3. INTENSIDADE
-      const embaralhadas = this.shuffleArray(this.cartasInfeccao.monteDescarte);
+      const embaralhadas = this.Embaralhar(this.cartasInfeccao.monteDescarte);
       this.cartasInfeccao.monteAtivo = embaralhadas.concat(this.cartasInfeccao.monteAtivo);
       this.cartasInfeccao.monteDescarte = [];
 
       // Mensagem
       window.alert(`EPIDEMIA em ${cidade} (${cor})!`);
     },
+    Embaralhar(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
   },
 });

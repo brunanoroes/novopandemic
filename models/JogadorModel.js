@@ -37,76 +37,60 @@ export default class Jogador {
     };
   }
 
-  Acao(cidade, acaoSelecionada, cidades, cartasJogo, conexoes, centrosPesquisa, doencas, jogadores) {
+  Acao(cidade, acaoSelecionada, cidades, cartasJogo, conexoes, centrosPesquisa, doencas, jogadores, tipo) {
     switch (acaoSelecionada) {
       case 'Balsa':
         if (this.EstaConectada(this.peao.lugar, cidade.nome, conexoes)) {
           this.peao.lugar = cidade.nome;
-        } else {
-          return { mensagem: 'Você não pode andar de balsa para essa cidade. As cidades precisam estar conectadas.' };
+          return { mensagem: 'Barca Utilizada com Sucesso', tipo: 'sucesso' };
         }
-        break;
-
+        return { mensagem: 'Você não pode andar de balsa para essa cidade. As cidades precisam estar conectadas.', tipo: 'erro' };
+  
       case 'Voo Direto':
         if (this.cartas.some(c => c.conteudo === cidade.nome)) {
           this.peao.lugar = cidade.nome;
           this.DescartarCarta(cidade.nome);
-        } else {
-          return { mensagem: 'Você precisa ter a carta da cidade de destino para usar o voo direto.' };
+          return { mensagem: 'Voo Direto Utilizado com Sucesso', tipo: 'sucesso' };
         }
-        break;
-
+        return { mensagem: 'Você precisa ter a carta da cidade de destino para usar o voo direto.', tipo: 'erro' };
+  
       case 'Voo Fretado':
-        // Verifica se o jogador tem a carta da cidade onde ele está
         if (this.cartas.some(carta => carta.conteudo === this.peao.lugar)) {
-          // Se tiver a carta, ele pode viajar
-          this.peao.lugar = cidade.nome;
-          // Remove a carta da cidade atual (já que foi usada no voo fretado)
           this.DescartarCarta(this.peao.lugar);
-        } else {
-          return { mensagem: 'Você precisa ter a carta da cidade atual para usar o voo fretado.' };
+          this.peao.lugar = cidade.nome;
+          return { mensagem: 'Voo Fretado Utilizado com Sucesso', tipo: 'sucesso' };
         }
-        break;
-
+        return { mensagem: 'Você precisa ter a carta da cidade atual para usar o voo fretado.', tipo: 'erro' };
+  
       case 'Ponte Aérea':
         if (this.TemCentroPesquisa(centrosPesquisa, this.peao.lugar) && this.TemCentroPesquisa(centrosPesquisa, cidade.nome)) {
           this.peao.lugar = cidade.nome;
-        } else {
-          return { mensagem: 'Ambas as cidades devem ter um centro de pesquisa para usar a ponte aérea.' };
+          return { mensagem: 'Ponte Aérea Utilizada com Sucesso', tipo: 'sucesso' };
         }
-        break;
-
+        return { mensagem: 'Ambas as cidades devem ter um centro de pesquisa para usar a ponte aérea.', tipo: 'erro' };
+  
       case 'Tratar Doença':
-        // Verifica se o jogador está na cidade correta para tratar a doença
-        if (this.peao.lugar === cidade.nome) {
-          let mensagemTrato = 'Você não tem cubos de doença para remover nesta cidade.';
-          // Itera sobre todas as doenças
-          for (let doenca of doencas) {
-            // Verifica se a cor da doença corresponde à cor da cidade
-            if (doenca.cor === cidade.cor) {
-              // Verifica se há cubos de doença nessa cidade
-              const cubosCidade = doenca.cubosDoenca.filter(cubo => cubo.posicao === cidade.nome);
-
-              if (cubosCidade.length > 0) {
-                // Remove um cubo de doença da cidade e coloca na caixa
-                cubosCidade[0].posicao = 'caixa';
-                mensagemTrato = '';
-                break;
-              }
+        if (this.peao.lugar !== cidade.nome) {
+          return { mensagem: 'Você precisa estar na cidade para tratar a doença.', tipo: 'erro' };
+        }
+  
+        for (let doenca of doencas) {
+          if (doenca.cor === cidade.cor) {
+            const cubosCidade = doenca.cubosDoenca.filter(cubo => cubo.posicao === cidade.nome);
+            if (cubosCidade.length > 0) {
+              cubosCidade[0].posicao = 'caixa';
+              return { mensagem: 'Doença Tratada com Sucesso', tipo: 'sucesso' };
             }
           }
-          return { mensagem: mensagemTrato };
-        } else {
-          return { mensagem: 'Você precisa estar na cidade para tratar a doença.' };
         }
-        break;
-
+  
+        return { mensagem: 'Você não tem cubos de doença para remover nesta cidade.', tipo: 'erro' };
+  
       case 'Encontrar Cura':
         if (!this.TemCentroPesquisa(centrosPesquisa, this.peao.lugar)) {
-          return { mensagem: 'Você precisa estar em uma cidade com centro de pesquisa para encontrar a cura.' };
+          return { mensagem: 'Você precisa estar em uma cidade com centro de pesquisa para encontrar a cura.', tipo: 'erro' };
         }
-
-        // Agrupa as cartas por cor
+  
         const cartasPorCor = {};
         this.cartas.forEach(carta => {
           if (carta.tipo === 'cidade') {
@@ -116,8 +100,7 @@ export default class Jogador {
             cartasPorCor[carta.descricao].push(carta);
           }
         });
-
-        // Procura por uma cor com 5 cartas
+  
         let corComCura = null;
         for (let cor in cartasPorCor) {
           if (cartasPorCor[cor].length >= 5) {
@@ -125,71 +108,102 @@ export default class Jogador {
             break;
           }
         }
-
+  
         if (corComCura) {
-          // Remove 5 cartas da cor usada para a cura
-          let cartasDescartadas = 0;
+          let descartadas = 0;
           this.cartas = this.cartas.filter(carta => {
-            if (carta.tipo === 'cidade' && carta.descricao === corComCura && cartasDescartadas < 5) {
-              cartasDescartadas++;
-              return false; // remove a carta
+            if (carta.tipo === 'cidade' && carta.descricao === corComCura && descartadas < 5) {
+              descartadas++;
+              return false;
             }
             return true;
           });
-
-          // Aqui você pode marcar que a cura foi encontrada para essa doença no jogo (precisa ajustar no escopo global)
-          return { mensagem: `Cura encontrada para a doença de cor ${corComCura}!` };
-        } else {
-          return { mensagem: 'Você precisa de 5 cartas da mesma cor para encontrar a cura.' };
+  
+          // Aqui você pode marcar a cura globalmente: jogo.curas[corComCura] = true;
+          return { mensagem: `Cura encontrada para a doença de cor ${corComCura}!`, tipo: 'sucesso' };
         }
-
+  
+        return { mensagem: 'Você precisa de 5 cartas da mesma cor para encontrar a cura.', tipo: 'erro' };
+  
       case 'Construir Centro de Pesquisa':
-        // Verifica se o jogador tem a carta da cidade atual
-        const temCarta = this.cartas.some(carta => carta.conteudo === this.peao.lugar);
-        if (temCarta) {
-          // Verifica se já existe um centro de pesquisa na cidade atual
-          if (!this.TemCentroPesquisa(centrosPesquisa, this.peao.lugar)) {
-            // Procura por um centro de pesquisa com a posição 'caixa' para ser movido
-            const centroDePesquisaCaixa = centrosPesquisa.find(centro => centro.posicao === 'caixa');
-
-            if (centroDePesquisaCaixa) {
-              centroDePesquisaCaixa.posicao = this.peao.lugar; // Atualiza a posição do centro de pesquisa
-              console.log(`Centro de pesquisa foi construído em ${this.peao.lugar}.`);
-            } else {
-              return { mensagem: 'Não há centros de pesquisa disponíveis para construção.' };
-            }
-
-            // Descarta a carta da cidade atual
-            this.DescartarCarta(this.peao.lugar);
-          } else {
-            return { mensagem: `Já existe um centro de pesquisa em ${this.peao.lugar}.` };
-          }
-        } else {
-          return { mensagem: 'Você precisa ter a carta da cidade atual para construir um centro de pesquisa.' };
+        if (!this.cartas.some(carta => carta.conteudo === this.peao.lugar)) {
+          return { mensagem: 'Você precisa ter a carta da cidade atual para construir um centro de pesquisa.', tipo: 'erro' };
         }
-        break;
-
+  
+        if (this.TemCentroPesquisa(centrosPesquisa, this.peao.lugar)) {
+          return { mensagem: `Já existe um centro de pesquisa em ${this.peao.lugar}.`, tipo: 'erro' };
+        }
+  
+        const centroDisponivel = centrosPesquisa.find(centro => centro.posicao === 'caixa');
+        if (!centroDisponivel) {
+          return { mensagem: 'Não há centros de pesquisa disponíveis para construção.', tipo: 'erro' };
+        }
+  
+        centroDisponivel.posicao = this.peao.lugar;
+        this.DescartarCarta(this.peao.lugar);
+        return { mensagem: `Centro de pesquisa foi construído em ${this.peao.lugar}.`, tipo: 'sucesso' };
+  
       case 'Compartilhar Conhecimento':
         for (let jogador of jogadores) {
           if (jogador.id !== this.id && jogador.peao.lugar === this.peao.lugar) {
-            // Verifica se o jogador atual tem a carta da cidade em que estão
             const cartaParaCompartilhar = this.cartas.find(c => c.conteudo === cidade.nome);
             if (cartaParaCompartilhar) {
-              // Remove a carta do jogador atual
               this.cartas = this.cartas.filter(c => c !== cartaParaCompartilhar);
-              // Adiciona a carta ao outro jogador
               jogador.cartas.push(cartaParaCompartilhar);
-
-              window.alert(`Sua carta da cidade ${cidade.nome} foi passada para ${jogador.nome}.`);
-              return { mensagem: `Carta compartilhada com ${jogador.nome}` };
-            } else {
-              return { mensagem: `Você não possui a carta da cidade ${cidade.nome}.` };
+              return { mensagem: `Sua carta da cidade ${cidade.nome} foi passada para ${jogador.nome}.`, tipo: 'sucesso' };
             }
+            return { mensagem: `Você não possui a carta da cidade ${cidade.nome}.`, tipo: 'erro' };
           }
         }
-        return { mensagem: 'Não há outro jogador na mesma cidade para compartilhar conhecimento.' };
+  
+        return { mensagem: 'Não há outro jogador na mesma cidade para compartilhar conhecimento.', tipo: 'erro' };
+  
+      case 'Evento Ponte Aérea':
+        const jogadorMovido = jogadores.find(j => j.id === tipo);
+        if (!jogadorMovido) {
+          return { mensagem: 'Jogador não encontrado.', tipo: 'erro' };
+        }
+        jogadorMovido.peao.lugar = cidade.nome;
+        return { mensagem: `Carta de Evento de Ponte Aérea utilizada. ${jogadorMovido.nome} foi movido para ${cidade.nome}.`, tipo: 'sucesso' };
+  
+      case 'Previsão':
+        if (!Array.isArray(tipo) || tipo.length !== 6) {
+          return { mensagem: 'As 6 cartas reorganizadas precisam ser fornecidas.', tipo: 'erro' };
+        }
+  
+        const primeirasCartas = cartasJogo.infeccao.splice(0, 6);
+        const reorganizadas = tipo.map(nome => primeirasCartas.find(c => c.nome === nome)).filter(Boolean);
+        cartasJogo.infeccao = [...reorganizadas, ...cartasJogo.infeccao];
+  
+        return { mensagem: 'As 6 primeiras cartas de infecção foram reorganizadas com sucesso.', tipo: 'sucesso' };
+  
+      case 'Eventos Públicos':
+        const cartaEvento = cartasJogo.descarte.find(c => c.tipo === 'evento' && c.nome === tipo);
+        if (!cartaEvento) {
+          return { mensagem: 'Carta de evento não encontrada na pilha de descarte.', tipo: 'erro' };
+        }
+  
+        cartasJogo.descarte = cartasJogo.descarte.filter(c => c !== cartaEvento);
+        // Aqui você poderia chamar `this.Acao(...)` para ativar o efeito da carta novamente
+        return { mensagem: `A carta de evento "${tipo}" foi jogada novamente.`, tipo: 'sucesso' };
+  
+      case 'Operação Silenciosa':
+        cartasJogo.operacaoSilenciosaAtiva = true;
+        return { mensagem: 'A próxima infecção será silenciosa, sem cubos de doença.', tipo: 'sucesso' };
+  
+      case 'Recurso Extra':
+        const jogadorBonus = jogadores.find(j => j.id === tipo);
+        if (!jogadorBonus) {
+          return { mensagem: 'Jogador não encontrado para receber ações extras.', tipo: 'erro' };
+        }
+        jogadorBonus.acoesRestantes += 2;
+        return { mensagem: `${jogadorBonus.nome} recebeu 2 ações extras.`, tipo: 'sucesso' };
+  
+      default:
+        return { mensagem: 'Ação não reconhecida.', tipo: 'erro' };
     }
   }
+  
 
   EstaConectada(nomeA, nomeB, conexoes) {
     if (!Array.isArray(conexoes)) return false;
@@ -207,4 +221,27 @@ export default class Jogador {
   reiniciarCartas() {
     this.cartas = [];
   }
+
+  UtilizarCartaEvento(referencia) {
+    switch (referencia) {
+      case 'Evento Ponte Aérea':
+        return { mensagem: 'Use Ponte Aérea para mover qualquer peão para qualquer cidade.' };
+  
+      case 'Previsão':
+        return { mensagem: 'Use Previsão para ver e reordenar as 6 primeiras cartas de infecção.' };
+  
+      case 'Eventos Públicos':
+        return { mensagem: 'Use Eventos Públicos para reutilizar uma carta de evento da pilha de descarte.' };
+  
+      case 'Operação Silenciosa':
+        return { mensagem: 'Use Operação Silenciosa para impedir cubos de doença na próxima infecção.' };
+  
+      case 'Recurso Extra':
+        return { mensagem: 'Use Recurso Extra para dar 2 ações extras a um jogador.' };
+  
+      default:
+        return { mensagem: 'Carta de evento não reconhecida.' };
+    }
+  }
+  
 }
