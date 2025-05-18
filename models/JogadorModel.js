@@ -159,45 +159,20 @@ export default class Jogador {
         return { mensagem: 'Não há outro jogador na mesma cidade para compartilhar conhecimento.', tipo: 'erro' };
   
       case 'Evento Ponte Aérea':
-        const jogadorMovido = jogadores.find(j => j.id === tipo);
-        if (!jogadorMovido) {
-          return { mensagem: 'Jogador não encontrado.', tipo: 'erro' };
-        }
-        jogadorMovido.peao.lugar = cidade.nome;
-        return { mensagem: `Carta de Evento de Ponte Aérea utilizada. ${jogadorMovido.nome} foi movido para ${cidade.nome}.`, tipo: 'sucesso' };
-  
-      case 'Previsão':
-        if (!Array.isArray(tipo) || tipo.length !== 6) {
-          return { mensagem: 'As 6 cartas reorganizadas precisam ser fornecidas.', tipo: 'erro' };
-        }
-  
-        const primeirasCartas = cartasJogo.infeccao.splice(0, 6);
-        const reorganizadas = tipo.map(nome => primeirasCartas.find(c => c.nome === nome)).filter(Boolean);
-        cartasJogo.infeccao = [...reorganizadas, ...cartasJogo.infeccao];
-  
-        return { mensagem: 'As 6 primeiras cartas de infecção foram reorganizadas com sucesso.', tipo: 'sucesso' };
-  
-      case 'Eventos Públicos':
-        const cartaEvento = cartasJogo.descarte.find(c => c.tipo === 'evento' && c.nome === tipo);
-        if (!cartaEvento) {
-          return { mensagem: 'Carta de evento não encontrada na pilha de descarte.', tipo: 'erro' };
-        }
-  
-        cartasJogo.descarte = cartasJogo.descarte.filter(c => c !== cartaEvento);
-        // Aqui você poderia chamar `this.Acao(...)` para ativar o efeito da carta novamente
-        return { mensagem: `A carta de evento "${tipo}" foi jogada novamente.`, tipo: 'sucesso' };
+        this.peao.lugar = cidade.nome;
+        return { mensagem: `Carta de Evento de Ponte Aérea utilizada. Jogador foi movido para ${cidade.nome}.`, tipo: 'sucesso' };
   
       case 'Operação Silenciosa':
-        cartasJogo.operacaoSilenciosaAtiva = true;
-        return { mensagem: 'A próxima infecção será silenciosa, sem cubos de doença.', tipo: 'sucesso' };
-  
-      case 'Recurso Extra':
-        const jogadorBonus = jogadores.find(j => j.id === tipo);
-        if (!jogadorBonus) {
-          return { mensagem: 'Jogador não encontrado para receber ações extras.', tipo: 'erro' };
+        for (let doenca of doencas) {
+          if (doenca.cor === cidade.cor) {
+            const cubosCidade = doenca.cubosDoenca.filter(cubo => cubo.posicao === cidade.nome);
+            if (cubosCidade.length > 0) {
+              cubosCidade[0].posicao = 'caixa';
+              return { mensagem: 'Cubo Removido', tipo: 'sucesso' };
+            }
+          }
         }
-        jogadorBonus.acoesRestantes += 2;
-        return { mensagem: `${jogadorBonus.nome} recebeu 2 ações extras.`, tipo: 'sucesso' };
+        break
   
       default:
         return { mensagem: 'Ação não reconhecida.', tipo: 'erro' };
@@ -225,19 +200,16 @@ export default class Jogador {
   UtilizarCartaEvento(referencia) {
     switch (referencia) {
       case 'Evento Ponte Aérea':
-        return { mensagem: 'Use Ponte Aérea para mover qualquer peão para qualquer cidade.' };
+        return { mensagem: 'Use Ponte Aérea para mover seu peão para qualquer cidade.' };
   
       case 'Previsão':
         return { mensagem: 'Use Previsão para ver e reordenar as 6 primeiras cartas de infecção.' };
-  
-      case 'Eventos Públicos':
-        return { mensagem: 'Use Eventos Públicos para reutilizar uma carta de evento da pilha de descarte.' };
   
       case 'Operação Silenciosa':
         return { mensagem: 'Use Operação Silenciosa para impedir cubos de doença na próxima infecção.' };
   
       case 'Recurso Extra':
-        return { mensagem: 'Use Recurso Extra para dar 2 ações extras a um jogador.' };
+        return { mensagem: 'Recurso Extra Utilizado' };
   
       default:
         return { mensagem: 'Carta de evento não reconhecida.' };

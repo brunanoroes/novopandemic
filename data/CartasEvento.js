@@ -2,17 +2,12 @@ const cartasEventoJson = [
   {
     tipo: 'evento',
     conteudo: 'Evento Ponte Aérea',
-    descricao: 'Desloque qualquer peão para qualquer cidade, independentemente de conexões.',
+    descricao: 'Desloque o seu peão para qualquer cidade, independentemente de conexões.',
   },
   {
     tipo: 'evento',
     conteudo: 'Previsão',
     descricao: 'Olhe as 6 cartas do topo do monte de infecção e reorganize-as como quiser.',
-  },
-  {
-    tipo: 'evento',
-    conteudo: 'Eventos Públicos',
-    descricao: 'Um jogador pode jogar uma carta de evento gratuitamente.',
   },
   {
     tipo: 'evento',

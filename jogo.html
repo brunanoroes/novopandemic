@@ -100,6 +100,7 @@
           </div>
         </div>
       </div>
+      
       <div v-if="modal.mostra">
         <div class="modal-overlay" @click.self="modal.mostra = false">
           <div class="modal-content">
@@ -108,6 +109,19 @@
           </div>
         </div>
       </div>
+
+      <div v-if="acaoEventoAtual === 'Previsão'">
+        <div v-for="(carta, index) in proximasSeisCartas" :key="carta.id" style="display:flex; align-items:center; margin-bottom:8px;">
+          <carta-infeccao :cidade="carta.cidade" :cor="carta.cor" />
+          <div style="margin-left:8px;">
+            <button @click="moverCarta(index, -1)" :disabled="index === 0">↑</button>
+            <button @click="moverCarta(index, 1)" :disabled="index === proximasSeisCartas.length - 1">↓</button>
+          </div>
+        </div>
+        <button @click="confirmarReordenacao">Confirmar Reordenar</button>
+      </div>
+      
+
     </div>
 
     <!-- Vue 2 -->

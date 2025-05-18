@@ -39,6 +39,7 @@ new Vue({
       mensagem: '',
     },
     centrosPesquisa: [],
+    proximasSeisCartas: [],
   },
   created() {
     const params = new URLSearchParams(window.location.search);
@@ -66,6 +67,9 @@ new Vue({
     this.centrosPesquisa = this.tabuleiro.centrosPesquisa;
   },
   watch: {
+    'cartasInfeccao.monteAtivo'(novoMonte) {
+      this.proximasSeisCartas = novoMonte.slice(0, 6);
+    },
     acoesRestantes(novoValor) {
       if (novoValor === 0) {
         this.trocarTurno();
@@ -146,11 +150,12 @@ new Vue({
         }
       }
       else{
+        if(referencia === 'Recurso Extra') this.acoesRestantes += 2
         const resultado = this.jogadorAtivo.UtilizarCartaEvento(referencia);
         if (resultado && resultado.mensagem) {
           this.modal.mostra = true;
           this.modal.mensagem = resultado.mensagem;
-          this.acaoEventoAtual === referencia;
+          if(!(referencia === 'Recurso Extra')) this.acaoEventoAtual === referencia;
         }
       }
 
@@ -279,6 +284,29 @@ new Vue({
     },
     Embaralhar(array) {
       return [...array].sort(() => Math.random() - 0.5);
+    },
+    moverCarta(index, direcao) {
+      const novoIndex = index + direcao;
+      if (novoIndex < 0 || novoIndex >= this.proximasSeisCartas.length) return;
+  
+      // Troca as cartas de lugar
+      const cartas = [...this.proximasSeisCartas];
+      const temp = cartas[novoIndex];
+      cartas[novoIndex] = cartas[index];
+      cartas[index] = temp;
+  
+      this.proximasSeisCartas = cartas;
+    },
+    confirmarReordenacao() {
+      // Atualiza o monteAtivo com as 6 cartas reordenadas no início, depois o resto normal
+      this.cartasInfeccao.monteAtivo = [
+        ...this.proximasSeisCartas,
+        ...this.cartasInfeccao.monteAtivo.slice(6)
+      ];
+  
+      // Aqui você pode chamar sua lógica para avançar no jogo, ou avisar que reordenação terminou
+      this.acaoEventoAtual = '';
+      alert('Reordenação confirmada!');
     }
   },
 });
