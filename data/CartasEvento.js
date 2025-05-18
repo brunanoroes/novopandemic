@@ -17,7 +17,12 @@ const cartasEventoJson = [
   {
     tipo: 'evento',
     conteudo: 'Recurso Extra',
-    descricao: 'Um jogador pode realizar 1 ação extra nesta rodada.',
+    descricao: 'Um jogador pode realizar 2 ações extra nesta rodada.',
+  },
+  {
+    tipo: 'evento',
+    conteudo: 'Previsão',
+    descricao: 'Olhe as 6 cartas do topo do monte de infecção e reorganize-as como quiser.',
   },
 ];
 
