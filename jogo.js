@@ -185,7 +185,6 @@ new Vue({
 
       // Decrementa o número de ações restantes
       this.acoesRestantes = 4;
-      console.log(this.cartasJogo)
       // Troca para o próximo jogador
       this.TrocarJogadorAtivo();
     },
