@@ -7,36 +7,40 @@ export default class Doenca {
   }
 
   propagateSurto(cidade, espacosMarcadorInfeccao, espacosMarcadorSurto, cidadesComSurto = new Set()) {
-    if (cidadesComSurto.has(cidade.nome)) return; // Evita surto repetido na mesma cidade
-  
+    if (cidadesComSurto.has(cidade.nome)) return; // evita surto repetido
     cidadesComSurto.add(cidade.nome);
-  
-    const conexoesCidade = this.getConexoesCidade(cidade); // retorna conexões da cidade (array de {from, to})
-  
+
+    const conexoesCidade = this.getConexoesCidade(cidade);
+
     conexoesCidade.forEach(conexao => {
-      // Descobrir o nome da cidade conectada:
       const nomeCidadeConectada = (conexao.from === cidade.nome) ? conexao.to : conexao.from;
       const cidadeConectada = this.getCidadePorNome(nomeCidadeConectada);
-  
-      if (!cidadeConectada || cidadeConectada.cor !== this.cor) return;
-  
-      // Quantidade de cubos da doença da cor atual na cidade conectada
-      const cubos = cidadeConectada.cubosDoenca[this.cor] || 0;
-  
-      if (cubos >= 3) {
-        // Propaga surto recursivamente
+      if (!cidadeConectada) return;
+
+      // conta cubos da doença nesta cidade conectada
+      const cubosNaCidade = this.cubos.filter(cubo => cubo.posicao === cidadeConectada.nome);
+
+      if (cubosNaCidade.length >= 3) {
+        // surto em cadeia
         this.propagateSurto(cidadeConectada, espacosMarcadorInfeccao, espacosMarcadorSurto, cidadesComSurto);
       } else {
-        // Adiciona 1 cubo da doença
-        cidadeConectada.cubosDoenca[this.cor] = cubos + 1;
+        // adiciona 1 cubo: pega cubo livre e posiciona na cidade conectada
+        const cuboDisponivel = this.pegarCuboDisponivel();
+        if (cuboDisponivel) {
+          cuboDisponivel.posicao = cidadeConectada.nome;
+        }
       }
     });
-  
+
     this.atualizarMarcadorSurto(espacosMarcadorSurto);
     return { surto: true, cidade };
+    }
+
+  
+  pegarCuboDisponivel() {
+    return this.cubos.find(cubo => cubo.posicao === 'caixa');
   }
-  
-  
+
 
   atualizarMarcadorInfeccao(espacosMarcadorInfeccao) {
     const marcadorAtivo = espacosMarcadorInfeccao.find(espaco => espaco.atual === true);
