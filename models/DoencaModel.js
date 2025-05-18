@@ -18,7 +18,7 @@ export default class Doenca {
       if (!cidadeConectada) return;
 
       // conta cubos da doença nesta cidade conectada
-      const cubosNaCidade = this.cubos.filter(cubo => cubo.posicao === cidadeConectada.nome);
+      const cubosNaCidade = this.cubosDoenca.filter(cubo => cubo.posicao === cidadeConectada.nome);
 
       if (cubosNaCidade.length >= 3) {
         // surto em cadeia
@@ -38,7 +38,7 @@ export default class Doenca {
 
   
   pegarCuboDisponivel() {
-    return this.cubos.find(cubo => cubo.posicao === 'caixa');
+    return this.cubosDoenca.find(cubo => cubo.posicao === 'caixa');
   }
 
 
