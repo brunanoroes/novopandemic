@@ -1,9 +1,11 @@
 export default class Doenca {
-  constructor(nome, cor, estado, cubosDoenca) {
+  constructor(nome, cor, estado, cubosDoenca, cidades, conexoes) {
     this.nome = nome;
     this.cor = cor;
     this.estado = estado;
     this.cubosDoenca = cubosDoenca;
+    this.cidades = cidades || [];       // Garante que seja um array, mesmo se for undefined
+    this.conexoes = conexoes || [];
   }
 
   propagateSurto(cidade, espacosMarcadorInfeccao, espacosMarcadorSurto) {

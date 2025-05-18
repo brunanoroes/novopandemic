@@ -180,7 +180,7 @@ new Vue({
       }
 
       // Aplica a infecção
-      this.infectar();
+      this.infectarTurno();
 
       // Decrementa o número de ações restantes
       this.acoesRestantes = 4;
@@ -188,46 +188,50 @@ new Vue({
       // Troca para o próximo jogador
       this.TrocarJogadorAtivo();
     },
-
-    infectar() {
+    infectarTurno() {
       const cartasInfectadas = [];
-
+    
       for (let i = 0; i < 2; i++) {
-        const carta = this.cartasInfeccao.monteAtivo.shift(); // retira do topo
+        const carta = this.cartasInfeccao.monteAtivo.shift();
         if (!carta) break;
-
-        const cidade = carta.cidade;
-        const cor = carta.cor;
-
-        const doenca = this.doencas.find(d => d.cor === cor);
-        if (!doenca) continue;
-
-        if (doenca.estado === 'erradicado') {
-          console.log(`Doença ${cor} está erradicada. Não infecta mais a cidade ${cidade}.`);
-          cartasInfectadas.push({ cidade, cor, status: 'erradicada' });
-          continue;
-        }
-
-        const cubosNaCidade = doenca.cubosDoenca.filter(c => c.posicao === cidade);
-        if (cubosNaCidade.length >= 3) {
-          doenca.propagateSurto(cidade, this.espacosMarcadorInfeccao, this.espacosMarcadorSurto);
-          cartasInfectadas.push({ cidade, cor, status: 'surto' });
-        } else {
-          const cuboDisponivel = doenca.cubosDoenca.find(c => c.posicao === 'caixa');
-          if (cuboDisponivel) {
-            cuboDisponivel.posicao = cidade;
-            this.cartasInfeccao.monteDescarte.push({ cidade, cor });
-            cartasInfectadas.push({ cidade, cor, status: 'infectado' });
-          } else {
-            window.alert(`Não há mais cubos disponíveis para a doença ${cor}!`);
-            return { erro: 'sem_cubos', cor };
-          }
-        }
+    
+        const resultado = this.infectarCidade(carta.cidade, carta.cor);
+        if (resultado?.erro) return resultado;
+    
+        this.cartasInfeccao.monteDescarte.push(carta);
+        cartasInfectadas.push(resultado);
       }
-
+    
       const resumo = cartasInfectadas.map(c => `${c.cidade} - ${c.status}`).join('\n');
       window.alert(`Cartas de Infecção Retiradas:\n${resumo}`);
-    },
+    },    
+    infectarCidade(cidadeNome, cor) {
+      const doenca = this.doencas.find(d => d.cor === cor);
+      if (!doenca) return { cidade: cidadeNome, cor, status: 'erro' };
+    
+      if (doenca.estado === 'erradicado') {
+        console.log(`Doença ${cor} está erradicada. Não infecta mais a cidade ${cidadeNome}.`);
+        return { cidade: cidadeNome, cor, status: 'erradicada' };
+      }
+    
+      const cubosNaCidade = doenca.cubosDoenca.filter(c => c.posicao === cidadeNome);
+      if (cubosNaCidade.length >= 3) {
+        // Surto!
+        // doenca.propagateSurto(cidadeNome, this.espacosMarcadorInfeccao, this.espacosMarcadorSurto);
+        // return { cidade: cidadeNome, cor, status: 'surto' };
+        window.alert('Surto (Ainda não concluido a implementação)')
+      }
+    
+      const cuboDisponivel = doenca.cubosDoenca.find(c => c.posicao === 'caixa');
+      if (!cuboDisponivel) {
+        window.alert(`Não há mais cubos disponíveis para a doença ${cor}!`);
+        return { erro: 'sem_cubos', cor };
+      }
+    
+      // Infecta normalmente
+      cuboDisponivel.posicao = cidadeNome;
+      return { cidade: cidadeNome, cor, status: 'infectado' };
+    },    
     epidemizar() {
       // 1. AUMENTO
       const indiceAtual = this.espacosMarcadorInfeccao.findIndex(e => e.atual);
@@ -237,55 +241,26 @@ new Vue({
       } else {
         window.alert('Velocidade máxima de infecção atingida!');
       }
-
-      // 2. INFECÇÃO
-      const carta = this.cartasInfeccao.monteAtivo.pop(); // Do fundo do baralho
+    
+      // 2. INFECÇÃO com carta do fundo
+      const carta = this.cartasInfeccao.monteAtivo.pop();
       if (!carta) {
         window.alert('Não há mais cartas de infecção!');
         return;
       }
-
-      const cidade = carta.cidade;
-      const cor = carta.cor;
-      const doenca = this.doencas.find(d => d.cor === cor);
-      if (!doenca) return;
-
-      if (doenca.estado === 'erradicado') {
-        console.log(`Doença ${cor} está erradicada. Não infecta mais.`);
-      } else {
-        const cubosNaCidade = doenca.cubosDoenca.filter(c => c.posicao === cidade);
-        const faltando = 3 - cubosNaCidade.length;
-
-        if (faltando > 0) {
-          for (let i = 0; i < faltando; i++) {
-            const cubo = doenca.cubosDoenca.find(c => c.posicao === 'caixa');
-            if (cubo) {
-              cubo.posicao = cidade;
-            } else {
-              window.alert(`PERDEU! Sem cubos da doença ${doenca.nome}.`);
-              return;
-            }
-          }
-          if (faltando < 3) {
-            // Surto ocorre porque já havia cubos
-            doenca.propagateSurto(cidade, this.espacosMarcadorInfeccao, this.espacosMarcadorSurto);
-          }
-        } else {
-          // Já tem 3 cubos, surto direto
-          doenca.propagateSurto(cidade, this.espacosMarcadorInfeccao, this.espacosMarcadorSurto);
-        }
-      }
-
+    
+      const resultado = this.infectarCidade(carta.cidade, carta.cor);
+      if (resultado?.erro) return;
+    
       this.cartasInfeccao.monteDescarte.push(carta);
-
+    
       // 3. INTENSIDADE
       const embaralhadas = this.Embaralhar(this.cartasInfeccao.monteDescarte);
       this.cartasInfeccao.monteAtivo = embaralhadas.concat(this.cartasInfeccao.monteAtivo);
       this.cartasInfeccao.monteDescarte = [];
-
-      // Mensagem
-      window.alert(`EPIDEMIA em ${cidade} (${cor})!`);
-    },
+    
+      window.alert(`EPIDEMIA em ${carta.cidade} (${carta.cor})!\nStatus: ${resultado.status}`);
+    },    
     Embaralhar(array) {
       return [...array].sort(() => Math.random() - 0.5);
     },
