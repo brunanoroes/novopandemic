@@ -4,25 +4,39 @@ export default class Doenca {
     this.cor = cor;
     this.estado = estado;
     this.cubosDoenca = cubosDoenca;
-    this.cidades = cidades || [];       // Garante que seja um array, mesmo se for undefined
-    this.conexoes = conexoes || [];
   }
 
-  propagateSurto(cidade, espacosMarcadorInfeccao, espacosMarcadorSurto) {
-    const cidadesConectadas = this.getConexoesCidade(cidade);
-    cidadesConectadas.forEach(conexao => {
-      const cidadeConectada = this.getCidadePorNome(conexao);
-      if (cidadeConectada && cidadeConectada.cor === this.cor) {
-        this.infectar(cidadeConectada);
+  propagateSurto(cidade, espacosMarcadorInfeccao, espacosMarcadorSurto, cidadesComSurto = new Set()) {
+    if (cidadesComSurto.has(cidade.nome)) return; // Evita surto repetido na mesma cidade
+  
+    cidadesComSurto.add(cidade.nome);
+  
+    const conexoesCidade = this.getConexoesCidade(cidade); // retorna conexões da cidade (array de {from, to})
+  
+    conexoesCidade.forEach(conexao => {
+      // Descobrir o nome da cidade conectada:
+      const nomeCidadeConectada = (conexao.from === cidade.nome) ? conexao.to : conexao.from;
+      const cidadeConectada = this.getCidadePorNome(nomeCidadeConectada);
+  
+      if (!cidadeConectada || cidadeConectada.cor !== this.cor) return;
+  
+      // Quantidade de cubos da doença da cor atual na cidade conectada
+      const cubos = cidadeConectada.cubosDoenca[this.cor] || 0;
+  
+      if (cubos >= 3) {
+        // Propaga surto recursivamente
+        this.propagateSurto(cidadeConectada, espacosMarcadorInfeccao, espacosMarcadorSurto, cidadesComSurto);
+      } else {
+        // Adiciona 1 cubo da doença
+        cidadeConectada.cubosDoenca[this.cor] = cubos + 1;
       }
     });
-
-    // Atualiza os marcadores de infecção e surto
-    this.atualizarMarcadorInfeccao(espacosMarcadorInfeccao);
+  
     this.atualizarMarcadorSurto(espacosMarcadorSurto);
-
     return { surto: true, cidade };
   }
+  
+  
 
   atualizarMarcadorInfeccao(espacosMarcadorInfeccao) {
     const marcadorAtivo = espacosMarcadorInfeccao.find(espaco => espaco.atual === true);
@@ -59,4 +73,24 @@ export default class Doenca {
   getCidadePorNome(nome) {
     return this.cidades.find(cidade => cidade.nome === nome);
   }
+
+  verificarCidadesComSurtoResolvido(cidadesComSurto) {
+    const contagemCubosPorCidade = {};
+  
+    // Conta quantos cubos existem por cidade para esta doença
+    this.cubosDoenca.forEach(cubo => {
+      const nomeCidade = cubo.posicao;
+      contagemCubosPorCidade[nomeCidade] = (contagemCubosPorCidade[nomeCidade] || 0) + 1;
+    });
+  
+    // Para cada cidade em surtos, verifica se tem menos de 4 cubos
+    cidadesComSurto.forEach(nomeCidade => {
+      const qtdCubos = contagemCubosPorCidade[nomeCidade] || 0;
+  
+      if (qtdCubos < 4) {
+        cidadesComSurto.delete(nomeCidade);
+      }
+    });
+  }
+  
 }

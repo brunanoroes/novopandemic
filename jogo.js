@@ -113,6 +113,7 @@ new Vue({
         }
       }
     },
+    
   },
   methods: {
     getCidadeX(nome) {
@@ -217,9 +218,8 @@ new Vue({
       const cubosNaCidade = doenca.cubosDoenca.filter(c => c.posicao === cidadeNome);
       if (cubosNaCidade.length >= 3) {
         // Surto!
-        // doenca.propagateSurto(cidadeNome, this.espacosMarcadorInfeccao, this.espacosMarcadorSurto);
-        // return { cidade: cidadeNome, cor, status: 'surto' };
-        window.alert('Surto (Ainda não concluido a implementação)')
+         doenca.propagateSurto(cidadeNome, this.espacosMarcadorInfeccao, this.espacosMarcadorSurto);
+         return { cidade: cidadeNome, cor, status: 'surto' };
       }
     
       const cuboDisponivel = doenca.cubosDoenca.find(c => c.posicao === 'caixa');
