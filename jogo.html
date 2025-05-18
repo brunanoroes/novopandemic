@@ -22,7 +22,7 @@
                 </div>
               </div>
             </div>
-            <button @click="controls.mostrarCartasInfeccao = !controls.mostrarCartasInfeccao">Montinho das cartas de doença usadas</button>
+            <button @click="controls.mostrarCartasInfeccao = !controls.mostrarCartasInfeccao">Montinho das cartas de infecção usadas</button>
           </div>
           <div class="caixinha-doenca" v-for="doenca in doencas" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
             <div v-for="(cubo, index) in doenca.cubosDoenca" v-if="cubo.posicao === 'caixa'" :key="index">
