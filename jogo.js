@@ -29,7 +29,7 @@ new Vue({
     },
     controls: {
       mostrarCartaReferencia: false,
-      mostrarCartasJogador: true,
+      mostrarCartasJogador: false,
       mostrarCartasInfeccao: false,
     },
     tabuleiro: null,

@@ -8,11 +8,15 @@
   <body>
     <div id="appVue" v-cloak>
       <div class="mesa">
-        <div id="info" :style="{ backgroundColor: jogadorAtivo.peao?.cor || 'gray' }" class="info-jogador">
-          <span class="label">Jogador:</span>
-          <span class="nome">{{ jogadorAtivo.nome }}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <button style="margin-left: 2rem;" @click="window.open('instrucao.html')" target="_blank">Instrução</button>
+          <div style="flex: 1; display: flex; justify-content: center;">
+            <div id="info" :style="{ backgroundColor: jogadorAtivo.peao?.cor || 'gray' }" class="info-jogador">
+              <span class="label">Jogador:</span>
+              <span class="nome">{{ jogadorAtivo.nome }}</span>
+            </div>
+          </div>
         </div>
-
         <div class="conteiner-doenca">
           <div>
             <div v-if="controls.mostrarCartasInfeccao">
@@ -97,7 +101,6 @@
           <div style="display: flex">
             <button style="margin-right: 2rem" v-model="controls.mostrarCartaReferencia" @click="controls.mostrarCartaReferencia = !controls.mostrarCartaReferencia">Carta Referência</button>
             <button style="margin-right: 2rem" v-model="controls.mostrarCartasJogador" @click="controls.mostrarCartasJogador =!controls.mostrarCartasJogador">Cartas Jogáveis</button>
-            <p><a href="instrucao.html" target="_blank">Instrução</a></p>
           </div>
         </div>
       </div>

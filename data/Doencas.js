@@ -2,25 +2,25 @@ const doencasJson = [
   {
     nome: 'Doença A',
     cor: 'red',
-    estado: 'nao curado',
+    estado: 'Não Curado',
     cubosDoenca: [],
   },
   {
     nome: 'Doença B',
     cor: 'blue',
-    estado: 'nao curado',
+    estado: 'Não Curado',
     cubosDoenca: [],
   },
   {
     nome: 'Doença C',
     cor: 'yellow',
-    estado: 'nao curado',
+    estado: 'Não Curado',
     cubosDoenca: [],
   },
   {
     nome: 'Doença D',
     cor: 'black',
-    estado: 'nao curado',
+    estado: 'Não Curado',
     cubosDoenca: [],
   },
 ];
