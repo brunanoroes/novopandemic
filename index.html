@@ -10,7 +10,12 @@
       <h2>Olá, bem-vindo ao nosso projeto de Pandemic!</h2>
 
       <label>Quantos jogadores?</label>
-      <input type="number" v-model.number="quantidade" min="1" max="4" />
+      <select v-model.number="quantidade">
+        <option value="0" disabled>Selecione</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
 
       <div v-if="quantidade > 0">
         <label>Quais os nomes dos jogadores?</label>
@@ -20,9 +25,9 @@
       </div>
 
       <br />
-      <p>Instrução: <a href="instrucao.html" target="_blank">Instrução</a></p>
+      <a href="instrucao.html" target="_blank">Instrução</a>
 
-      <a :href="linkJogar" v-if="todosNomesPreenchidos">Jogar</a>
+      <a :href="linkJogar" v-if="todosNomesPreenchidos && quantidade">Jogar</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>

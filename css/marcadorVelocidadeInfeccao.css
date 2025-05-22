@@ -3,12 +3,13 @@
   border: 2px dashed #555;
   border-radius: 6px;
   background-color: #d0e8f2;
-  text-align: center;
-  width: 3.5rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1rem;
   font-size: 0.9rem;
   color: #222;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
 }
 
 .marcador-infeccao.atual {
