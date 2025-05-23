@@ -14,7 +14,7 @@
 /* Estilo da Board (fundo) */
 .board {
   position: relative;
-  width:70vw;
+  width: 70vw;
   height: 70vh;
   background-image: url('../assets/Sem%20título.png');
   background-size: cover; /* Ou use 'contain' dependendo da necessidade */
@@ -195,7 +195,7 @@ button:hover {
   text-transform: uppercase;
 }
 
-.mesa{
+.mesa {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -204,8 +204,16 @@ button:hover {
   height: 100%;
 }
 
-.conteiner-meio{
+.conteiner-meio {
   display: flex;
   justify-content: center;
+}
 
+.lateral {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem;
+  gap: 2rem;
 }

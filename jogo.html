@@ -8,9 +8,9 @@
   <body>
     <div id="appVue" v-cloak>
       <div class="mesa">
-        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-          <button style="margin-left: 2rem;" @click="window.open('instrucao.html')" target="_blank">Instrução</button>
-          <div style="flex: 1; display: flex; justify-content: center;">
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%">
+          <button style="margin-left: 2rem" @click="window.open('instrucao.html')" target="_blank">Instrução</button>
+          <div style="flex: 1; display: flex; justify-content: center">
             <div id="info" :style="{ backgroundColor: jogadorAtivo.peao?.cor || 'gray' }" class="info-jogador">
               <span class="label">Jogador:</span>
               <span class="nome">{{ jogadorAtivo.nome }}</span>
@@ -40,9 +40,11 @@
           </div>
         </div>
         <div class="conteiner-meio">
-          <div class="caixinha-doenca" v-for="doenca in doencas" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
-            <div v-for="(cubo, index) in doenca.cubosDoenca" v-if="cubo.posicao === 'caixa'" :key="index">
-              <pino-doenca :cor="doenca.cor"></pino-doenca>
+          <div class="lateral">
+            <div class="caixinha-doenca" v-for="doenca in doencas.slice(0, 2)" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
+              <div v-for="(cubo, index) in doenca.cubosDoenca" v-if="cubo.posicao === 'caixa'" :key="index">
+                <pino-doenca :cor="doenca.cor"></pino-doenca>
+              </div>
             </div>
           </div>
           <div class="board">
@@ -73,7 +75,14 @@
             <div v-for="espaco in espacosMarcadorSurto" :key="espaco.id" class="marcadorSurtos" :atual="espaco.atual" :nivel="espaco.nome" :style="EstilizarObjetoPosicao(espaco)">
               <marcador-surto :atual="espaco.atual" :nivel="espaco.nome"></marcador-surto>
             </div>
-        </div>
+          </div>
+          <div class="lateral">
+            <div class="caixinha-doenca" v-for="doenca in doencas.slice(2, 4)" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
+              <div v-for="(cubo, index) in doenca.cubosDoenca" v-if="cubo.posicao === 'caixa'" :key="index">
+                <pino-doenca :cor="doenca.cor"></pino-doenca>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="conteiner-baixo">
           <p>
@@ -85,7 +94,7 @@
             <option disabled value="">-- Escolha uma ação --</option>
             <option v-for="acao in acoes" :key="acao" :value="acao">{{ acao }}</option>
           </select>
-          <p style="background: white;" v-if="acaoEventoAtual">{{acaoEventoAtual}}</p>
+          <p style="background: white" v-if="acaoEventoAtual">{{acaoEventoAtual}}</p>
         </div>
 
         <div>
@@ -106,7 +115,7 @@
           </div>
         </div>
       </div>
-      
+
       <div v-if="modal.mostra">
         <div class="modal-overlay" @click.self="modal.mostra = false">
           <div class="modal-content">
@@ -119,9 +128,9 @@
       <div v-if="acaoEventoAtual === 'Previsão'">
         <div class="modal-overlay">
           <div class="modal-content">
-            <div v-for="(carta, index) in proximasSeisCartas" :key="carta.id" style="display:flex; align-items:center; margin-bottom:8px;">
+            <div v-for="(carta, index) in proximasSeisCartas" :key="carta.id" style="display: flex; align-items: center; margin-bottom: 8px">
               <div>{{ carta.cidade }} - {{ carta.cor }}</div>
-              <div style="margin-left:8px;">
+              <div style="margin-left: 8px">
                 <button @click="moverCarta(index, -1)" :disabled="index === 0">↑</button>
                 <button @click="moverCarta(index, 1)" :disabled="index === proximasSeisCartas.length - 1">↓</button>
               </div>
@@ -130,7 +139,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- Vue 2 -->
