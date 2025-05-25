@@ -19,30 +19,32 @@
           </div>
         </div>
         <div class="conteiner-cima">
-          <div>
+          <div class="montinho-cartas-infeccao">
+            <button @click="controls.mostrarCartasInfeccao = !controls.mostrarCartasInfeccao">Montinho das cartas de infecção usadas</button>
             <div v-if="controls.mostrarCartasInfeccao">
-              <div style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px">
+              <div class="conteiner-cartas-infeccao">
                 <div v-for="(cartaInfeccao, index) in cartasInfeccao.monteDescarte" :key="index">
                   <carta-infeccao :cidade="cartaInfeccao.cidade" :cor="cartaInfeccao.cor" />
                 </div>
               </div>
             </div>
-            <button @click="controls.mostrarCartasInfeccao = !controls.mostrarCartasInfeccao">Montinho das cartas de infecção usadas</button>
           </div>
-          <div class="caixinha-centroPesquisa">
-            <div v-for="(centroPesquisa, index) in centrosPesquisa" v-if="centroPesquisa.posicao === 'caixa'" :key="index">
-              <centro-pesquisa></centro-pesquisa>
+          <div class="elementos-jogo">
+            <div style="display: flex">
+              <div v-for="doenca in doencas" :key="doenca.cor">
+                <marcador-cura :cor="doenca.cor" :estado="doenca.estado"></marcador-cura>
+              </div>
             </div>
-          </div>
-          <div style="display: flex">
-            <div v-for="doenca in doencas" :key="doenca.cor">
-              <marcador-cura :cor="doenca.cor" :estado="doenca.estado"></marcador-cura>
+            <div class="caixinha-centroPesquisa">
+              <div v-for="(centroPesquisa, index) in centrosPesquisa" v-if="centroPesquisa.posicao === 'caixa'" :key="index">
+                <centro-pesquisa></centro-pesquisa>
+              </div>
             </div>
-          </div>
-          <div style="display: flex; gap: 1rem">
-            <div class="caixinha-doenca" v-for="doenca in doencas" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
-              <div v-for="(cubo, index) in doenca.cubosDoenca" v-if="cubo.posicao === 'caixa'" :key="index">
-                <pino-doenca :cor="doenca.cor"></pino-doenca>
+            <div style="display: flex; gap: 1rem">
+              <div class="caixinha-doenca" v-for="doenca in doencas" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
+                <div v-for="(cubo, index) in doenca.cubosDoenca" v-if="cubo.posicao === 'caixa'" :key="index">
+                  <pino-doenca :cor="doenca.cor"></pino-doenca>
+                </div>
               </div>
             </div>
           </div>
@@ -101,7 +103,7 @@
           </div>
           <div v-if="controls.mostrarCartasJogador" style="display: flex">
             <carta-personagem :nome="jogadorAtivo.nome" :funcao="jogadorAtivo.cartaPersonagem.funcao" :imagem="jogadorAtivo.cartaPersonagem.imagem" :habilidades="jogadorAtivo.cartaPersonagem.habilidades"></carta-personagem>
-            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px">
+            <div class="conteiner-cartas-jogo">
               <div v-for="carta in jogadorAtivo.cartas">
                 <carta-jogo @click="jogadorAtivoAcao(carta.conteudo, 2, carta.tipo)" :tipo="carta.tipo" :conteudo="carta.conteudo" :descricao="carta.descricao" :style="{ backgroundColor: carta.tipo === 'cidade' ? carta.descricao : '#fff' }"></carta-jogo>
               </div>

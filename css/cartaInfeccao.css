@@ -19,23 +19,3 @@
     padding: 2px;
   }
 }
-
-/* Telas médias (tablets) */
-@media (min-width: 500px) and (max-width: 1024px) {
-  .carta-doenca {
-    min-width: 110px;
-    font-size: 14px;
-    margin-right: 6px;
-    padding: 3px;
-  }
-}
-
-/* Telas grandes (desktops) */
-@media (min-width: 1025px) {
-  .carta-doenca {
-    min-width: 120px;
-    font-size: 16px;
-    margin-right: 8px;
-    padding: 4px;
-  }
-}

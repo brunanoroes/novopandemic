@@ -1,5 +1,5 @@
 .marcador-infeccao {
-  padding: 0.4rem;
+  padding: 0.6rem;
   border: 2px dashed #555;
   border-radius: 6px;
   background-color: #d0e8f2;
@@ -28,15 +28,5 @@
     height: 0.9rem;
     font-size: 0.8rem;
     padding: 0.3rem;
-  }
-}
-
-/* Tablets */
-@media (min-width: 500px) and (max-width: 1024px) {
-  .marcador-infeccao {
-    width: 1.4rem;
-    height: 0.95rem;
-    font-size: 0.85rem;
-    padding: 0.35rem;
   }
 }

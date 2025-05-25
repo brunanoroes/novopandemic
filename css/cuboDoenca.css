@@ -18,15 +18,3 @@
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
   }
 }
-
-/* Tablets */
-@media (min-width: 500px) and (max-width: 1024px) {
-  .pino-doenca {
-    width: 0.7rem;
-    height: 0.7rem;
-    border-width: 1.75px;
-    box-shadow: 1.5px 1.5px 4px rgba(0, 0, 0, 0.1);
-  }
-}
-
-/* Desktop mantém o padrão */

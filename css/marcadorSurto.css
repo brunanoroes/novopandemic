@@ -37,17 +37,3 @@
     margin-left: 0.5rem;
   }
 }
-
-/* Tablets */
-@media (min-width: 500px) and (max-width: 1024px) {
-  .marcador-surto {
-    width: 1.6rem;
-    height: 0.75rem;
-    padding: 0.4rem;
-    font-size: 0.9rem;
-  }
-
-  .pMarcSurto {
-    margin-left: 0.6rem;
-  }
-}

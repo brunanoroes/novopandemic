@@ -34,33 +34,16 @@
 /* Telas pequenas (celulares) */
 @media (max-width: 500px) {
   .carta-personagem {
-    width: 140px;
-    padding: 10px;
-    margin: 8px;
+    width: 9rem;
+    padding: 1rem;
+    max-height: 20rem;
   }
 
   .carta-personagem h3 {
-    font-size: 14px;
+    font-size: 1rem;
   }
 
   .carta-personagem p {
-    font-size: 12px;
-  }
-}
-
-/* Telas médias (tablets) */
-@media (min-width: 500px) and (max-width: 1024px) {
-  .carta-personagem {
-    width: 170px;
-    padding: 11px;
-    margin: 9px;
-  }
-
-  .carta-personagem h3 {
-    font-size: 15px;
-  }
-
-  .carta-personagem p {
-    font-size: 13px;
+    font-size: 1rem;
   }
 }

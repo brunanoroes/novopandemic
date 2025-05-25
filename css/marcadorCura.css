@@ -22,13 +22,3 @@
     min-height: 2rem;
   }
 }
-
-/* Tablets */
-@media (min-width: 500px) and (max-width: 1024px) {
-  .frasco {
-    font-size: 0.85rem;
-    padding: 7px 11px;
-    margin: 9px;
-    min-height: 2.2rem;
-  }
-}
