@@ -21,6 +21,9 @@
   background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: right;
 }
 /* Remover imagem <img> dentro da .board, já que estamos usando background */
 .board img {
@@ -63,13 +66,6 @@ button {
 
 button:hover {
   background-color: #2980b9;
-}
-
-/* Ajuste de estilo para garantir que as cidades e linhas fiquem visíveis e organizadas */
-.board {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .conteiner-cima {
@@ -209,11 +205,103 @@ button:hover {
   justify-content: center;
 }
 
-.lateral {
+.conteiner-marcadores-infeccao {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.conteiner-marcadores-surtos {
+  display: flex;
+  gap: 0.9rem;
   flex-direction: column;
-  padding: 2rem;
-  gap: 2rem;
+  margin-left: 3rem;
+}
+
+@media (max-width: 500px) {
+  .board {
+    width: 100vw;
+    height: 70vh;
+    background-size: contain;
+    background-position: center;
+  }
+
+  .city {
+    width: 0.9rem;
+    height: 0.9rem;
+    font-size: 0.5rem;
+    border: 1px solid white;
+  }
+
+  .city:hover {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.8rem;
+  }
+
+  .conteiner-cima,
+  .conteiner-meio {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .caixinha-doenca {
+    width: 90%;
+    height: auto;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 6px;
+    grid-gap: 2px;
+  }
+  .caixinha-centroPesquisa {
+    height: 1rem;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 6px;
+    grid-gap: 2px;
+  }
+
+  .mesa {
+    padding: 0.5rem;
+    flex-direction: column;
+  }
+
+  .info-jogador {
+    font-size: 14px;
+    padding: 6px 10px;
+    text-align: center;
+  }
+
+  button {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .conteiner-baixo select {
+    width: 100%;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 12px;
+  }
+  .conteiner-marcadores-infeccao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 2rem;
+  }
+
+  .conteiner-marcadores-surtos {
+    display: flex;
+    gap: 0.3rem;
+    flex-direction: column;
+    margin-left: 3rem;
+  }
 }

@@ -10,6 +10,7 @@
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .marcador-infeccao.atual {
@@ -18,4 +19,24 @@
   border: 2px solid #0d47a1;
   font-weight: bold;
   box-shadow: 0 0 8px #0d47a1;
+}
+
+/* Responsividade: Celulares */
+@media (max-width: 500px) {
+  .marcador-infeccao {
+    width: 1.2rem;
+    height: 0.9rem;
+    font-size: 0.8rem;
+    padding: 0.3rem;
+  }
+}
+
+/* Tablets */
+@media (min-width: 500px) and (max-width: 1024px) {
+  .marcador-infeccao {
+    width: 1.4rem;
+    height: 0.95rem;
+    font-size: 0.85rem;
+    padding: 0.35rem;
+  }
 }

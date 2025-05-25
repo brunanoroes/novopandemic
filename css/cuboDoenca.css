@@ -1,12 +1,32 @@
 .pino-doenca {
-  width: 0.8rem; /* Menor tamanho dos pinos */
-  height: 0.8rem; /* Menor tamanho dos pinos */
-  border-radius: 50%;
-  background-color: inherit; /* Cor herdada da caixinha */
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  width: 0.8rem; /* tamanho base */
+  height: 0.8rem;
+  border-radius: 50%; /* círculo */
+  background-color: inherit; /* herda cor */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   display: inline-block;
   margin: 0 auto;
   border: 2px solid #333;
-  border-radius: 8px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+/* Responsivo para celulares */
+@media (max-width: 500px) {
+  .pino-doenca {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-width: 1.5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Tablets */
+@media (min-width: 500px) and (max-width: 1024px) {
+  .pino-doenca {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-width: 1.75px;
+    box-shadow: 1.5px 1.5px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Desktop mantém o padrão */

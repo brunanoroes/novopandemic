@@ -4,7 +4,38 @@
   margin-right: 8px;
   color: white;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-  border: 3px solid green; /* Borda verde */
-  border-radius: 8px; /* Opcional: bordas arredondadas */
-  padding: 4px; /* Opcional: espaço interno */
+  border: 3px solid green;
+  border-radius: 8px;
+  padding: 4px;
+  font-size: 16px;
+}
+
+/* Telas menores (celulares) */
+@media (max-width: 500px) {
+  .carta-doenca {
+    min-width: 90px;
+    font-size: 12px;
+    margin-right: 4px;
+    padding: 2px;
+  }
+}
+
+/* Telas médias (tablets) */
+@media (min-width: 500px) and (max-width: 1024px) {
+  .carta-doenca {
+    min-width: 110px;
+    font-size: 14px;
+    margin-right: 6px;
+    padding: 3px;
+  }
+}
+
+/* Telas grandes (desktops) */
+@media (min-width: 1025px) {
+  .carta-doenca {
+    min-width: 120px;
+    font-size: 16px;
+    margin-right: 8px;
+    padding: 4px;
+  }
 }

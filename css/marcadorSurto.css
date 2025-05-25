@@ -9,6 +9,7 @@
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
+  color: white; /* para contraste */
 }
 
 .marcador-surto.atual {
@@ -21,4 +22,32 @@
 
 .pMarcSurto {
   margin-left: 0.7rem;
+}
+
+/* Celulares */
+@media (max-width: 500px) {
+  .marcador-surto {
+    width: 1.5rem;
+    height: 0.7rem;
+    padding: 0.3rem;
+    font-size: 0.85rem;
+  }
+
+  .pMarcSurto {
+    margin-left: 0.5rem;
+  }
+}
+
+/* Tablets */
+@media (min-width: 500px) and (max-width: 1024px) {
+  .marcador-surto {
+    width: 1.6rem;
+    height: 0.75rem;
+    padding: 0.4rem;
+    font-size: 0.9rem;
+  }
+
+  .pMarcSurto {
+    margin-left: 0.6rem;
+  }
 }

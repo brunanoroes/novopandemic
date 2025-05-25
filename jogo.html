@@ -39,15 +39,15 @@
               <marcador-cura :cor="doenca.cor" :estado="doenca.estado"></marcador-cura>
             </div>
           </div>
-        </div>
-        <div class="conteiner-meio">
-          <div class="lateral">
-            <div class="caixinha-doenca" v-for="doenca in doencas.slice(0, 2)" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
+          <div style="display: flex; gap: 1rem">
+            <div class="caixinha-doenca" v-for="doenca in doencas" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
               <div v-for="(cubo, index) in doenca.cubosDoenca" v-if="cubo.posicao === 'caixa'" :key="index">
                 <pino-doenca :cor="doenca.cor"></pino-doenca>
               </div>
             </div>
           </div>
+        </div>
+        <div class="conteiner-meio">
           <div class="board">
             <svg id="conexoes-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0">
               <line v-for="(conexao, index) in conexoesCidades" :key="index" :x1="getCidadeX(conexao.from)" :y1="getCidadeY(conexao.from)" :x2="getCidadeX(conexao.to)" :y2="getCidadeY(conexao.to)" stroke="#999" stroke-width="2" />
@@ -70,17 +70,14 @@
                 <centro-pesquisa></centro-pesquisa>
               </div>
             </div>
-            <div v-for="espaco in espacosMarcadorInfeccao" :key="espaco.id" :style="EstilizarObjetoPosicao(espaco)">
-              <marcador-infeccao :atual="espaco.atual" :nivel="espaco.nome"></marcador-infeccao>
+            <div class="conteiner-marcadores-infeccao">
+              <div v-for="espaco in espacosMarcadorInfeccao" :key="espaco.id">
+                <marcador-infeccao :atual="espaco.atual" :nivel="espaco.nome"></marcador-infeccao>
+              </div>
             </div>
-            <div v-for="espaco in espacosMarcadorSurto" :key="espaco.id" class="marcadorSurtos" :atual="espaco.atual" :nivel="espaco.nome" :style="EstilizarObjetoPosicao(espaco)">
-              <marcador-surto :atual="espaco.atual" :nivel="espaco.nome"></marcador-surto>
-            </div>
-          </div>
-          <div class="lateral">
-            <div class="caixinha-doenca" v-for="doenca in doencas.slice(2, 4)" :style="{ backgroundColor: doenca.cor }" :key="doenca.cor">
-              <div v-for="(cubo, index) in doenca.cubosDoenca" v-if="cubo.posicao === 'caixa'" :key="index">
-                <pino-doenca :cor="doenca.cor"></pino-doenca>
+            <div class="conteiner-marcadores-surtos">
+              <div v-for="espaco in espacosMarcadorSurto" :key="espaco.id" class="marcadorSurtos" :atual="espaco.atual" :nivel="espaco.nome">
+                <marcador-surto :atual="espaco.atual" :nivel="espaco.nome"></marcador-surto>
               </div>
             </div>
           </div>

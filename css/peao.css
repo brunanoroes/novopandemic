@@ -4,4 +4,24 @@
   border-radius: 50%;
   background-color: white;
   border: 2px solid white;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+}
+
+/* Responsividade: Celulares */
+@media (max-width: 500px) {
+  .pino-jogador {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-width: 1.5px;
+  }
+}
+
+/* Tablets */
+@media (min-width: 500px) and (max-width: 1024px) {
+  .pino-jogador {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-width: 1.75px;
+  }
 }

@@ -15,6 +15,8 @@
 .carta-personagem img {
   border-radius: 8px;
   margin-bottom: 10px;
+  max-width: 100%;
+  height: auto;
 }
 
 .carta-personagem h3 {
@@ -27,4 +29,38 @@
   font-size: 14px;
   color: #555;
   line-height: 1.4;
+}
+
+/* Telas pequenas (celulares) */
+@media (max-width: 500px) {
+  .carta-personagem {
+    width: 140px;
+    padding: 10px;
+    margin: 8px;
+  }
+
+  .carta-personagem h3 {
+    font-size: 14px;
+  }
+
+  .carta-personagem p {
+    font-size: 12px;
+  }
+}
+
+/* Telas médias (tablets) */
+@media (min-width: 500px) and (max-width: 1024px) {
+  .carta-personagem {
+    width: 170px;
+    padding: 11px;
+    margin: 9px;
+  }
+
+  .carta-personagem h3 {
+    font-size: 15px;
+  }
+
+  .carta-personagem p {
+    font-size: 13px;
+  }
 }
