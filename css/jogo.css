@@ -8,14 +8,10 @@
 @import url('marcadorSurto.css');
 @import url('marcadorVelocidadeInfeccao.css');
 @import url('peao.css');
-#appVue {
-  background-image: url('../assets/fundo-azul-abstrato-com-arquivo-vetorial-branco-brilhante_372841-original.webp');
-}
+
 /* Estilo da Board (fundo) */
 .board {
   position: relative;
-  width: 100vw;
-  max-width: 1000px;
   aspect-ratio: 16 / 9; /* ou a proporção real da imagem */
   margin: 0 auto;
   overflow: hidden;
@@ -200,8 +196,7 @@ button:hover {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  background-image: url('../assets/fundo-azul-abstrato-com-arquivo-vetorial-branco-brilhante_372841-original.webp');
 }
 
 .conteiner-marcadores-infeccao,
@@ -229,11 +224,15 @@ button:hover {
   gap: 1rem;
 }
 
-@media (max-width: 1600px) {
+.conteiner-meio {
+  width: 70%;
+}
+
+@media (max-width: 1400px) {
   .city {
-    width: 0.9rem;
-    height: 0.9rem;
-    font-size: 0.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    font-size: 0.4rem;
     border: 1px solid white;
   }
 
@@ -317,7 +316,7 @@ button:hover {
   }
 }
 
-@media (min-width: 1000px) and (max-width: 1400px) {
+@media (min-width: 700px) and (max-width: 1400px) {
   .conteiner-cartas-jogo {
     display: grid;
     grid-template-columns: repeat(2, 3fr);
@@ -328,8 +327,13 @@ button:hover {
     grid-template-columns: repeat(4, 3fr);
     gap: 1rem;
   }
+  .city {
+    width: 0.9rem;
+    height: 0.9rem;
+    font-size: 0.7rem;
+  }
 }
-@media (min-width: 1401px) and (max-width: 2000px) {
+@media (min-width: 1401px) {
   .conteiner-cartas-jogo {
     display: grid;
     grid-template-columns: repeat(3, 3fr);
@@ -339,5 +343,10 @@ button:hover {
     display: grid;
     grid-template-columns: repeat(6, 3fr);
     gap: 1rem;
+  }
+  .city {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.8rem;
   }
 }

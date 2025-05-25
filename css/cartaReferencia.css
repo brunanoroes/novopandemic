@@ -24,7 +24,7 @@
 }
 
 /* Celulares */
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .carta-referencia {
     width: 90vw; /* quase toda a largura da tela */
     padding: 1rem;

@@ -1,20 +1,28 @@
 .pino-doenca {
   width: 0.8rem; /* tamanho base */
   height: 0.8rem;
-  border-radius: 50%; /* círculo */
   background-color: inherit; /* herda cor */
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 8px black;
   display: inline-block;
   margin: 0 auto;
   border: 2px solid #333;
+  filter: brightness(6);
+}
+@media (max-width: 1400px) {
+  .pino-doenca {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-width: 1.5px;
+    box-shadow: 0 0 8px black;
+  }
 }
 
 /* Responsivo para celulares */
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .pino-doenca {
-    width: 0.6rem;
-    height: 0.6rem;
+    width: 0.3rem;
+    height: 0.3rem;
     border-width: 1.5px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 8px black;
   }
 }

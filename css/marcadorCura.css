@@ -14,7 +14,7 @@
 }
 
 /* Responsividade para celulares */
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .frasco {
     font-size: 0.8rem;
     padding: 6px 10px;

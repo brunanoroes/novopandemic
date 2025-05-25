@@ -19,7 +19,7 @@
 }
 
 /* Telas pequenas (celulares) */
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .centro-pesquisa {
     width: 1rem;
     height: 1rem;

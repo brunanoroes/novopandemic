@@ -9,7 +9,7 @@
 }
 
 /* Responsividade: Celulares */
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .pino-jogador {
     width: 0.8rem;
     height: 0.8rem;
