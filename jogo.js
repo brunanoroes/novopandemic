@@ -90,7 +90,7 @@ new Vue({
         window.open('index.html', '_self');
       }
     },
-    doencas(valor) {
+    doencas() {
       const todasCuradas = this.doencas.every(d => d.estado === 'curado');
       if (todasCuradas) {
         this.modal.mostra = true;
