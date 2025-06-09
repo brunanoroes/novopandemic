@@ -8,7 +8,7 @@
   <body>
     <div id="appVue">
       <h2>Olá, bem-vindo ao nosso projeto de Pandemic!</h2>
-
+      <a href="instrucao.html" target="_blank">Instrução</a>
       <label>Quantos jogadores?</label>
       <select v-model.number="quantidade">
         <option value="0" disabled>Selecione</option>
@@ -25,8 +25,6 @@
       </div>
 
       <br />
-      <a href="instrucao.html" target="_blank">Instrução</a>
-
       <a :href="linkJogar" v-if="todosNomesPreenchidos && quantidade">Jogar</a>
     </div>
 
@@ -55,7 +53,7 @@
         },
       });
     </script>
-    
+
     <!-- Vue 2 -->
     <script src="assets/vue.js"></script>
   </body>
