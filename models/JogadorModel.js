@@ -42,7 +42,7 @@ export default class Jogador {
       case 'Balsa':
         if (this.EstaConectada(this.peao.lugar, cidade.nome, conexoes)) {
           this.peao.lugar = cidade.nome;
-          return { mensagem: 'Barca Utilizada com Sucesso', tipo: 'sucesso' };
+          return { mensagem: '', tipo: 'sucesso' };
         }
         return { mensagem: 'Você não pode andar de balsa para essa cidade. As cidades precisam estar conectadas.', tipo: 'erro' };
 
@@ -50,7 +50,7 @@ export default class Jogador {
         if (this.cartas.some(c => c.conteudo === cidade.nome)) {
           this.peao.lugar = cidade.nome;
           this.DescartarCarta(cidade.nome);
-          return { mensagem: 'Voo Direto Utilizado com Sucesso', tipo: 'sucesso' };
+          return { mensagem: '', tipo: 'sucesso' };
         }
         return { mensagem: 'Você precisa ter a carta da cidade de destino para usar o voo direto.', tipo: 'erro' };
 
@@ -58,14 +58,14 @@ export default class Jogador {
         if (this.cartas.some(carta => carta.conteudo === this.peao.lugar)) {
           this.DescartarCarta(this.peao.lugar);
           this.peao.lugar = cidade.nome;
-          return { mensagem: 'Voo Fretado Utilizado com Sucesso', tipo: 'sucesso' };
+          return { mensagem: '', tipo: 'sucesso' };
         }
         return { mensagem: 'Você precisa ter a carta da cidade atual para usar o voo fretado.', tipo: 'erro' };
 
       case 'Ponte Aérea':
         if (this.TemCentroPesquisa(centrosPesquisa, this.peao.lugar) && this.TemCentroPesquisa(centrosPesquisa, cidade.nome)) {
           this.peao.lugar = cidade.nome;
-          return { mensagem: 'Ponte Aérea Utilizada com Sucesso', tipo: 'sucesso' };
+          return { mensagem: '', tipo: 'sucesso' };
         }
         return { mensagem: 'Ambas as cidades devem ter um centro de pesquisa para usar a ponte aérea.', tipo: 'erro' };
 

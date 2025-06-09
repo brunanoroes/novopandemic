@@ -119,9 +119,9 @@
 
       <div v-if="modal.mostra">
         <div class="modal-overlay" @click.self="modal.mostra = false">
-          <div class="modal-content">
-            <button class="fechar" @click="modal.mostra = false">✖</button>
+          <div class="modal-content" style="display: flex">
             <p>{{ modal.mensagem }}</p>
+            <button class="fechar" @click="modal.mostra = false">✖</button>
           </div>
         </div>
       </div>
