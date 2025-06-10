@@ -217,7 +217,7 @@ new Vue({
         // Surto!
         const surtoResponse = doenca.propagateSurto(this.cidades, cidadeNome, this.conexoesCidades, this.espacosMarcadorInfeccao, this.espacosMarcadorSurto);
         if (surtoResponse.surto) this.atualizarMarcadorSurto();
-        return { cidade: cidadeNome, cor, status: `Surto em ${cidadeNome}, Infectou com 1 cubo de doença alguma cidade vizinha` };
+        return { cidade: cidadeNome, cor, status: `Surto em ${cidadeNome}, Infectou com 1 a cidade: ` };
       }
 
       const cuboDisponivel = doenca.cubosDoenca.find(c => c.posicao === 'caixa');
